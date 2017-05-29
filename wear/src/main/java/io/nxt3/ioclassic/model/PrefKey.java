@@ -10,6 +10,4 @@ public enum PrefKey {
      *
      * String: SAMPLE_KEY, SAMPLE_STR or just SAMPLE
      */
-
-
 }
