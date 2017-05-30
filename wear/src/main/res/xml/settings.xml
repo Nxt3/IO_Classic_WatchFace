@@ -46,6 +46,13 @@
             android:title="@string/settings_draw_border_complications" />
     </PreferenceScreen>
 
+    <!--<SwitchPreference-->
+        <!--android:defaultValue="false"-->
+        <!--android:key="settings_ambient"-->
+        <!--android:summaryOff="@string/settings_grayscale"-->
+        <!--android:summaryOn="@string/settings_color"-->
+        <!--android:title="@string/settings_ambient" />-->
+
     <!--TODO, use for different styles (i.e. with digital time, w/o digital time, etc.)-->
     <!--<ListPreference-->
         <!--android:defaultValue="0"-->
@@ -154,15 +161,7 @@
                 android:name="default"
                 android:value="Grey" />
         </Preference>
-
     </PreferenceScreen>
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="settings_ambient"
-        android:summaryOff="Grayscale"
-        android:summaryOn="Color"
-        android:title="Ambient" />
 
     <ListPreference
         android:defaultValue="0"

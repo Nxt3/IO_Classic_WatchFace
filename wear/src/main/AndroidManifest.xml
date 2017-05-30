@@ -2,6 +2,12 @@
     package="io.nxt3.ioclassic">
 
     <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
+    <uses-permission android:name="com.google.android.wearable.permission.RECEIVE_COMPLICATION_DATA" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +15,18 @@
         android:supportsRtl="true"
         android:taskAffinity=""
         android:theme="@android:style/Theme.DeviceDefault">
+
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="false" />
 
         <service
             android:name=".IOClassicWatchFaceService"
@@ -24,6 +42,9 @@
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview_circular"
                 android:resource="@drawable/preview_circular" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.wearableConfigurationAction"
+                android:value="io.nxt3.ioclassic.CONFIG_IO_CLASSIC_WATCH_FACE" />
 
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
@@ -31,5 +52,18 @@
                     android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
             </intent-filter>
         </service>
+
+        <activity android:name="android.support.wearable.complications.ComplicationHelperActivity" />
+        <activity android:name=".config.ColorActivity" />
+        <activity
+            android:name=".config.SettingsActivity"
+            android:label="@string/settings">
+            <intent-filter>
+                <action android:name="io.nxt3.ioclassic.CONFIG_IO_CLASSIC_WATCH_FACE" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WEARABLE_CONFIGURATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

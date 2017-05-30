@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">IO Classic</string>
 
+    <string name="settings">Settings</string>
+
     <!--Complication setting titles-->
     <string name="settings_left_complication">Left</string>
     <string name="settings_right_complication">Right</string>
@@ -8,6 +10,8 @@
     <string name="settings_bottom_complication">Bottom</string>
     <string name="settings_draw_border_complications">Draw border</string>
     <string name="settings_empty">Empty</string>
+    <string name="settings_color">Color</string>
+    <string name="settings_grayscale">Grayscale</string>
 
     <!--Hand color setting titles-->
     <string name="settings_watch_face_components_title">Hand colors</string>
@@ -25,6 +29,35 @@
     <string name="settings_default_circle_ticks_color">White</string>
     <string name="settings_default_outer_circle_color">Grey</string>
 
-
+    <!--Donation-->
     <string name="settings_donation_error">There was an error with your donation</string>
+
+    <string name="settings_ambient">Ambient</string>
+
+    <!--Colors-->
+    <string name="settings_default_hands">Default hands</string>
+    <string name="settings_default_seconds">Default seconds</string>
+    <string name="settings_default_background">Default center</string>
+    <string name="settings_default_outer_circle">Default outer</string>
+    <string name="settings_red">Red</string>
+    <string name="settings_pink">Pink</string>
+    <string name="settings_purple">Purple</string>
+    <string name="settings_deep_purple">Deep purple</string>
+    <string name="settings_indigo">Indigo</string>
+    <string name="settings_blue">Blue</string>
+    <string name="settings_light_blue">Light blue</string>
+    <string name="settings_cyan">Cyan</string>
+    <string name="settings_teal">Teal</string>
+    <string name="settings_green">Green</string>
+    <string name="settings_light_green">Light green</string>
+    <string name="settings_lime">Lime</string>
+    <string name="settings_yellow">Yellow</string>
+    <string name="settings_amber">Amber</string>
+    <string name="settings_orange">Orange</string>
+    <string name="settings_deep_orange">Deep orange</string>
+    <string name="settings_brown">Brown</string>
+    <string name="settings_gray">Gray</string>
+    <string name="settings_blue_gray">Blue gray</string>
+    <string name="settings_black">Black</string>
+    <string name="settings_white">White</string>
 </resources>
