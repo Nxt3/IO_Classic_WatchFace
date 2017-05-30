@@ -273,7 +273,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             super.onVisibilityChanged(visible);
 
             if (visible) {
-                //loadSavedPrefs();
+                loadSavedPrefs();
                 updateWatchPaintStyles();
 
                 registerReceiver();
