@@ -126,11 +126,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private Paint mComplicationTextPaint;
         private TextPaint mComplicationLongTextPaint;
 
-        //Complication array
+        //Complication stuff
         private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
-
-        //Complication Tap boxes
         private RectF[] mComplicationTapBoxes = new RectF[COMPLICATION_IDS.length];
+        private final float COMPLICATION_RADIUS = 4.6f;
 
         //Fonts for complications
         private Typeface mFontLight;
@@ -704,7 +703,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             ComplicationText text = data.getShortText();
             Icon icon = mBurnInProtection && mAmbient && data.getBurnInProtectionIcon() != null ? data.getBurnInProtectionIcon() : data.getIcon();
 
-            float radius = mCenterX / 4;
+            float radius = mCenterX / COMPLICATION_RADIUS;
 
             mComplicationTapBoxes[id] = new RectF(centerX - radius,
                     centerY - radius,
@@ -755,7 +754,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          */
         private void drawIconComplication(Canvas canvas, ComplicationData data,
                                           float centerX, float centerY, int id) {
-            float radius = mCenterX / 4;
+            float radius = mCenterX / COMPLICATION_RADIUS;
 
             mComplicationTapBoxes[id] = new RectF(centerX - radius,
                     centerY - radius,
@@ -788,7 +787,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          */
         private void drawSmallImageComplication(Canvas canvas,ComplicationData data,
                                                 float centerX, float centerY, int id) {
-            float radius = mCenterX / 4;
+            float radius = mCenterX / COMPLICATION_RADIUS;
 
             mComplicationTapBoxes[id] = new RectF(centerX - radius,
                     centerY - radius,

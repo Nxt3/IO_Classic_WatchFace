@@ -145,7 +145,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
             case "settings_circle_ticks_color":
                 intent = new Intent(getContext(), ColorActivity.class);
-                intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_WHITE)));
+                intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_color_value", Color.parseColor(DEFAULT_WHITE)));
                 intent.putExtra("color_names_id", R.array.color_names);
                 intent.putExtra("color_values_id", R.array.color_values);
                 startActivityForResult(intent, CIRCLE_AND_TICKS_COLOR_REQ);
