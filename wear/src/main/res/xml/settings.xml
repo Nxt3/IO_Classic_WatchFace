@@ -77,7 +77,7 @@
                 android:title="@string/settings_hour_hand_color">
                 <extra
                     android:name="default"
-                    android:value="White" />
+                    android:value="@string/settings_default_hands" />
             </Preference>
 
             <Preference
@@ -87,7 +87,7 @@
                 android:title="@string/settings_minute_hand_color">
                 <extra
                     android:name="default"
-                    android:value="White" />
+                    android:value="@string/settings_default_hands" />
             </Preference>
 
             <Preference
@@ -97,7 +97,7 @@
                 android:title="@string/settings_second_hand_color">
                 <extra
                     android:name="default"
-                    android:value="Red" />
+                    android:value="@string/settings_default_seconds" />
             </Preference>
         </PreferenceCategory>
 
@@ -137,7 +137,7 @@
             android:title="@string/settings_center_circle_color">
             <extra
                 android:name="default"
-                android:value="Black" />
+                android:value="@string/settings_default_center_circle_color" />
         </Preference>
 
         <Preference
@@ -148,7 +148,7 @@
             android:title="@string/settings_circle_ticks_color">
             <extra
                 android:name="default"
-                android:value="White" />
+                android:value="@string/settings_default_circle_ticks_color" />
         </Preference>
 
         <Preference
@@ -159,7 +159,7 @@
             android:title="@string/settings_outer_circle_color">
             <extra
                 android:name="default"
-                android:value="Grey" />
+                android:value="@string/settings_default_outer_circle_color" />
         </Preference>
     </PreferenceScreen>
 

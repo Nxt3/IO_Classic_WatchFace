@@ -137,7 +137,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 startActivityForResult(intent, SECOND_HAND_COLOR_REQ);
                 break;
 
-            case "settings_background_color":
+            case "settings_center_circle_color":
                 intent = new Intent(getContext(), ColorActivity.class);
                 intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_BKGD)));
                 intent.putExtra("color_names_id", R.array.background_color_names);
