@@ -22,6 +22,8 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import io.nxt3.ioclassic.config.Settings;
+
 public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private static final String TAG = "IOClassic";
     private static Settings sSettings;

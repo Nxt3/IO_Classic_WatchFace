@@ -1,4 +1,4 @@
-package io.nxt3.ioclassic;
+package io.nxt3.ioclassic.config;
 
 
 import android.content.Context;
