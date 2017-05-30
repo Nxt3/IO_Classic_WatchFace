@@ -162,6 +162,24 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             case "time_format":
                 startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
                 break;
+
+            case "settings_reset_hand_colors":
+                getPreferenceScreen().getSharedPreferences().edit()
+                        .putInt("settings_hour_hand_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
+                getPreferenceScreen().getSharedPreferences().edit()
+                        .putInt("settings_minute_hand_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
+                getPreferenceScreen().getSharedPreferences().edit()
+                        .putInt("settings_second_hand_color_value", Color.parseColor(DEFAULT_RED)).apply();
+                break;
+
+            case "settings_reset_background_colors":
+                getPreferenceScreen().getSharedPreferences().edit()
+                        .putInt("settings_center_circle_color_value", Color.parseColor(DEFAULT_CENTER)).apply();
+                getPreferenceScreen().getSharedPreferences().edit()
+                        .putInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
+                getPreferenceScreen().getSharedPreferences().edit()
+                        .putInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER)).apply();
+                break;
             
             case "donation_1":
             case "donation_3":

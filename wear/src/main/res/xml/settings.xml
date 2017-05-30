@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Complications-->
     <PreferenceScreen
         android:icon="@drawable/ic_complications_black_24dp"
         android:key="settings_complication_screen"
@@ -65,6 +66,7 @@
         <!--android:summary="%s"-->
         <!--android:title="Style" />-->
 
+    <!--Hand colors-->
     <PreferenceScreen
         android:icon="@drawable/ic_color_lens_black_24dp"
         android:key="settings_hand_colors"
@@ -125,6 +127,7 @@
         <!--</PreferenceCategory>-->
     </PreferenceScreen>
 
+    <!--Background colors-->
     <PreferenceScreen
         android:icon="@drawable/ic_background_black_24dp"
         android:key="settings_backgrounds"
@@ -191,11 +194,25 @@
         <!--android:summary="%s"-->
         <!--android:title="Time format" />-->
 
+    <!--Reset settings-->
+    <PreferenceScreen
+        android:icon="@drawable/ic_format_color_reset_black_24dp"
+        android:key="settings_reset_settings"
+        android:title="@string/settings_reset_settings_title">
+        <Preference
+            android:key="settings_reset_hand_colors"
+            android:title="@string/settings_reset_hand_colors" />
+        <Preference
+            android:key="settings_reset_background_colors"
+            android:title="@string/settings_reset_background_colors" />
+    </PreferenceScreen>
+
+    <!--Donations-->
     <PreferenceScreen
         android:icon="@drawable/ic_donate_black_24dp"
         android:key="settings_donate_screen"
-        android:summary="Support development"
-        android:title="Donate">
+        android:summary="@string/settings_support_development"
+        android:title="@string/settings_donate">
         <Preference
             android:key="donation_1"
             android:summary="Beer"

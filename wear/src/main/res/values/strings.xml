@@ -30,9 +30,16 @@
     <string name="settings_default_outer_circle_color">@string/settings_default_outer_circle</string>
 
     <!--Donation-->
+    <string name="settings_support_development">Support development</string>
+    <string name="settings_donate">Donate</string>
     <string name="settings_donation_error">There was an error with your donation</string>
 
     <string name="settings_ambient">Ambient</string>
+
+    <!--Reset to default-->
+    <string name="settings_reset_settings_title">Reset settings to default</string>
+    <string name="settings_reset_hand_colors">Reset hand colors</string>
+    <string name="settings_reset_background_colors">Reset background colors</string>
 
     <!--Colors-->
     <string name="settings_default_hands">Default hands</string>

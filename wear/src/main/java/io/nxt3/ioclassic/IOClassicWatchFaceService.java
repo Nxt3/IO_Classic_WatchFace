@@ -272,7 +272,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             drawBackground(canvas);
 
-            final float offset = 0; //offset for complications
+            final float offset = -10; //offset for complications
 
             drawWatchFace(canvas, bounds);
             drawComplication(canvas, now, TOP_DIAL_COMPLICATION, mCenterX, mCenterY / 2 - offset);
@@ -569,8 +569,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                                               int id) {
             ComplicationText text = data.getLongText();
             String textText = text != null ? text.getText(getApplicationContext(), currentTimeMillis).toString() : null;
+
             ComplicationText title = data.getLongTitle();
             String titleText = title != null ? title.getText(getApplicationContext(), currentTimeMillis).toString() : null;
+
             Icon icon = mBurnInProtection && mAmbient && data.getBurnInProtectionIcon() != null ? data.getBurnInProtectionIcon() : data.getIcon();
             Icon image = data.getSmallImage();
 
@@ -580,28 +582,35 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             Rect bounds = new Rect();
             Rect bounds2 = new Rect();
+
             float textWidth = 0;
             float titleWidth = 0;
+
             if (textText != null) {
                 mComplicationPrimaryLongTextPaint.getTextBounds(textText, 0, textText.length(), bounds);
                 textWidth = bounds.width() + height / 2;
             }
+
             if (titleText != null) {
                 mComplicationLongTextPaint.getTextBounds(titleText, 0, titleText.length(), bounds2);
                 titleWidth = bounds2.width() + height / 2;
             }
+
             if (textWidth > titleWidth && textWidth > 0) {
                 width = textWidth;
             }
+
             if (textWidth < titleWidth && titleWidth > 0) {
                 width = titleWidth;
             }
+
             if (image != null && !(mAmbient && mBurnInProtection)) {
                 width += height + 8;
             } else if (icon != null) {
                 width += height;
             }
             boolean ellipsize = false;
+
             if (width > maxWidth) {
                 width = maxWidth;
                 ellipsize = true;
@@ -617,10 +626,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             if (mComplicationBorder) {
                 Path path = new Path();
                 path.moveTo(tapBox.left + height / 2, tapBox.top);
+
                 path.lineTo(tapBox.right - height / 2, tapBox.top);
                 path.arcTo(tapBox.right - height, tapBox.top, tapBox.right, tapBox.bottom, -90, 180, false);
+
                 path.lineTo(tapBox.left + height / 2, tapBox.bottom);
                 path.arcTo(tapBox.left, tapBox.top, tapBox.left + height, tapBox.bottom, 90, 180, false);
+
                 canvas.drawPath(path, mComplicationCirclePaint);
             }
 
@@ -797,6 +809,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             Icon smallImage = data.getSmallImage();
             if (smallImage != null && !(mAmbient && mBurnInProtection)) {
                 Drawable drawable = smallImage.loadDrawable(getApplicationContext());
+
                 if (drawable != null) {
                     if (mAmbient) {
                         drawable = convertToGrayscale(drawable);
@@ -807,8 +820,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     } else {
                         drawable = convertToCircle(drawable);
                     }
+
                     drawable.setBounds(Math.round(centerX - size), Math.round(centerY - size), Math.round(centerX + size), Math.round(centerY + size));
                     drawable.draw(canvas);
+
                     if (mComplicationBorder) {
                         canvas.drawCircle(centerX, centerY, radius, mComplicationCirclePaint);
                     }
