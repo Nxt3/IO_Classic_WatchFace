@@ -45,7 +45,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private final int HOUR_HAND_COLOR_REQ = 10;
     private final int MINUTE_HAND_COLOR_REQ = 11;
     private final int SECOND_HAND_COLOR_REQ = 12;
-    private final int BACKGROUND_COLOR_REQ = 13;
+    private final int CENTER_CIRCLE_COLOR_REQ = 13;
     private final int CIRCLE_AND_TICKS_COLOR_REQ = 14;
     private final int OUTER_CIRCLE_COLOR_REQ = 15;
 
@@ -92,10 +92,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Intent intent;
 
         //Default colors
-        final String DEFAULT_WHITE = "#98a4a3"; //hours, minutes, ticks, and circle
-        final String DEFAULT_RED = "#aa5b34"; //seconds
-        final String DEFAULT_BKGD = "#1e2327"; //center circle
-        final String DEFAULT_OUTER = "#20272a"; //outer circle
+        final String DEFAULT_WHITE = "#98A4A3"; //hours, minutes, ticks, and circle
+        final String DEFAULT_RED = "#AA5B34"; //seconds
+        final String DEFAULT_CENTER = "#1E2327"; //center circle
+        final String DEFAULT_OUTER = "#20272A"; //outer circle
 
         switch (preference.getKey()) {
             case "settings_top_complication":
@@ -139,10 +139,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
             case "settings_center_circle_color":
                 intent = new Intent(getContext(), ColorActivity.class);
-                intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_BKGD)));
+                intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_CENTER)));
                 intent.putExtra("color_names_id", R.array.background_color_names);
                 intent.putExtra("color_values_id", R.array.background_color_values);
-                startActivityForResult(intent, BACKGROUND_COLOR_REQ);
+                startActivityForResult(intent, CENTER_CIRCLE_COLOR_REQ);
                 break;
 
             case "settings_circle_ticks_color":
@@ -212,7 +212,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     setSummary("settings_second_hand_color");
                     break;
 
-                case BACKGROUND_COLOR_REQ:
+                case CENTER_CIRCLE_COLOR_REQ:
                     editor.putString("settings_center_circle_color", data.getStringExtra("color_name"));
                     editor.putInt("settings_center_circle_color_value", data.getIntExtra("color_value", 0));
                     editor.apply();
