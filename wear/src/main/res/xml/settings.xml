@@ -130,11 +130,11 @@
         android:key="settings_backgrounds"
         android:title="@string/settings_backgrounds_title">
         <Preference
-            android:defaultValue="@string/settings_default_background_color"
+            android:defaultValue="@string/settings_default_center_circle_color"
             android:icon="@drawable/ic_color_lens_black_24dp"
-            android:key="settings_background_color"
+            android:key="settings_center_circle_color"
             android:summary="%s"
-            android:title="@string/settings_background_color">
+            android:title="@string/settings_center_circle_color">
             <extra
                 android:name="default"
                 android:value="Black" />

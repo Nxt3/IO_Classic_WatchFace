@@ -88,7 +88,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        final Bundle extras = preference.getExtras();
+        Bundle extras = preference.getExtras();
         Intent intent;
 
         //Default colors
@@ -147,7 +147,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
             case "settings_circle_ticks_color":
                 intent = new Intent(getContext(), ColorActivity.class);
-                intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_color_value", Color.parseColor(DEFAULT_WHITE)));
+                intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_WHITE)));
                 intent.putExtra("color_names_id", R.array.color_names);
                 intent.putExtra("color_values_id", R.array.color_values);
                 startActivityForResult(intent, CIRCLE_AND_TICKS_COLOR_REQ);
@@ -188,47 +188,51 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 case 1:
                 case 2:
                 case 3:
-                case 4:
                     setComplicationSummary(requestCode, data.getParcelableExtra(ProviderChooserIntent.EXTRA_PROVIDER_INFO));
                     break;
 
                 case HOUR_HAND_COLOR_REQ:
                     editor.putString("settings_hour_hand_color", data.getStringExtra("color_name"));
                     editor.putInt("settings_hour_hand_color_value", data.getIntExtra("color_value", 0));
+                    editor.apply();
                     setSummary("settings_hour_hand_color");
                     break;
 
                 case MINUTE_HAND_COLOR_REQ:
                     editor.putString("settings_minute_hand_color", data.getStringExtra("color_name"));
                     editor.putInt("settings_minute_hand_color_value", data.getIntExtra("color_value", 0));
+                    editor.apply();
                     setSummary("settings_minute_hand_color");
                     break;
 
                 case SECOND_HAND_COLOR_REQ:
                     editor.putString("settings_second_hand_color", data.getStringExtra("color_name"));
                     editor.putInt("settings_second_hand_color_value", data.getIntExtra("color_value", 0));
+                    editor.apply();
                     setSummary("settings_second_hand_color");
                     break;
 
                 case BACKGROUND_COLOR_REQ:
-                    editor.putString("settings_background_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_background_color_value", data.getIntExtra("color_value", 0));
-                    setSummary("settings_background_color");
+                    editor.putString("settings_center_circle_color", data.getStringExtra("color_name"));
+                    editor.putInt("settings_center_circle_color_value", data.getIntExtra("color_value", 0));
+                    editor.apply();
+                    setSummary("settings_center_circle_color");
                     break;
 
                 case CIRCLE_AND_TICKS_COLOR_REQ:
                     editor.putString("settings_circle_ticks_color", data.getStringExtra("color_name"));
                     editor.putInt("settings_circle_ticks_color_value", data.getIntExtra("color_value", 0));
+                    editor.apply();
                     setSummary("settings_circle_ticks_color");
                     break;
 
                 case OUTER_CIRCLE_COLOR_REQ:
                     editor.putString("settings_outer_circle_color", data.getStringExtra("color_name"));
                     editor.putInt("settings_outer_circle_color_value", data.getIntExtra("color_value", 0));
+                    editor.apply();
                     setSummary("settings_outer_circle_color");
                     break;
             }
-            editor.apply();
         }
     }
 
@@ -310,11 +314,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             Bundle extras = preference.getExtras();
 
             if (preference instanceof ListPreference) {
-                final String name = extras.getString("icons");
+                String name = extras.getString("icons");
 
                 if (name != null) {
-                    final String value = sharedPreferences.getString(key, null);
-                    final int id = getResources().getIdentifier(name, "array", getActivity().getPackageName());
+                    String value = sharedPreferences.getString(key, null);
+                    int id = getResources().getIdentifier(name, "array", getActivity().getPackageName());
 
                     final TypedArray icons = getResources().obtainTypedArray(id);
                     final CharSequence[] entryValues = ((ListPreference) preference).getEntryValues();
@@ -344,8 +348,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (preference != null) {
             Bundle extras = preference.getExtras();
 
-            final String def = extras.getString("default");
-            final String value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(key, def);
+            String def = extras.getString("default");
+            String value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(key, def);
 
             preference.setSummary(value);
         }

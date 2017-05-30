@@ -23,12 +23,8 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import io.nxt3.ioclassic.config.Settings;
-import io.nxt3.ioclassic.model.PrefKey;
-
 public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private static final String TAG = "IOClassic";
-    private static Settings sSettings;
     //Update rate in milliseconds for interactive mode. We update once a second to advance the second hand.
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
@@ -55,7 +51,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
     @Override
     public Engine onCreateEngine() {
-        sSettings = Settings.getInstance(getApplicationContext()); //get a Settings instance
         return new IOClassicWatchFaceEngine();
     }
 
@@ -367,13 +362,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * Loads the user selected colors for each component
          */
         private void loadSavedPrefs() {
-            mHourHandColor = sSettings.getInt(PrefKey.HOUR_HAND_COLOR, Color.WHITE);
-            mMinuteHandColor = sSettings.getInt(PrefKey.MINUTE_HAND_COLOR, Color.WHITE);
-            mSecondHandColor = sSettings.getInt(PrefKey.SECOND_HAND_COLOR, Color.RED);
+            mHourHandColor = Color.WHITE;
+            mMinuteHandColor = Color.WHITE;
+            mSecondHandColor = Color.RED;
 
-            mBackgroundColor = sSettings.getInt(PrefKey.BACKGROUND_COLOR, Color.DKGRAY);
-            mCircleAndTickColor = sSettings.getInt(PrefKey.CIRCLE_AND_TICKS_COLOR, Color.WHITE);
-            mOuterBackgroundColor = sSettings.getInt(PrefKey.OUTER_CIRCLE_COLOR, Color.GRAY);
+            mBackgroundColor = Color.DKGRAY;
+            mCircleAndTickColor = Color.WHITE;
+            mOuterBackgroundColor = Color.GRAY;
         }
 
         /**

@@ -22,12 +22,12 @@
 
     <!--Background color setting titles-->
     <string name="settings_backgrounds_title">Background colors</string>
-    <string name="settings_background_color">Background</string>
+    <string name="settings_center_circle_color">Center circle</string>
     <string name="settings_circle_ticks_color">Circle and ticks</string>
     <string name="settings_outer_circle_color">Outer circle</string>
-    <string name="settings_default_background_color">Black</string>
-    <string name="settings_default_circle_ticks_color">White</string>
-    <string name="settings_default_outer_circle_color">Grey</string>
+    <string name="settings_default_center_circle_color">@string/settings_default_center_circle</string>
+    <string name="settings_default_circle_ticks_color">@string/settings_default_hands</string>
+    <string name="settings_default_outer_circle_color">@string/settings_default_outer_circle</string>
 
     <!--Donation-->
     <string name="settings_donation_error">There was an error with your donation</string>
@@ -37,7 +37,7 @@
     <!--Colors-->
     <string name="settings_default_hands">Default hands</string>
     <string name="settings_default_seconds">Default seconds</string>
-    <string name="settings_default_background">Default center</string>
+    <string name="settings_default_center_circle">Default center</string>
     <string name="settings_default_outer_circle">Default outer</string>
     <string name="settings_red">Red</string>
     <string name="settings_pink">Pink</string>
