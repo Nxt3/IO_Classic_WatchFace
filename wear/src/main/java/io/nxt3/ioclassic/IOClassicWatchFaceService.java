@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.wearable.complications.ComplicationData;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -30,6 +31,27 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private static Settings sSettings;
     //Update rate in milliseconds for interactive mode. We update once a second to advance the second hand.
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
+
+    //Left/Right dial support types
+    public static final int[][] COMPLICATION_SUPPORTED_TYPES = {
+            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_RANGED_VALUE, ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_LONG_TEXT, ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_LARGE_IMAGE}
+    };
+    private static final int TOP_DIAL_COMPLICATION = 0;
+    private static final int LEFT_DIAL_COMPLICATION = 1;
+    private static final int RIGHT_DIAL_COMPLICATION = 2;
+    private static final int BOTTOM_DIAL_COMPLICATION = 3;
+    private static final int BACKGROUND_COMPLICATION = 4;
+    public static final int[] COMPLICATION_IDS = {
+            TOP_DIAL_COMPLICATION,
+            LEFT_DIAL_COMPLICATION,
+            RIGHT_DIAL_COMPLICATION,
+            BOTTOM_DIAL_COMPLICATION,
+            BACKGROUND_COMPLICATION
+    };
 
     @Override
     public Engine onCreateEngine() {

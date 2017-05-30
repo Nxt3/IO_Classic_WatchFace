@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceScreen
+        android:icon="@drawable/ic_complications_black_24dp"
+        android:key="settings_complication_screen"
+        android:title="Complications">
+        <Preference
+            android:icon="@drawable/ic_top_complication_black_24dp"
+            android:key="settings_top_complication"
+            android:title="@string/settings_top_complication">
+            <extra
+                android:name="id"
+                android:value="0" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_left_complication_black_24dp"
+            android:key="settings_left_complication"
+            android:title="@string/settings_left_complication">
+            <extra
+                android:name="id"
+                android:value="1" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_right_complication_black_24dp"
+            android:key="settings_right_complication"
+            android:title="@string/settings_right_complication">
+            <extra
+                android:name="id"
+                android:value="2" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_bottom_complication_black_24dp"
+            android:key="settings_bottom_complication"
+            android:title="@string/settings_bottom_complication">
+            <extra
+                android:name="id"
+                android:value="3" />
+        </Preference>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="settings_complication_border"
+            android:title="@string/settings_draw_border_complications" />
+    </PreferenceScreen>
+
+    <!--TODO, use for different styles (i.e. with digital time, w/o digital time, etc.)-->
+    <!--<ListPreference-->
+        <!--android:defaultValue="0"-->
+        <!--android:dialogTitle=""-->
+        <!--android:entries="@array/style_items"-->
+        <!--android:entryValues="@array/style_values"-->
+        <!--android:icon="@drawable/ic_style_black_24dp"-->
+        <!--android:key="settings_style"-->
+        <!--android:negativeButtonText=""-->
+        <!--android:summary="%s"-->
+        <!--android:title="Style" />-->
+
+    <PreferenceScreen
+        android:icon="@drawable/ic_color_lens_black_24dp"
+        android:key="settings_hand_colors"
+        android:title="@string/settings_watch_face_components_title">
+        <PreferenceCategory android:title="@string/settings_hands">
+            <Preference
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:key="settings_hour_hand_color"
+                android:summary="%s"
+                android:title="@string/settings_hour_hand_color">
+                <extra
+                    android:name="default"
+                    android:value="White" />
+            </Preference>
+
+            <Preference
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:key="settings_minute_hand_color"
+                android:summary="%s"
+                android:title="@string/settings_minute_hand_color">
+                <extra
+                    android:name="default"
+                    android:value="White" />
+            </Preference>
+
+            <Preference
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:key="settings_second_hand_color"
+                android:summary="%s"
+                android:title="@string/settings_second_hand_color">
+                <extra
+                    android:name="default"
+                    android:value="Red" />
+            </Preference>
+        </PreferenceCategory>
+
+        <!--Colors for when Ambient mode is activated-->
+        <!--<PreferenceCategory android:title="Ambient">-->
+            <!--<Preference-->
+                <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
+                <!--android:key="settings_ambient_color_name"-->
+                <!--android:summary="%s"-->
+                <!--android:title="Primary Color">-->
+                <!--<extra-->
+                    <!--android:name="default"-->
+                    <!--android:value="Cyan" />-->
+            <!--</Preference>-->
+
+            <!--<Preference-->
+                <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
+                <!--android:key="settings_ambient_accent_color_name"-->
+                <!--android:summary="%s"-->
+                <!--android:title="Accent color">-->
+                <!--<extra-->
+                    <!--android:name="default"-->
+                    <!--android:value="White" />-->
+            <!--</Preference>-->
+        <!--</PreferenceCategory>-->
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="@drawable/ic_background_black_24dp"
+        android:key="settings_backgrounds"
+        android:title="@string/settings_backgrounds_title">
+        <Preference
+            android:defaultValue="@string/settings_default_background_color"
+            android:icon="@drawable/ic_color_lens_black_24dp"
+            android:key="settings_background_color"
+            android:summary="%s"
+            android:title="@string/settings_background_color">
+            <extra
+                android:name="default"
+                android:value="Black" />
+        </Preference>
+
+        <Preference
+            android:defaultValue="@string/settings_default_circle_ticks_color"
+            android:icon="@drawable/ic_color_lens_black_24dp"
+            android:key="settings_circle_ticks_color"
+            android:summary="%s"
+            android:title="@string/settings_circle_ticks_color">
+            <extra
+                android:name="default"
+                android:value="White" />
+        </Preference>
+
+        <Preference
+            android:defaultValue="@string/settings_default_outer_circle_color"
+            android:icon="@drawable/ic_color_lens_black_24dp"
+            android:key="settings_outer_circle_color"
+            android:summary="%s"
+            android:title="@string/settings_outer_circle_color">
+            <extra
+                android:name="default"
+                android:value="Grey" />
+        </Preference>
+
+    </PreferenceScreen>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="settings_ambient"
+        android:summaryOff="Grayscale"
+        android:summaryOn="Color"
+        android:title="Ambient" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:dialogTitle=""
+        android:entries="@array/notification_items"
+        android:entryValues="@array/notification_values"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:key="settings_notification_indicator"
+        android:negativeButtonText=""
+        android:summary="%s"
+        android:title="Notification indicator">
+        <extra
+            android:name="icons"
+            android:value="notification_icons" />
+    </ListPreference>
+
+    <!--TODO, time format when we introduce the digital clock setting-->
+    <!--<ListPreference-->
+        <!--android:defaultValue="0"-->
+        <!--android:dialogTitle=""-->
+        <!--android:entries="@array/time_format_items"-->
+        <!--android:entryValues="@array/time_format_values"-->
+        <!--android:icon="@drawable/ic_time_black_24dp"-->
+        <!--android:key="settings_time_format"-->
+        <!--android:negativeButtonText=""-->
+        <!--android:summary="%s"-->
+        <!--android:title="Time format" />-->
+
+    <PreferenceScreen
+        android:icon="@drawable/ic_donate_black_24dp"
+        android:key="settings_donate_screen"
+        android:summary="Support development"
+        android:title="Donate">
+        <Preference
+            android:key="donation_1"
+            android:summary="Beer"
+            android:title="Donate &#8364;1" />
+        <Preference
+            android:key="donation_3"
+            android:summary="Pizza slice"
+            android:title="Donate &#8364;3" />
+        <Preference
+            android:key="donation_5"
+            android:summary="Pizza"
+            android:title="Donate &#8364;5" />
+        <Preference
+            android:key="donation_10"
+            android:summary="Big pizza and fries"
+            android:title="Donate &#8364;10" />
+        <Preference
+            android:key="donation_20"
+            android:summary="Big pizza, fries and a movie"
+            android:title="Donate &#8364;20" />
+    </PreferenceScreen>
+</PreferenceScreen>

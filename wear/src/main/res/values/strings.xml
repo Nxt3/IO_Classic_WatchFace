@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">IO Classic</string>
+
+    <!--Complication setting titles-->
+    <string name="settings_left_complication">Left</string>
+    <string name="settings_right_complication">Right</string>
+    <string name="settings_top_complication">Top</string>
+    <string name="settings_bottom_complication">Bottom</string>
+    <string name="settings_draw_border_complications">Draw border</string>
+    <string name="settings_empty">Empty</string>
+
+    <!--Hand color setting titles-->
+    <string name="settings_watch_face_components_title">Hand colors</string>
+    <string name="settings_hands">Hands</string>
+    <string name="settings_hour_hand_color">Hour</string>
+    <string name="settings_minute_hand_color">Minute</string>
+    <string name="settings_second_hand_color">Second</string>
+
+    <!--Background color setting titles-->
+    <string name="settings_backgrounds_title">Background colors</string>
+    <string name="settings_background_color">Background</string>
+    <string name="settings_circle_ticks_color">Circle and ticks</string>
+    <string name="settings_outer_circle_color">Outer circle</string>
+    <string name="settings_default_background_color">Black</string>
+    <string name="settings_default_circle_ticks_color">White</string>
+    <string name="settings_default_outer_circle_color">Grey</string>
+
+
+    <string name="settings_donation_error">There was an error with your donation</string>
 </resources>
