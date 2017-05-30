@@ -50,6 +50,18 @@ public class Settings {
     /************ SETTERS ************/
 
     /**
+     * Convenience method for storing ints
+     *
+     * @param prefKey The enum of the preference to store
+     * @param val The new value for the preference
+     */
+    public void put(PrefKey prefKey, int val) {
+        doEdit();
+        mEditor.putInt(prefKey.name(), val);
+        doCommit();
+    }
+
+    /**
      * Convenience method for storing booleans
      *
      * @param prefKey The enum of the preference to store
@@ -63,6 +75,25 @@ public class Settings {
 
 
     /************ GETTERS ************/
+
+    /**
+     * Convenience method for retrieving ints
+     *
+     * @param prefKey The enum of the preference to fetch
+     */
+    public int getInt(PrefKey prefKey) {
+        return mPref.getInt(prefKey.name(), 0);
+    }
+
+    /**
+     * Convenience method for retrieving ints
+     *
+     * @param prefKey          The enum of the preference to fetch
+     * @param defaultValue to return if the prefKey doesn't have a value
+     */
+    public int getInt(PrefKey prefKey, int defaultValue) {
+        return mPref.getInt(prefKey.name(), defaultValue);
+    }
 
     /**
      * Convenience method for retrieving booleans
