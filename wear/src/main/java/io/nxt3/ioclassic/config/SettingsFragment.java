@@ -91,6 +91,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Bundle extras = preference.getExtras();
         Intent intent;
 
+        SharedPreferences.Editor editor = getPreferenceScreen().getSharedPreferences().edit();
+
         //Default colors
         final String DEFAULT_WHITE = "#98A4A3"; //hours, minutes, ticks, and circle
         final String DEFAULT_RED = "#AA5B34"; //seconds
@@ -164,21 +166,35 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 break;
 
             case "settings_reset_hand_colors":
-                getPreferenceScreen().getSharedPreferences().edit()
-                        .putInt("settings_hour_hand_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
-                getPreferenceScreen().getSharedPreferences().edit()
-                        .putInt("settings_minute_hand_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
-                getPreferenceScreen().getSharedPreferences().edit()
-                        .putInt("settings_second_hand_color_value", Color.parseColor(DEFAULT_RED)).apply();
+                editor.putString("settings_hour_hand_color", getString(R.string.settings_default_hands));
+                editor.putInt("settings_hour_hand_color_value", Color.parseColor(DEFAULT_WHITE));
+
+                editor.putString("settings_minute_hand_color", getString(R.string.settings_default_hands));
+                editor.putInt("settings_minute_hand_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
+
+                editor.putString("settings_second_hand_color", getString(R.string.settings_default_seconds));
+                editor.putInt("settings_second_hand_color_value", Color.parseColor(DEFAULT_RED)).apply();
+
+                editor.apply();
+                setSummary("settings_hour_hand_color");
+                setSummary("settings_minute_hand_color");
+                setSummary("settings_second_hand_color");
                 break;
 
             case "settings_reset_background_colors":
-                getPreferenceScreen().getSharedPreferences().edit()
-                        .putInt("settings_center_circle_color_value", Color.parseColor(DEFAULT_CENTER)).apply();
-                getPreferenceScreen().getSharedPreferences().edit()
-                        .putInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
-                getPreferenceScreen().getSharedPreferences().edit()
-                        .putInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER)).apply();
+                editor.putString("settings_center_circle_color", getString(R.string.settings_default_center_circle));
+                editor.putInt("settings_center_circle_color_value", Color.parseColor(DEFAULT_CENTER)).apply();
+
+                editor.putString("settings_circle_ticks_color", getString(R.string.settings_default_hands));
+                editor.putInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
+
+                editor.putString("settings_center_circle_color", getString(R.string.settings_default_outer_circle));
+                editor.putInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER)).apply();
+
+                editor.apply();
+                setSummary("settings_center_circle_color");
+                setSummary("settings_circle_ticks_color");
+                setSummary("settings_outer_circle_color");
                 break;
             
             case "donation_1":

@@ -129,7 +129,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         //Complication stuff
         private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
         private RectF[] mComplicationTapBoxes = new RectF[COMPLICATION_IDS.length];
-        private final float COMPLICATION_RADIUS = 4.6f;
+        private final float COMPLICATION_RADIUS = 4.5f;
 
         //Fonts for complications
         private Typeface mFontLight;
