@@ -1,7 +1,9 @@
 package io.nxt3.ioclassic;
 
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -26,8 +28,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.wearable.complications.ComplicationData;
+import android.support.wearable.complications.ComplicationHelperActivity;
 import android.support.wearable.complications.ComplicationText;
 import android.support.wearable.watchface.CanvasWatchFaceService;
+import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -150,7 +154,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             setWatchFaceStyle(new WatchFaceStyle.Builder(IOClassicWatchFaceService.this)
                     .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                     .setStatusBarGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL)
-                    .setShowSystemUiTime(false)
+                    .setAcceptsTapEvents(true)
                     .build());
 
             loadSavedPrefs();
@@ -913,6 +917,67 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             //Check and trigger whether or not timer should be running (only in active mode)
             updateTimer();
+        }
+
+        /**
+         * Captures tap event (and tap type).
+         * The {@link android.support.wearable.watchface.WatchFaceService#TAP_TYPE_TAP} case can be
+         * used for implementing specific logic to handle the gesture.
+         *
+         * @param tapType   type of tapping the user is performing
+         * @param x         coordinate of the tap
+         * @param y         coordinate of the tap
+         * @param eventTime time the tap took place
+         */
+        @Override
+        public void onTapCommand(int tapType, int x, int y, long eventTime) {
+            switch (tapType) {
+                case TAP_TYPE_TOUCH:
+                    // The user has started touching the screen.
+                    break;
+                case TAP_TYPE_TOUCH_CANCEL:
+                    // The user has started a different gesture or otherwise cancelled the tap.
+                    break;
+                case TAP_TYPE_TAP:
+                    // The user has completed the tap gesture.
+                    for (int i = 0; i < mComplicationTapBoxes.length; i++) {
+                        if (mComplicationTapBoxes[i] != null && mComplicationTapBoxes[i].contains(x, y)) {
+                            onComplicationTapped(i);
+                        }
+                    }
+                    break;
+            }
+            invalidate();
+        }
+
+        /**
+         * Handles what to do once a complication is tapped
+         *
+         * @param id of the complication tapped
+         */
+        private void onComplicationTapped(int id) {
+            ComplicationData complicationData = mActiveComplicationDataSparseArray.get(id);
+
+            if (complicationData != null) {
+                if (complicationData.getTapAction() != null) {
+                    try {
+                        complicationData.getTapAction().send();
+                    } catch (PendingIntent.CanceledException e) {
+                        Log.d(TAG, "Something went wrong with tapping a complication");
+                    }
+
+                } else if (complicationData.getType() == ComplicationData.TYPE_NO_PERMISSION) {
+                    ComponentName componentName = new ComponentName(
+                            getApplicationContext(),
+                            WatchFaceService.class);
+
+                    Intent permissionRequestIntent =
+                            ComplicationHelperActivity.createPermissionRequestHelperIntent(
+                                    getApplicationContext(), componentName);
+
+                    startActivity(permissionRequestIntent);
+                }
+            }
         }
 
         /**
