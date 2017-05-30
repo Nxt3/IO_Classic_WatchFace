@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class IOClassicWatchFace extends CanvasWatchFaceService {
+public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private static final String TAG = "IOClassic";
     private static Settings sSettings;
     //Update rate in milliseconds for interactive mode. We update once a second to advance the second hand.
@@ -118,7 +118,7 @@ public class IOClassicWatchFace extends CanvasWatchFaceService {
 
             mCalendar = Calendar.getInstance();
 
-            setWatchFaceStyle(new WatchFaceStyle.Builder(IOClassicWatchFace.this)
+            setWatchFaceStyle(new WatchFaceStyle.Builder(IOClassicWatchFaceService.this)
                     .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                     .setStatusBarGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL)
                     .setShowSystemUiTime(false)
@@ -360,7 +360,7 @@ public class IOClassicWatchFace extends CanvasWatchFaceService {
             }
             mRegisteredTimeZoneReceiver = true;
             IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-            IOClassicWatchFace.this.registerReceiver(mTimeZoneReceiver, filter);
+            IOClassicWatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
         }
 
         /**
@@ -371,7 +371,7 @@ public class IOClassicWatchFace extends CanvasWatchFaceService {
                 return;
             }
             mRegisteredTimeZoneReceiver = false;
-            IOClassicWatchFace.this.unregisterReceiver(mTimeZoneReceiver);
+            IOClassicWatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
         /**
