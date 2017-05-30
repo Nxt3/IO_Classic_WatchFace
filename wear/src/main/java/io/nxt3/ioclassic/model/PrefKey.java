@@ -10,4 +10,15 @@ public enum PrefKey {
      *
      * String: SAMPLE_KEY, SAMPLE_STR or just SAMPLE
      */
+
+    /**
+     * Colors for each of the different components
+     * This is the KEY we'll be using for storing in Settings
+     */
+    HOUR_HAND_COLOR,
+    MINUTE_HAND_COLOR,
+    SECOND_HAND_COLOR,
+    BACKGROUND_COLOR,
+    CIRCLE_AND_TICKS_COLOR,
+    OUTER_CIRCLE_COLOR
 }
