@@ -24,6 +24,7 @@ import android.support.wearable.complications.ComplicationHelperActivity;
 import android.support.wearable.complications.ComplicationProviderInfo;
 import android.support.wearable.complications.ProviderChooserIntent;
 import android.support.wearable.complications.ProviderInfoRetriever;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
@@ -179,22 +180,32 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 setSummary("settings_hour_hand_color");
                 setSummary("settings_minute_hand_color");
                 setSummary("settings_second_hand_color");
+
+                Toast.makeText(getContext(),
+                        getString(R.string.settings_confirmation_hands_reset),
+                        Toast.LENGTH_SHORT).show();
+
                 break;
 
             case "settings_reset_background_colors":
                 editor.putString("settings_center_circle_color", getString(R.string.settings_default_center_circle));
-                editor.putInt("settings_center_circle_color_value", Color.parseColor(DEFAULT_CENTER)).apply();
+                editor.putInt("settings_center_circle_color_value", Color.parseColor(DEFAULT_CENTER));
 
                 editor.putString("settings_circle_ticks_color", getString(R.string.settings_default_hands));
-                editor.putInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE)).apply();
+                editor.putInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE));
 
-                editor.putString("settings_center_circle_color", getString(R.string.settings_default_outer_circle));
-                editor.putInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER)).apply();
+                editor.putString("settings_outer_circle_color", getString(R.string.settings_default_outer_circle));
+                editor.putInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER));
 
                 editor.apply();
                 setSummary("settings_center_circle_color");
                 setSummary("settings_circle_ticks_color");
                 setSummary("settings_outer_circle_color");
+
+                Toast.makeText(getContext(),
+                        getString(R.string.settings_confirmation_background_reset),
+                        Toast.LENGTH_SHORT).show();
+
                 break;
             
             case "donation_1":

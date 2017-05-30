@@ -40,6 +40,8 @@
     <string name="settings_reset_settings_title">Reset settings to default</string>
     <string name="settings_reset_hand_colors">Reset hand colors</string>
     <string name="settings_reset_background_colors">Reset background colors</string>
+    <string name="settings_confirmation_hands_reset">Hand colors reset</string>
+    <string name="settings_confirmation_background_reset">Background colors reset</string>
 
     <!--Colors-->
     <string name="settings_default_hands">Default hands</string>
