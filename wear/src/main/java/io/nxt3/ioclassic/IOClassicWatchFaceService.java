@@ -78,9 +78,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private static final float THIN_STROKE = 2f;
 
         private Calendar mCalendar;
-        private SharedPreferences mPrefs;
 
-        private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
+        //SharedPrefs for getting settings
+        private SharedPreferences mPrefs;
 
         //Booleans for various ambient mode styles
         private boolean mAmbient;
@@ -122,6 +122,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private Paint mComplicationTextPaint;
         private TextPaint mComplicationLongTextPaint;
 
+        //Complication array
+        private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
+
         //Complication Tap boxes
         private RectF[] mComplicationTapBoxes = new RectF[COMPLICATION_IDS.length];
 
@@ -133,47 +136,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         //Other settings
         private boolean mComplicationBorder;
 
-        /**
-         * Handles changing timezones
-         */
-        private final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mCalendar.setTimeZone(TimeZone.getDefault());
-                invalidate();
-            }
-        };
-
-        /**
-         * Handler to update the time once a second when viewing the watch face
-         */
-        private final Handler mUpdateTimeHandler = new Handler() {
-            @Override
-            public void handleMessage(Message message) {
-                switch (message.what) {
-                    case MSG_UPDATE_TIME:
-                        invalidate();
-
-                        if (shouldTimerBeRunning()) {
-                            long timeMs = System.currentTimeMillis();
-                            long delayMs = INTERACTIVE_UPDATE_RATE_MS
-                                    - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
-
-                            mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
-                        }
-                        break;
-                }
-            }
-        };
-
-        @Override
-        public void onPropertiesChanged(Bundle properties) {
-            super.onPropertiesChanged(properties);
-            Log.d(TAG, "onPropertiesChanged: low-bit ambient = " + mLowBitAmbient);
-
-            mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
-            mBurnInProtection = properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false);
-        }
 
         /**
          * Called when the watch face service is created for the first time
@@ -309,12 +271,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             final float offset = 0; //offset for complications
 
+            drawWatchFace(canvas, bounds);
             drawComplication(canvas, now, TOP_DIAL_COMPLICATION, mCenterX, mCenterY / 2 - offset);
             drawComplication(canvas, now, LEFT_DIAL_COMPLICATION, mCenterX / 2 - offset, mCenterY);
             drawComplication(canvas, now, BOTTOM_DIAL_COMPLICATION, mCenterX, mCenterY * 1.5f + offset);
             drawComplication(canvas, now, RIGHT_DIAL_COMPLICATION, mCenterX * 1.5f + offset, mCenterY);
-
-            drawWatchFace(canvas, bounds);
         }
 
         /**
@@ -991,6 +952,15 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 //            mNotificationBackgroundPaint.setShader(shader);
         }
 
+        @Override
+        public void onPropertiesChanged(Bundle properties) {
+            super.onPropertiesChanged(properties);
+            Log.d(TAG, "onPropertiesChanged: low-bit ambient = " + mLowBitAmbient);
+
+            mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
+            mBurnInProtection = properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false);
+        }
+
         /**
          * Update the watch paint styles when changing between Ambient and Non-Ambient modes
          */
@@ -1079,6 +1049,39 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
         }
+
+        /**
+         * Handles changing timezones
+         */
+        private final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mCalendar.setTimeZone(TimeZone.getDefault());
+                invalidate();
+            }
+        };
+
+        /**
+         * Handler to update the time once a second when viewing the watch face
+         */
+        private final Handler mUpdateTimeHandler = new Handler() {
+            @Override
+            public void handleMessage(Message message) {
+                switch (message.what) {
+                    case MSG_UPDATE_TIME:
+                        invalidate();
+
+                        if (shouldTimerBeRunning()) {
+                            long timeMs = System.currentTimeMillis();
+                            long delayMs = INTERACTIVE_UPDATE_RATE_MS
+                                    - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
+
+                            mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
+                        }
+                        break;
+                }
+            }
+        };
 
         /**
          * Register a receiver for handling timezone changes

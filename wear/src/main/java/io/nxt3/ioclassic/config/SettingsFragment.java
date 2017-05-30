@@ -108,9 +108,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                                 getContext(),
                                 new ComponentName(getContext().getApplicationContext(),
                                         IOClassicWatchFaceService.class),
-                                id,
-                                IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES[id]),
-                                id);
+                                id, IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES[id]), id);
                 break;
             
             case "settings_hour_hand_color":
