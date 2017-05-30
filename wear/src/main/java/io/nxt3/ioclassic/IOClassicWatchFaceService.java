@@ -23,6 +23,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import io.nxt3.ioclassic.config.Settings;
+import io.nxt3.ioclassic.model.PrefKey;
 
 public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private static final String TAG = "IOClassic";
@@ -344,13 +345,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * Loads the user selected colors for each component
          */
         private void loadSavedPrefs() {
-            mHourHandColor = Color.WHITE;
-            mMinuteHandColor = Color.WHITE;
-            mSecondHandColor = Color.RED;
+            mHourHandColor = sSettings.getInt(PrefKey.HOUR_HAND_COLOR, Color.WHITE);
+            mMinuteHandColor = sSettings.getInt(PrefKey.MINUTE_HAND_COLOR, Color.WHITE);
+            mSecondHandColor = sSettings.getInt(PrefKey.SECOND_HAND_COLOR, Color.RED);
 
-            mBackgroundColor = Color.GREEN;
-            mCircleAndTickColor = Color.WHITE;
-            mOuterBackgroundColor = Color.MAGENTA;
+            mBackgroundColor = sSettings.getInt(PrefKey.BACKGROUND_COLOR, Color.DKGRAY);
+            mCircleAndTickColor = sSettings.getInt(PrefKey.CIRCLE_AND_TICKS_COLOR, Color.WHITE);
+            mOuterBackgroundColor = sSettings.getInt(PrefKey.OUTER_CIRCLE_COLOR, Color.GRAY);
         }
 
         /**
