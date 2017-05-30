@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
@@ -25,10 +24,8 @@ import android.support.wearable.complications.ComplicationHelperActivity;
 import android.support.wearable.complications.ComplicationProviderInfo;
 import android.support.wearable.complications.ProviderChooserIntent;
 import android.support.wearable.complications.ProviderInfoRetriever;
-import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.Executor;
 
 import io.nxt3.ioclassic.IOClassicWatchFaceService;
@@ -43,7 +40,7 @@ import static io.nxt3.ioclassic.config.SettingsActivity.donate;
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
-     * Request codes for the colors
+     * Request codes for the color settings
      */
     private final int HOUR_HAND_COLOR_REQ = 10;
     private final int MINUTE_HAND_COLOR_REQ = 11;
@@ -153,7 +150,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_color_value", Color.parseColor(DEFAULT_WHITE)));
                 intent.putExtra("color_names_id", R.array.color_names);
                 intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, BACKGROUND_COLOR_REQ);
+                startActivityForResult(intent, CIRCLE_AND_TICKS_COLOR_REQ);
                 break;
 
             case "settings_outer_circle_color":
@@ -161,7 +158,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_OUTER)));
                 intent.putExtra("color_names_id", R.array.background_color_names);
                 intent.putExtra("color_values_id", R.array.background_color_values);
-                startActivityForResult(intent, BACKGROUND_COLOR_REQ);
+                startActivityForResult(intent, OUTER_CIRCLE_COLOR_REQ);
                 break;
             
             case "time_format":
@@ -182,7 +179,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         SharedPreferences.Editor editor = getPreferenceScreen().getSharedPreferences().edit();
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 0:
@@ -247,32 +246,54 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * Gets the list of preferences in a PreferenceScreen
+     *
+     * @param p    preference to add to the list
+     * @param list of preferences in the PreferenceScreen
+     * @return a list of all the preferences
+     */
     private ArrayList<Preference> getPreferenceList(Preference p, ArrayList<Preference> list) {
         if (p instanceof PreferenceCategory || p instanceof PreferenceScreen) {
-            PreferenceGroup pGroup = (PreferenceGroup) p;
-            int pCount = pGroup.getPreferenceCount();
-            for (int i = 0; i < pCount; i++) {
-                getPreferenceList(pGroup.getPreference(i), list);
+            PreferenceGroup prefGroup = (PreferenceGroup) p;
+
+            int prefCount = prefGroup.getPreferenceCount();
+
+            for (int i = 0; i < prefCount; i++) {
+                getPreferenceList(prefGroup.getPreference(i), list);
             }
         }
+
         if (!(p instanceof PreferenceCategory)) {
             list.add(p);
         }
+
         return list;
     }
 
+    /**
+     * Updates all of the preferences
+     */
     private void updateAll() {
         ArrayList<Preference> preferences = getPreferenceList(getPreferenceScreen(), new ArrayList<>());
 
         for (Preference preference : preferences) {
-            Drawable icon = preference.getIcon();
+            final Drawable icon = preference.getIcon();
+
             if (icon != null) {
                 setStyleIcon(preference, icon);
             }
+
             onSharedPreferenceChanged(getPreferenceScreen().getSharedPreferences(), preference.getKey());
         }
     }
 
+    /**
+     * Sets the icon styles for the preferences
+     *
+     * @param preference belonging to the icon
+     * @param icon       to set the styles of
+     */
     private void setStyleIcon(Preference preference, Drawable icon) {
         LayerDrawable layerDrawable = (LayerDrawable) getContext().getDrawable(R.drawable.config_icon);
         icon.setTint(Color.WHITE);
@@ -284,33 +305,26 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
+
         if (preference != null) {
             Bundle extras = preference.getExtras();
-            if (preference instanceof MultiSelectListPreference) {
-                Set<String> values = sharedPreferences.getStringSet(key, null);
-                ArrayList<CharSequence> items = new ArrayList<>();
-                CharSequence[] entries = ((MultiSelectListPreference) preference).getEntries();
-                CharSequence[] entryValues = ((MultiSelectListPreference) preference).getEntryValues();
-                for (int x = 0; x < entries.length; x++) {
-                    if (values != null && values.contains(entryValues[x].toString())) {
-                        items.add(entries[x]);
-                    }
-                }
-                String delimiter = items.size() == 2 ? " & " : ", ";
-                String summary = items.size() > 0 ? TextUtils.join(delimiter, items) : "None";
-                preference.setSummary(summary);
-            } else if (preference instanceof ListPreference) {
-                String name = extras.getString("icons");
+
+            if (preference instanceof ListPreference) {
+                final String name = extras.getString("icons");
+
                 if (name != null) {
-                    String value = sharedPreferences.getString(key, null);
-                    int id = getResources().getIdentifier(name, "array", getActivity().getPackageName());
-                    TypedArray icons = getResources().obtainTypedArray(id);
-                    CharSequence[] entryValues = ((ListPreference) preference).getEntryValues();
+                    final String value = sharedPreferences.getString(key, null);
+                    final int id = getResources().getIdentifier(name, "array", getActivity().getPackageName());
+
+                    final TypedArray icons = getResources().obtainTypedArray(id);
+                    final CharSequence[] entryValues = ((ListPreference) preference).getEntryValues();
+
                     for (int x = 0; x < entryValues.length; x++) {
                         if (value != null && value.equals(entryValues[x])) {
                             setStyleIcon(preference, getResources().getDrawable(icons.getResourceId(x, 0)));
                         }
                     }
+
                     icons.recycle();
                 }
             } else if (preference.getSummary() != null && preference.getSummary().equals("%s")) {
@@ -319,16 +333,30 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
     }
 
+    /**
+     * Handles setting the summary after an new selection has been made
+     *
+     * @param key of the setting to update its summary for
+     */
     private void setSummary(String key) {
         Preference preference = findPreference(key);
+
         if (preference != null) {
             Bundle extras = preference.getExtras();
-            String def = extras.getString("default");
-            String value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(key, def);
+
+            final String def = extras.getString("default");
+            final String value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(key, def);
+
             preference.setSummary(value);
         }
     }
 
+    /**
+     * Sets the summary for the complication selections
+     *
+     * @param id           of the complication
+     * @param providerInfo provider which returns the name of the selected complication in the slot
+     */
     private void setComplicationSummary(int id, ComplicationProviderInfo providerInfo) {
         String key;
 
