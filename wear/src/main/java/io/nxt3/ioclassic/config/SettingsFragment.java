@@ -49,6 +49,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private final int CENTER_CIRCLE_COLOR_REQ = 13;
     private final int CIRCLE_AND_TICKS_COLOR_REQ = 14;
     private final int OUTER_CIRCLE_COLOR_REQ = 15;
+    private final int COMPLICATION_COLOR_REQ = 16;
 
     private ProviderInfoRetriever mProviderInfoRetriever;
 
@@ -112,6 +113,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                                 new ComponentName(getContext().getApplicationContext(),
                                         IOClassicWatchFaceService.class),
                                 id, IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES[id]), id);
+                break;
+
+            case "settings_complication_color":
+                intent = new Intent(getContext(), ColorActivity.class);
+                intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_color_value", Color.parseColor(DEFAULT_WHITE)));
+                intent.putExtra("color_names_id", R.array.color_names);
+                intent.putExtra("color_values_id", R.array.color_values);
+                startActivityForResult(intent, COMPLICATION_COLOR_REQ);
                 break;
             
             case "settings_hour_hand_color":
@@ -197,10 +206,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 editor.putString("settings_outer_circle_color", getString(R.string.settings_default_outer_circle));
                 editor.putInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER));
 
+                editor.putString("settings_complication_color", getString(R.string.settings_default_hands));
+                editor.putInt("settings_complication_color_value", Color.parseColor(DEFAULT_WHITE));
+
                 editor.apply();
                 setSummary("settings_center_circle_color");
                 setSummary("settings_circle_ticks_color");
                 setSummary("settings_outer_circle_color");
+                setSummary("settings_complication_color");
 
                 Toast.makeText(getContext(),
                         getString(R.string.settings_confirmation_background_reset),

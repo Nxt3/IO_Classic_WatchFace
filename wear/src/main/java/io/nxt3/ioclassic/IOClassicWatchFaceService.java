@@ -114,6 +114,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private Paint mOuterBackgroundPaint;
 
         //Colors for each complication component
+        private int mComplicationColor;
         private int mTertiaryColor;
         private int mQuaternaryColor;
 
@@ -222,7 +223,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mFont = Typeface.create("sans-serif", Typeface.NORMAL);
 
             mComplicationArcValuePaint = new Paint();
-            mComplicationArcValuePaint.setColor(mCircleAndTickColor);
+            mComplicationArcValuePaint.setColor(mComplicationColor);
             mComplicationArcValuePaint.setStrokeWidth(4f);
             mComplicationArcValuePaint.setAntiAlias(true);
             mComplicationArcValuePaint.setStrokeCap(Paint.Cap.SQUARE);
@@ -243,12 +244,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationCirclePaint.setStyle(Paint.Style.STROKE);
 
             mComplicationPrimaryLongTextPaint = new TextPaint();
-            mComplicationPrimaryLongTextPaint.setColor(mCircleAndTickColor);
+            mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
             mComplicationPrimaryLongTextPaint.setAntiAlias(true);
             mComplicationPrimaryLongTextPaint.setTypeface(mFontBold);
 
             mComplicationPrimaryTextPaint = new Paint();
-            mComplicationPrimaryTextPaint.setColor(mCircleAndTickColor);
+            mComplicationPrimaryTextPaint.setColor(mComplicationColor);
             mComplicationPrimaryTextPaint.setAntiAlias(true);
             mComplicationPrimaryTextPaint.setTypeface(mFontBold);
 
@@ -1045,11 +1046,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          */
         private void updateWatchPaintStyles() {
 
-            mComplicationArcValuePaint.setColor(mCircleAndTickColor);
+            mComplicationArcValuePaint.setColor(mComplicationColor);
             mComplicationArcPaint.setColor(mTertiaryColor);
             mComplicationCirclePaint.setColor(mQuaternaryColor);
-            mComplicationPrimaryLongTextPaint.setColor(mCircleAndTickColor);
-            mComplicationPrimaryTextPaint.setColor(mCircleAndTickColor);
+            mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
+            mComplicationPrimaryTextPaint.setColor(mComplicationColor);
             mComplicationTextPaint.setColor(mTertiaryColor);
             mComplicationLongTextPaint.setColor(mTertiaryColor);
 
@@ -1077,6 +1078,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mHourPaint.setAntiAlias(false);
                 mMinutePaint.setAntiAlias(false);
                 mSecondPaint.setAntiAlias(false);
+                mComplicationArcValuePaint.setAntiAlias(false);
+                mComplicationPrimaryLongTextPaint.setAntiAlias(false);
+                mComplicationPrimaryTextPaint.setAntiAlias(false);
             } else {
                 mBackgroundPaint.setColor(mCenterCircleColor);
                 mOuterBackgroundPaint.setColor(mOuterCircleColor);
@@ -1092,14 +1096,17 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setColor(mCircleAndTickColor);
                 mCircleAndTickPaint.setStrokeWidth(THICK_STROKE);
 
-                mComplicationArcValuePaint.setColor(mCircleAndTickColor);
-                mComplicationPrimaryLongTextPaint.setColor(mCircleAndTickColor);
-                mComplicationPrimaryTextPaint.setColor(mCircleAndTickColor);
+                mComplicationArcValuePaint.setColor(mComplicationColor);
+                mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
+                mComplicationPrimaryTextPaint.setColor(mComplicationColor);
 
                 mHourPaint.setAntiAlias(true);
                 mMinutePaint.setAntiAlias(true);
                 mSecondPaint.setAntiAlias(true);
                 mCircleAndTickPaint.setAntiAlias(true);
+                mComplicationArcValuePaint.setAntiAlias(true);
+                mComplicationPrimaryLongTextPaint.setAntiAlias(true);
+                mComplicationPrimaryTextPaint.setAntiAlias(true);
             }
         }
 
@@ -1122,9 +1129,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE));
             mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER));
 
+            mComplicationColor = mPrefs.getInt("settings_complication_color_value", Color.parseColor(DEFAULT_WHITE));
+
             //Accent colors for complications
-            mTertiaryColor = Color.argb(Math.round(152), Color.red(mCircleAndTickColor), Color.green(mCircleAndTickColor), Color.blue(mCircleAndTickColor));
-            mQuaternaryColor = Color.argb(Math.round(48), Color.red(mCircleAndTickColor), Color.green(mCircleAndTickColor), Color.blue(mCircleAndTickColor));
+            mComplicationColor =
+            mTertiaryColor = Color.argb(Math.round(152), Color.red(mComplicationColor), Color.green(mComplicationColor), Color.blue(mComplicationColor));
+            mQuaternaryColor = Color.argb(Math.round(48), Color.red(mComplicationColor), Color.green(mComplicationColor), Color.blue(mComplicationColor));
 
             mComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
         }

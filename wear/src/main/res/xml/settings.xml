@@ -4,7 +4,7 @@
     <PreferenceScreen
         android:icon="@drawable/ic_complications_black_24dp"
         android:key="settings_complication_screen"
-        android:title="Complications">
+        android:title="@string/settings_complications_title">
         <Preference
             android:icon="@drawable/ic_top_complication_black_24dp"
             android:key="settings_top_complication"
@@ -39,6 +39,16 @@
             <extra
                 android:name="id"
                 android:value="3" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_color_lens_black_24dp"
+            android:key="settings_complication_color"
+            android:summary="%s"
+            android:title="@string/settings_color">
+            <extra
+                android:name="default"
+                android:value="@string/settings_default_hands" />
         </Preference>
 
         <SwitchPreference

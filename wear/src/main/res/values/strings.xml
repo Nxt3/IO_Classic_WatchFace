@@ -4,6 +4,7 @@
     <string name="settings">Settings</string>
 
     <!--Complication setting titles-->
+    <string name="settings_complications_title">Complications</string>
     <string name="settings_left_complication">Left</string>
     <string name="settings_right_complication">Right</string>
     <string name="settings_top_complication">Top</string>

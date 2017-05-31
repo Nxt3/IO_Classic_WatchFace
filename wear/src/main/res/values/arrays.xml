@@ -72,6 +72,7 @@
         <item>@string/settings_gray</item>
         <item>@string/settings_blue_gray</item>
         <item>@string/settings_black</item>
+        <item>@string/settings_white</item>
     </array>
     <array name="background_color_values">
         <item>#1E2327</item>
@@ -96,6 +97,7 @@
         <item>#212121</item>
         <item>#263238</item>
         <item>#000000</item>
+        <item>#FFFFFF</item>
     </array>
 
     <string-array name="style_items">
