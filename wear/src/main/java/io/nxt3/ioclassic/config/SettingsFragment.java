@@ -288,6 +288,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     editor.apply();
                     setSummary("settings_outer_circle_color");
                     break;
+
+                case COMPLICATION_COLOR_REQ:
+                    editor.putString("settings_complication_color", data.getStringExtra("color_name"));
+                    editor.putInt("settings_complication_value", data.getIntExtra("color_value", 0));
+                    editor.apply();
+                    setSummary("settings_complication_color");
+                    break;
             }
         }
     }
