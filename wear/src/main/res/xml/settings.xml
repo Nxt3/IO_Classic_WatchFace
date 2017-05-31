@@ -197,7 +197,7 @@
 
         <PreferenceCategory android:title="@string/settings_misc_category">
             <ListPreference
-                android:defaultValue="@string/settings_number_ticks_default"
+                android:defaultValue="4"
                 android:dialogTitle=""
                 android:entries="@array/number_ticks_items"
                 android:entryValues="@array/number_ticks_values"

@@ -1170,7 +1170,16 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             //Misc settings
             mComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = mPrefs.getBoolean("settings_show_second_hand", true);
-            mNumberTicks = Integer.parseInt(mPrefs.getString("settings_number_ticks", "4"));
+            final String numberOfTicks = mPrefs.getString("settings_number_ticks", "4");
+            if (numberOfTicks.equals(getString(R.string.settings_number_ticks_default))) {
+                /**
+                 * This is a workaround for the pref not showing the correct default value upon a
+                 * fresh install
+                 */
+                mNumberTicks = 4;
+            } else {
+                mNumberTicks = Integer.parseInt(numberOfTicks);
+            }
 
             mPrefs = null;
         }
