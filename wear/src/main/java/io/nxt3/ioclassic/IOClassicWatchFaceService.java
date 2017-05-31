@@ -136,9 +136,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private final float COMPLICATION_RADIUS = 4.5f;
 
         //Fonts for complications
-        private Typeface mFontLight;
-        private Typeface mFontBold;
-        private Typeface mFont;
+        private Typeface mComplicationFont;
 
         //Other settings
         private boolean mComplicationBorder;
@@ -225,9 +223,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             setActiveComplications(COMPLICATION_IDS);
 
             /* Set defaults for fonts */
-            mFontLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
-            mFontBold = Typeface.create("sans-serif", Typeface.BOLD);
-            mFont = Typeface.create("sans-serif", Typeface.NORMAL);
+            mComplicationFont = Typeface.create("sans-serif", Typeface.BOLD);
 
             mComplicationArcValuePaint = new Paint();
             mComplicationArcValuePaint.setColor(mComplicationColor);
@@ -253,22 +249,22 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationPrimaryLongTextPaint = new TextPaint();
             mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
             mComplicationPrimaryLongTextPaint.setAntiAlias(true);
-            mComplicationPrimaryLongTextPaint.setTypeface(mFontBold);
+            mComplicationPrimaryLongTextPaint.setTypeface(mComplicationFont);
 
             mComplicationPrimaryTextPaint = new Paint();
             mComplicationPrimaryTextPaint.setColor(mComplicationColor);
             mComplicationPrimaryTextPaint.setAntiAlias(true);
-            mComplicationPrimaryTextPaint.setTypeface(mFontBold);
+            mComplicationPrimaryTextPaint.setTypeface(mComplicationFont);
 
             mComplicationTextPaint = new Paint();
             mComplicationTextPaint.setColor(mTertiaryColor);
             mComplicationTextPaint.setAntiAlias(true);
-            mComplicationTextPaint.setTypeface(mFontBold);
+            mComplicationTextPaint.setTypeface(mComplicationFont);
 
             mComplicationLongTextPaint = new TextPaint();
             mComplicationLongTextPaint.setColor(mTertiaryColor);
             mComplicationLongTextPaint.setAntiAlias(true);
-            mComplicationLongTextPaint.setTypeface(mFontBold);
+            mComplicationLongTextPaint.setTypeface(mComplicationFont);
         }
 
         @Override
