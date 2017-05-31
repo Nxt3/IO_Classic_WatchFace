@@ -13,10 +13,12 @@
     <string name="settings_empty">Empty</string>
     <string name="settings_color">Color</string>
     <string name="settings_grayscale">Grayscale</string>
+    <string name="settings_complication_data_category">Data</string>
+    <string name="settings_complication_style_category">Style</string>
 
     <!--Hand color setting titles-->
     <string name="settings_watch_face_components_title">Hand colors</string>
-    <string name="settings_hands">Hands</string>
+    <string name="settings_hands_category">Hands</string>
     <string name="settings_hour_hand_color">Hour</string>
     <string name="settings_minute_hand_color">Minute</string>
     <string name="settings_second_hand_color">Second</string>
