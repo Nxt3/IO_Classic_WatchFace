@@ -22,6 +22,7 @@
         <item>@string/settings_brown</item>
         <item>@string/settings_gray</item>
         <item>@string/settings_blue_gray</item>
+        <item>@string/settings_black</item>
         <item>@string/settings_white</item>
     </array>
     <array name="color_values">
@@ -46,6 +47,7 @@
         <item>#BCAAA4</item>
         <item>#BDBDBD</item>
         <item>#90A4AE</item>
+        <item>#000000</item>
         <item>#ffffff</item>
     </array>
 
