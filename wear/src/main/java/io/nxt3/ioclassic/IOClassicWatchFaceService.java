@@ -274,7 +274,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * @param canvas to draw to
          */
         private void drawBackground(Canvas canvas) {
-            if (mAmbient && (!mLowBitAmbient || mBurnInProtection)) {
+            if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
                 canvas.drawColor(Color.BLACK);
             } else {
                 canvas.drawColor(mCenterCircleColor);
@@ -295,12 +295,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             if ((complicationData != null) && (complicationData.isActive(currentTimeMillis))) {
                 switch (complicationData.getType()) {
-//                    case ComplicationData.TYPE_RANGED_VALUE:
-//                        drawRangeComplication(canvas,
-//                                complicationData,
-//                                currentTimeMillis,
-//                                id);
-//                        break;
                     case ComplicationData.TYPE_SMALL_IMAGE:
                         drawSmallImageComplication(canvas,
                                 complicationData,
