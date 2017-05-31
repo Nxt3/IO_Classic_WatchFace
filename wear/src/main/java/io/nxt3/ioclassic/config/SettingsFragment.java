@@ -33,7 +33,6 @@ import io.nxt3.ioclassic.IOClassicWatchFaceService;
 import io.nxt3.ioclassic.R;
 
 import static android.app.Activity.RESULT_OK;
-import static io.nxt3.ioclassic.config.SettingsActivity.donate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -193,7 +192,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 Toast.makeText(getContext(),
                         getString(R.string.settings_confirmation_hands_reset),
                         Toast.LENGTH_SHORT).show();
-
                 break;
 
             case "settings_reset_background_colors":
@@ -218,7 +216,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 Toast.makeText(getContext(),
                         getString(R.string.settings_confirmation_background_reset),
                         Toast.LENGTH_SHORT).show();
-
                 break;
             
             case "donation_1":
@@ -226,7 +223,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             case "donation_5":
             case "donation_10":
             case "donation_20":
-                donate(getActivity(), preference.getKey());
+                getSettingsActivity().donate(getActivity(), preference.getKey());
                 break;
         }
 
@@ -312,6 +309,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onPause();
 
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    /**
+     * Gets the SettingsActivity so that we can call donate()
+     *
+     * @return SettingsActivity
+     */
+    private SettingsActivity getSettingsActivity() {
+        return (SettingsActivity) getActivity();
     }
 
     /**

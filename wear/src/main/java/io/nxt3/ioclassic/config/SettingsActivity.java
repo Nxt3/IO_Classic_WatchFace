@@ -12,10 +12,10 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 import io.nxt3.ioclassic.R;
 
 public class SettingsActivity  extends PreferenceActivity implements BillingProcessor.IBillingHandler {
-    private static BillingProcessor sBillingProcessor;
+    private BillingProcessor mBillingProcessor;
 
-    public static void donate(Activity activity, String productId) {
-        sBillingProcessor.purchase(activity, productId);
+    public void donate(Activity activity, String productId) {
+        mBillingProcessor.purchase(activity, productId);
     }
 
     @Override
@@ -24,17 +24,18 @@ public class SettingsActivity  extends PreferenceActivity implements BillingProc
         SettingsFragment settingsPreferenceFragment = new SettingsFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, settingsPreferenceFragment).commit();
 
-        sBillingProcessor = new BillingProcessor(this, null, this);
-        sBillingProcessor.loadOwnedPurchasesFromGoogle();
+        mBillingProcessor = new BillingProcessor(this, null, this);
+        mBillingProcessor.loadOwnedPurchasesFromGoogle();
     }
 
     @Override
     public void onBillingInitialized() {
+        //nothing
     }
 
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
-        sBillingProcessor.consumePurchase(productId);
+        mBillingProcessor.consumePurchase(productId);
         donate(this, productId);
     }
 
@@ -46,5 +47,15 @@ public class SettingsActivity  extends PreferenceActivity implements BillingProc
 
     @Override
     public void onPurchaseHistoryRestored() {
+        //nothing
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mBillingProcessor != null) {
+            mBillingProcessor.release();
+        }
+
+        super.onDestroy();
     }
 }
