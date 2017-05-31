@@ -19,9 +19,9 @@
     <!--Hand color setting titles-->
     <string name="settings_watch_face_components_title">Hand colors</string>
     <string name="settings_hands_category">Hands</string>
-    <string name="settings_hour_hand_color">Hour</string>
-    <string name="settings_minute_hand_color">Minute</string>
-    <string name="settings_second_hand_color">Second</string>
+    <string name="settings_hour_hand_color">Hour hand</string>
+    <string name="settings_minute_hand_color">Minute hand</string>
+    <string name="settings_second_hand_color">Second hand</string>
 
     <!--Background color setting titles-->
     <string name="settings_backgrounds_title">Background colors</string>
