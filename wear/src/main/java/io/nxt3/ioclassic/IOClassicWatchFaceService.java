@@ -258,26 +258,68 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             long now = System.currentTimeMillis();
             mCalendar.setTimeInMillis(now);
 
-            drawBackground(canvas);
-            drawWatchFace(canvas, bounds);
+            drawBackground(canvas, bounds);
 
             final float offset = mHasFlatTire ? -18 : -10; //offset for complications
             drawComplication(canvas, now, TOP_DIAL_COMPLICATION, mCenterX, mCenterY / 2 - offset);
             drawComplication(canvas, now, LEFT_DIAL_COMPLICATION, mCenterX / 2 - offset, mCenterY);
             drawComplication(canvas, now, BOTTOM_DIAL_COMPLICATION, mCenterX, mCenterY * 1.5f + offset);
             drawComplication(canvas, now, RIGHT_DIAL_COMPLICATION, mCenterX * 1.5f + offset, mCenterY);
+
+            if (mShowSecondHand && !mAmbient) {
+                drawSecondHand(canvas);
+            }
+            drawMinuteHand(canvas);
+            drawHourHand(canvas);
         }
 
         /**
-         * Handles drawing the background
+         * Handles drawing the background, tick marks w/ circle, and outer circle
          *
          * @param canvas to draw to
+         * @param bounds of the device screen
          */
-        private void drawBackground(Canvas canvas) {
+        private void drawBackground(Canvas canvas, Rect bounds) {
             if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
                 canvas.drawColor(Color.BLACK);
             } else {
                 canvas.drawColor(mCenterCircleColor);
+
+                final int width = bounds.width();
+                final int height = bounds.height();
+
+                /**
+                 * Offset/distance between the edge and the inner circle; bigger if the device
+                 * has a flat tire
+                 */
+                final float circleOffset = mHasFlatTire ? 38f : 24f;
+
+                //draws outer circle
+                canvas.drawColor(mOuterCircleColor);
+                canvas.drawCircle(mCenterX, mCenterY, width / 2,
+                        mOuterBackgroundPaint);
+                canvas.drawCircle(mCenterX, mCenterY, width / 2 - circleOffset - 20.0f,
+                        mBackgroundPaint);
+
+                //draws the tick marks
+                float innerTickRadius = mCenterX - circleOffset - 14;
+                float outerTickRadius = mCenterX - circleOffset - 1;
+
+                for (int tickIndex = 0; tickIndex < mNumberTicks; tickIndex++) {
+                    float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberTicks);
+
+                    float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
+                    float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
+                    float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
+                    float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
+
+                    canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
+                            mCenterX + outerX, mCenterY + outerY, mCircleAndTickPaint);
+                }
+
+                //draws circle for the ticks
+                canvas.drawArc(circleOffset, circleOffset, width - circleOffset,
+                        height - circleOffset, 0, 360, false, mCircleAndTickPaint);
             }
         }
 
@@ -328,88 +370,71 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 }
             }
         }
-
+        
         /**
-         * Handles drawing the watch face components
-         * Draws the hour, minute, and second hands
-         * Draws the circle w/ ticks
+         * Handles drawing the hour hand
          *
          * @param canvas to draw to
-         * @param bounds of the device screen
          */
-        private void drawWatchFace(Canvas canvas, Rect bounds) {
-            final int width = bounds.width();
-            final int height = bounds.height();
+        private void drawHourHand(Canvas canvas) {
+            final float seconds = mCalendar.get(Calendar.SECOND)
+                    + mCalendar.get(Calendar.MILLISECOND) / 1000f;
+            final float minutes = mCalendar.get(Calendar.MINUTE) + seconds / 60f;
+            final float hours = mCalendar.get(Calendar.HOUR) + minutes / 60f;
+            final float hourRotation = hours / 12f * TWO_PI;
 
-            final float minHrOverflow = 10f;
-            final float secOverflow = 16f;
+            final float hourOverflow = 10f;
+            final float hourHandLength = mCenterX - 95;
 
-            /**
-             * Offset/distance between the edge and the inner circle; bigger if the device
-             * has a flat tire
-             */
-            final float circleOffset = mHasFlatTire ? 38f : 24f;
+            float hourX = (float) Math.sin(hourRotation);
+            float hourY = (float) -Math.cos(hourRotation);
 
-            //Center X and Y coordinates
-            final float centerX = width / 2f;
-            final float centerY = height / 2f;
+            canvas.drawLine(mCenterX - hourX * hourOverflow, mCenterY - hourY * hourOverflow,
+                    mCenterX + hourX * hourHandLength, mCenterY + hourY * hourHandLength,
+                    mHourPaint);
+        }
 
-            float innerX, innerY, outerX, outerY;
+        /**
+         * Handles drawing the minute hand
+         *
+         * @param canvas to draw to
+         */
+        private void drawMinuteHand(Canvas canvas) {
+            final float seconds = mCalendar.get(Calendar.SECOND)
+                    + mCalendar.get(Calendar.MILLISECOND) / 1000f;
+            final float minutes = mCalendar.get(Calendar.MINUTE) + seconds / 60f;
+            final float minuteRotation = minutes / 60f * TWO_PI;
 
-            // draw the clock pointers
-            float seconds = mCalendar.get(Calendar.SECOND) + mCalendar.get(Calendar.MILLISECOND) / 1000f;
-            float secRot = seconds / 60f * TWO_PI;
-            float minutes = mCalendar.get(Calendar.MINUTE) + seconds / 60f;
-            float minRot = minutes / 60f * TWO_PI;
-            float hours = mCalendar.get(Calendar.HOUR) + minutes / 60f;
-            float hrRot = hours / 12f * TWO_PI;
+            final float minuteOverflow = 10f;
+            final float minuteHandLength = mCenterX - 65;
 
-            final float hourHandLength = centerX - 95;
-            final float minuteHandLength = centerX - 65;
-            final float secondHandLength = centerX - 60;
+            final float minuteX = (float) Math.sin(minuteRotation);
+            final float minuteY = (float) -Math.cos(minuteRotation);
 
-            if (!isInAmbientMode()) {
-                //draws backgrounds
-                canvas.drawColor(mOuterCircleColor);
-                canvas.drawCircle(centerX, centerY, width / 2, mOuterBackgroundPaint);
-                canvas.drawCircle(centerX, centerY, width / 2 - circleOffset - 20.0f, mBackgroundPaint);
+            canvas.drawLine(mCenterX - minuteX * minuteOverflow, mCenterY - minuteY * minuteOverflow,
+                    mCenterX + minuteX * minuteHandLength, mCenterY + minuteY * minuteHandLength,
+                    mMinutePaint);
+        }
 
-                //draws second hand
-                if (mShowSecondHand) {
-                    float secX = (float) Math.sin(secRot);
-                    float secY = (float) -Math.cos(secRot);
-                    canvas.drawLine(centerX - secX * secOverflow, centerY - secY * secOverflow, centerX + secX * secondHandLength, centerY + secY * secondHandLength, mSecondPaint);
-                }
-            }
+        /**
+         * Handles drawing the second hand
+         *
+         * @param canvas to draw to
+         */
+        private void drawSecondHand(Canvas canvas) {
+            float seconds = mCalendar.get(Calendar.SECOND)
+                    + mCalendar.get(Calendar.MILLISECOND) / 1000f;
+            float secondRotation = seconds / 60f * TWO_PI;
 
-            //draws hour hand
-            float hrX = (float) Math.sin(hrRot);
-            float hrY = (float) -Math.cos(hrRot);
-            canvas.drawLine(centerX - hrX * minHrOverflow, centerY - hrY * minHrOverflow, centerX + hrX * hourHandLength, centerY + hrY * hourHandLength, mHourPaint);
+            final float secondOverflow = 16f;
+            final float secondHandLength = mCenterX - 60;
 
-            //draws minute hand
-            float minX = (float) Math.sin(minRot);
-            float minY = (float) -Math.cos(minRot);
-            canvas.drawLine(centerX - minX * minHrOverflow, centerY - minY * minHrOverflow, centerX + minX * minuteHandLength, centerY + minY * minuteHandLength, mMinutePaint);
+            final float secondX = (float) Math.sin(secondRotation);
+            final float secondY = (float) -Math.cos(secondRotation);
 
-            //draws the tick marks
-            float innerTickRadius = centerX - circleOffset - 14;
-            float outerTickRadius = centerX - circleOffset - 1;
-
-            for (int tickIndex = 0; tickIndex < mNumberTicks; tickIndex++) {
-                float tickRot = (float) (tickIndex * Math.PI * 2 / mNumberTicks);
-
-                innerX = (float) Math.sin(tickRot) * innerTickRadius;
-                innerY = (float) -Math.cos(tickRot) * innerTickRadius;
-                outerX = (float) Math.sin(tickRot) * outerTickRadius;
-                outerY = (float) -Math.cos(tickRot) * outerTickRadius;
-
-                canvas.drawLine(centerX + innerX, centerY + innerY,
-                        centerX + outerX, centerY + outerY, mCircleAndTickPaint);
-            }
-
-            //draws circle for the ticks
-            canvas.drawArc(circleOffset, circleOffset, width - circleOffset, height - circleOffset, 0, 360, false, mCircleAndTickPaint);
+            canvas.drawLine(mCenterX - secondX * secondOverflow, mCenterY - secondY * secondOverflow,
+                    mCenterX + secondX * secondHandLength, mCenterY + secondY * secondHandLength,
+                    mSecondPaint);
         }
 
         /**
