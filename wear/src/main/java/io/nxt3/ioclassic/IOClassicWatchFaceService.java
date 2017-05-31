@@ -122,13 +122,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private int mQuaternaryColor;
 
         //Paint objects for complication components
-        private Paint mComplicationArcValuePaint;
-        private Paint mComplicationArcPaint;
         private Paint mComplicationCirclePaint;
         private TextPaint mComplicationPrimaryLongTextPaint;
         private Paint mComplicationPrimaryTextPaint;
-        private Paint mComplicationTextPaint;
-        private TextPaint mComplicationLongTextPaint;
+        private Paint mComplicationSecondaryTextPaint;
+        private TextPaint mComplicationSecondaryLongTextPaint;
 
         //Complication stuff
         private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
@@ -225,20 +223,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             /* Set defaults for fonts */
             mComplicationFont = Typeface.create("sans-serif", Typeface.BOLD);
 
-            mComplicationArcValuePaint = new Paint();
-            mComplicationArcValuePaint.setColor(mComplicationColor);
-            mComplicationArcValuePaint.setStrokeWidth(3f);
-            mComplicationArcValuePaint.setAntiAlias(true);
-            mComplicationArcValuePaint.setStrokeCap(Paint.Cap.ROUND);
-            mComplicationArcValuePaint.setStyle(Paint.Style.STROKE);
-
-            mComplicationArcPaint = new Paint();
-            mComplicationArcPaint.setColor(mTertiaryColor);
-            mComplicationArcPaint.setStrokeWidth(2f);
-            mComplicationArcPaint.setAntiAlias(true);
-            mComplicationArcPaint.setStrokeCap(Paint.Cap.SQUARE);
-            mComplicationArcPaint.setStyle(Paint.Style.STROKE);
-
             mComplicationCirclePaint = new Paint();
             mComplicationCirclePaint.setColor(mQuaternaryColor);
             mComplicationCirclePaint.setStrokeWidth(3f);
@@ -256,15 +240,15 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationPrimaryTextPaint.setAntiAlias(true);
             mComplicationPrimaryTextPaint.setTypeface(mComplicationFont);
 
-            mComplicationTextPaint = new Paint();
-            mComplicationTextPaint.setColor(mTertiaryColor);
-            mComplicationTextPaint.setAntiAlias(true);
-            mComplicationTextPaint.setTypeface(mComplicationFont);
+            mComplicationSecondaryTextPaint = new Paint();
+            mComplicationSecondaryTextPaint.setColor(mTertiaryColor);
+            mComplicationSecondaryTextPaint.setAntiAlias(true);
+            mComplicationSecondaryTextPaint.setTypeface(mComplicationFont);
 
-            mComplicationLongTextPaint = new TextPaint();
-            mComplicationLongTextPaint.setColor(mTertiaryColor);
-            mComplicationLongTextPaint.setAntiAlias(true);
-            mComplicationLongTextPaint.setTypeface(mComplicationFont);
+            mComplicationSecondaryLongTextPaint = new TextPaint();
+            mComplicationSecondaryLongTextPaint.setColor(mTertiaryColor);
+            mComplicationSecondaryLongTextPaint.setAntiAlias(true);
+            mComplicationSecondaryLongTextPaint.setTypeface(mComplicationFont);
         }
 
         @Override
@@ -435,113 +419,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         }
 
         /**
-         * Handles shortening the complication numbers to readable strings
-         * If a number is large enough, we'll round and make it shorter (i.e. 1323 becomes 1.3k)
-         *
-         * @param val to shorten and round
-         * @return the number as an easily digestible String
-         */
-        private String complicationNumberString(float val) {
-            if (val > 100000) {
-                return String.valueOf(Math.round(val / 100000) + "m");
-            } else if (val > 1000) {
-                return String.valueOf(Math.round(val / 1000) + "k");
-            } else {
-                return String.valueOf(Math.round(val));
-            }
-        }
-
-        /**
-         * Handles drawing range complications
-         *
-         * @param canvas            to draw to
-         * @param data              of the complication
-         * @param currentTimeMillis current time
-         * @param id                of the the complication
-         */
-        private void drawRangeComplication(Canvas canvas, ComplicationData data,
-                                           long currentTimeMillis, int id) {
-            float min = data.getMinValue();
-            float max = data.getMaxValue();
-            float val = data.getValue();
-
-            final float centerX = mCenterX * 1.5f;
-            final float centerY = mCenterY;
-            final float radius = mCenterX / (COMPLICATION_RADIUS + 1.5f);
-            float startAngle = -90;
-
-            mComplicationTapBoxes[id] = new RectF(centerX - radius, centerY - radius,
-                    centerX + radius,
-                    centerY + radius);
-
-            Bitmap arcBitmap = Bitmap.createBitmap((int) radius * 2 + 4, (int) radius * 2 + 4, Bitmap.Config.ARGB_8888);
-            Canvas arcCanvas = new Canvas(arcBitmap);
-            Path path = new Path();
-            path.addArc(2, 2, radius * 2 + 2, radius * 2 + 2,
-                    -90 + (val - min) / (max - min) * 270,
-                    270 - (val - min) / (max - min) * 270);
-
-            final int complicationSteps = 10;
-            for (int tickIndex = 1; tickIndex < complicationSteps; tickIndex++) {
-                float tickRot = (float) (tickIndex * Math.PI * 3 / 2 / complicationSteps - startAngle / 180 * Math.PI - Math.PI / 2);
-                float innerX = (float) Math.sin(tickRot) * (radius - 4 - (0.05f * mCenterX));
-                float innerY = (float) -Math.cos(tickRot) * (radius - 4 - (0.05f * mCenterX));
-                float outerX = (float) Math.sin(tickRot) * (radius - 4);
-                float outerY = (float) -Math.cos(tickRot) * (radius - 4);
-                path.moveTo(radius + innerX + 2, radius + innerY + 2);
-                path.lineTo(radius + outerX + 2, radius + outerY + 2);
-            }
-            arcCanvas.drawPath(path, mComplicationArcPaint);
-
-            final float valRot = (float) ((val - min) * Math.PI * 3 / 2 / (max - min) - startAngle / 180 * Math.PI - Math.PI / 2);
-            Path valuePath = new Path();
-            valuePath.addArc(2, 2, radius * 2 + 2, radius * 2 + 2, -90,
-                    (val - min) / (max - min) * 270 + 0.0001f);
-
-            valuePath.lineTo((float) Math.sin(valRot) * (radius - (0.15f * mCenterX)) + radius + 2,
-                    (float) -Math.cos(valRot) * (radius - (0.15f * mCenterX)) + radius + 2);
-
-            mComplicationArcValuePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-            arcCanvas.drawPath(valuePath, mComplicationArcValuePaint);
-
-            mComplicationArcValuePaint.setXfermode(null);
-            arcCanvas.drawPath(valuePath, mComplicationArcValuePaint);
-
-            canvas.drawBitmap(arcBitmap, centerX - radius - 2, centerY - radius - 2, null);
-
-            mComplicationTextPaint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(complicationNumberString(min),
-                    centerX + -6,
-                    centerY - radius - mComplicationTextPaint.descent()
-                            - mComplicationTextPaint.ascent(),
-                    mComplicationTextPaint);
-
-            mComplicationTextPaint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText(complicationNumberString(max),
-                    centerX - radius - 4,
-                    centerY - 6,
-                    mComplicationTextPaint);
-
-            Icon icon = mAmbient && mBurnInProtection ? data.getBurnInProtectionIcon() : data.getIcon();
-            if (icon != null) {
-                Drawable drawable = icon.loadDrawable(getApplicationContext());
-
-                if (drawable != null) {
-                    int size = (int) Math.round(0.13 * mCenterX);
-                    drawable.setTint(mComplicationArcValuePaint.getColor());
-                    drawable.setBounds(Math.round(centerX - size / 2), Math.round(centerY - size / 2), Math.round(centerX + size / 2), Math.round(centerY + size / 2));
-                    drawable.draw(canvas);
-                }
-            } else {
-                mComplicationPrimaryTextPaint.setTextAlign(Paint.Align.CENTER);
-                canvas.drawText(complicationNumberString(val),
-                        centerX,
-                        centerY - (mComplicationPrimaryTextPaint.descent() + mComplicationPrimaryTextPaint.ascent()) / 2,
-                        mComplicationPrimaryTextPaint);
-            }
-        }
-
-        /**
          * Handles drawing long text complications
          *
          * @param canvas            to draw to
@@ -579,7 +456,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             if (titleText != null) {
-                mComplicationLongTextPaint.getTextBounds(titleText, 0, titleText.length(), bounds2);
+                mComplicationSecondaryLongTextPaint.getTextBounds(titleText, 0, titleText.length(), bounds2);
                 titleWidth = bounds2.width() + height / 2;
             }
 
@@ -663,13 +540,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 canvas.drawText(
                         ellipsize ? TextUtils.ellipsize(
                                 titleText,
-                                mComplicationLongTextPaint,
+                                mComplicationSecondaryLongTextPaint,
                                 textW,
                                 TextUtils.TruncateAt.END
                         ).toString() : titleText,
                         textX,
-                        centerY - mComplicationLongTextPaint.descent() - mComplicationLongTextPaint.ascent() + 4,
-                        mComplicationLongTextPaint);
+                        centerY - mComplicationSecondaryLongTextPaint.descent() - mComplicationSecondaryLongTextPaint.ascent() + 4,
+                        mComplicationSecondaryLongTextPaint);
                 textY = centerY - 4;
             }
 
@@ -714,7 +591,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             mComplicationPrimaryTextPaint.setTextAlign(Paint.Align.CENTER);
-            mComplicationTextPaint.setTextAlign(Paint.Align.CENTER);
+            mComplicationSecondaryTextPaint.setTextAlign(Paint.Align.CENTER);
 
             float textY = centerY - (mComplicationPrimaryTextPaint.descent() + mComplicationPrimaryTextPaint.ascent() / 2);
 
@@ -731,8 +608,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             } else if (title != null) {
                 canvas.drawText(title.getText(getApplicationContext(), currentTimeMillis).toString().toUpperCase(),
                         centerX,
-                        centerY - mComplicationTextPaint.descent() - mComplicationTextPaint.ascent() + 4,
-                        mComplicationTextPaint);
+                        centerY - mComplicationSecondaryTextPaint.descent() - mComplicationSecondaryTextPaint.ascent() + 4,
+                        mComplicationSecondaryTextPaint);
                 textY = centerY - 4;
             }
 
@@ -997,20 +874,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             super.onSurfaceChanged(holder, format, width, height);
-
-            /*
-             * Find the coordinates of the center point on the screen, and ignore the window
-             * insets, so that, on round watches with a "chin", the watch face is centered on the
-             * entire screen, not just the usable portion.
-             */
-
             mCenterX = width / 2;
             mCenterY = height / 2;
 
             mComplicationPrimaryLongTextPaint.setTextSize(width / 23);
             mComplicationPrimaryTextPaint.setTextSize(width / 18);
-            mComplicationLongTextPaint.setTextSize(width / 25);
-            mComplicationTextPaint.setTextSize(width / 20);
+            mComplicationSecondaryLongTextPaint.setTextSize(width / 25);
+            mComplicationSecondaryTextPaint.setTextSize(width / 20);
 //            mNotificationTextPaint.setTextSize(width / 25);
 
 //            int gradientColor = Color.argb(128, Color.red(mBackgroundColor), Color.green(mBackgroundColor), Color.blue(mBackgroundColor));
@@ -1038,14 +908,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * Update the watch paint styles when changing between Ambient and Non-Ambient modes
          */
         private void updateWatchPaintStyles() {
-            mComplicationArcValuePaint.setColor(mComplicationColor);
-            mComplicationArcPaint.setColor(mTertiaryColor);
-            mComplicationCirclePaint.setColor(mQuaternaryColor);
-            mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
-            mComplicationPrimaryTextPaint.setColor(mComplicationColor);
-            mComplicationTextPaint.setColor(mTertiaryColor);
-            mComplicationLongTextPaint.setColor(mTertiaryColor);
-
             if (mAmbient) {
                 mBackgroundPaint.setColor(Color.BLACK);
                 mOuterBackgroundPaint.setColor(Color.BLACK);
@@ -1064,17 +926,23 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setColor(Color.WHITE);
                 mCircleAndTickPaint.setStrokeWidth(THIN_STROKE);
 
-                if (mLowBitAmbient) {
-                    mComplicationArcValuePaint.setColor(Color.WHITE);
-                    mComplicationPrimaryLongTextPaint.setColor(Color.WHITE);
-                    mComplicationPrimaryTextPaint.setColor(Color.WHITE);
-                }
+                mComplicationCirclePaint.setColor(Color.WHITE);
+                mComplicationPrimaryLongTextPaint.setColor(Color.WHITE);
+                mComplicationPrimaryTextPaint.setColor(Color.WHITE);
+                mComplicationSecondaryTextPaint.setColor(Color.WHITE);
+                mComplicationSecondaryLongTextPaint.setColor(Color.WHITE);
 
                 mHourPaint.setAntiAlias(false);
                 mMinutePaint.setAntiAlias(false);
-                mComplicationArcValuePaint.setAntiAlias(false);
-                mComplicationPrimaryLongTextPaint.setAntiAlias(false);
-                mComplicationPrimaryTextPaint.setAntiAlias(false);
+                mCircleAndTickPaint.setAntiAlias(false);
+                mComplicationCirclePaint.setAntiAlias(false);
+
+                if (mLowBitAmbient) {
+                    mComplicationPrimaryLongTextPaint.setAntiAlias(false);
+                    mComplicationPrimaryTextPaint.setAntiAlias(false);
+                    mComplicationSecondaryTextPaint.setAntiAlias(false);
+                    mComplicationSecondaryLongTextPaint.setAntiAlias(false);
+                }
             } else {
                 mBackgroundPaint.setColor(mCenterCircleColor);
                 mOuterBackgroundPaint.setColor(mOuterCircleColor);
@@ -1093,16 +961,20 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setColor(mCircleAndTickColor);
                 mCircleAndTickPaint.setStrokeWidth(THICK_STROKE);
 
-                mComplicationArcValuePaint.setColor(mComplicationColor);
+                mComplicationCirclePaint.setColor(mQuaternaryColor);
                 mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
                 mComplicationPrimaryTextPaint.setColor(mComplicationColor);
+                mComplicationSecondaryTextPaint.setColor(mTertiaryColor);
+                mComplicationSecondaryLongTextPaint.setColor(mTertiaryColor);
 
                 mHourPaint.setAntiAlias(true);
                 mMinutePaint.setAntiAlias(true);
                 mCircleAndTickPaint.setAntiAlias(true);
-                mComplicationArcValuePaint.setAntiAlias(true);
                 mComplicationPrimaryLongTextPaint.setAntiAlias(true);
                 mComplicationPrimaryTextPaint.setAntiAlias(true);
+                mComplicationSecondaryTextPaint.setAntiAlias(true);
+                mComplicationSecondaryLongTextPaint.setAntiAlias(true);
+                mComplicationCirclePaint.setAntiAlias(true);
             }
         }
 
