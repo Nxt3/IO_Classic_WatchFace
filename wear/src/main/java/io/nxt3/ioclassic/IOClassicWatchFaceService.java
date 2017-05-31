@@ -77,10 +77,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
      * The engine responsible for the Drawing of the watch face and receives events from the system
      */
     private class IOClassicWatchFaceEngine extends CanvasWatchFaceService.Engine {
-        private static final int MSG_UPDATE_TIME = 0;
-        private static final float TWO_PI = (float) Math.PI * 2f;
-        private static final float THICK_STROKE = 7f;
-        private static final float THIN_STROKE = 2f;
+        private final int MSG_UPDATE_TIME = 0;
+        private final float TWO_PI = (float) Math.PI * 2f;
+        private final float THICK_STROKE = 7f;
+        private final float THIN_STROKE = 2f;
 
         //Used for managing the time
         private Calendar mCalendar;
@@ -1216,6 +1216,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 }
             }
         };
+
+        @Override
+        public void onDestroy() {
+            mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
+            super.onDestroy();
+        }
 
         /**
          * Register a receiver for handling timezone changes
