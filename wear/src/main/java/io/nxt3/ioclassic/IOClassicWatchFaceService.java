@@ -54,7 +54,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     public static final int[][] COMPLICATION_SUPPORTED_TYPES = {
             {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
             {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_RANGED_VALUE, ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
             {ComplicationData.TYPE_LONG_TEXT, ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON}
     };
     private static final int TOP_DIAL_COMPLICATION = 0;
@@ -227,14 +227,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mComplicationArcValuePaint = new Paint();
             mComplicationArcValuePaint.setColor(mComplicationColor);
-            mComplicationArcValuePaint.setStrokeWidth(4f);
+            mComplicationArcValuePaint.setStrokeWidth(3f);
             mComplicationArcValuePaint.setAntiAlias(true);
-            mComplicationArcValuePaint.setStrokeCap(Paint.Cap.SQUARE);
+            mComplicationArcValuePaint.setStrokeCap(Paint.Cap.ROUND);
             mComplicationArcValuePaint.setStyle(Paint.Style.STROKE);
 
             mComplicationArcPaint = new Paint();
             mComplicationArcPaint.setColor(mTertiaryColor);
-            mComplicationArcPaint.setStrokeWidth(4f);
+            mComplicationArcPaint.setStrokeWidth(2f);
             mComplicationArcPaint.setAntiAlias(true);
             mComplicationArcPaint.setStrokeCap(Paint.Cap.SQUARE);
             mComplicationArcPaint.setStyle(Paint.Style.STROKE);
@@ -243,7 +243,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationCirclePaint.setColor(mQuaternaryColor);
             mComplicationCirclePaint.setStrokeWidth(3f);
             mComplicationCirclePaint.setAntiAlias(true);
-            mComplicationCirclePaint.setStrokeCap(Paint.Cap.SQUARE);
+            mComplicationCirclePaint.setStrokeCap(Paint.Cap.ROUND);
             mComplicationCirclePaint.setStyle(Paint.Style.STROKE);
 
             mComplicationPrimaryLongTextPaint = new TextPaint();
@@ -311,12 +311,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             if ((complicationData != null) && (complicationData.isActive(currentTimeMillis))) {
                 switch (complicationData.getType()) {
-                    case ComplicationData.TYPE_RANGED_VALUE:
-                        drawRangeComplication(canvas,
-                                complicationData,
-                                currentTimeMillis,
-                                id);
-                        break;
+//                    case ComplicationData.TYPE_RANGED_VALUE:
+//                        drawRangeComplication(canvas,
+//                                complicationData,
+//                                currentTimeMillis,
+//                                id);
+//                        break;
                     case ComplicationData.TYPE_SMALL_IMAGE:
                         drawSmallImageComplication(canvas,
                                 complicationData,
@@ -465,35 +465,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             float max = data.getMaxValue();
             float val = data.getValue();
 
-            ComplicationData bottomComplicationData = mActiveComplicationDataSparseArray.get(BOTTOM_DIAL_COMPLICATION);
-
-            float centerX;
-            float centerY;
-            float radius;
+            final float centerX = mCenterX * 1.5f;
+            final float centerY = mCenterY;
+            final float radius = mCenterX / (COMPLICATION_RADIUS + 1.5f);
             float startAngle = -90;
 
-            /*
-            If bottom complication data exists then only the right space is available
-            instead of the bottom right space.
-            */
-            float offset = 0;
-
-            if (bottomComplicationData != null &&
-                    bottomComplicationData.getType() != ComplicationData.TYPE_EMPTY &&
-                    bottomComplicationData.getType() != ComplicationData.TYPE_NO_DATA &&
-                    bottomComplicationData.isActive(currentTimeMillis)) {
-                centerX = mCenterX * 1.5f + offset;
-                centerY = mCenterY;
-                radius = mCenterX / 4;
-            } else {
-                centerX = mCenterX + mCenterX / 4 + 10 + offset * 1.3f;
-                centerY = mCenterY + mCenterY / 4 + 10 + offset * 0.3f;
-                radius = mCenterX / 2;
-                radius -= 20;
-            }
-
-            mComplicationTapBoxes[id] = new RectF(centerX - radius,
-                    centerY - radius,
+            mComplicationTapBoxes[id] = new RectF(centerX - radius, centerY - radius,
                     centerX + radius,
                     centerY + radius);
 
@@ -504,7 +481,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     -90 + (val - min) / (max - min) * 270,
                     270 - (val - min) / (max - min) * 270);
 
-            int complicationSteps = 10;
+            final int complicationSteps = 10;
             for (int tickIndex = 1; tickIndex < complicationSteps; tickIndex++) {
                 float tickRot = (float) (tickIndex * Math.PI * 3 / 2 / complicationSteps - startAngle / 180 * Math.PI - Math.PI / 2);
                 float innerX = (float) Math.sin(tickRot) * (radius - 4 - (0.05f * mCenterX));
@@ -516,12 +493,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
             arcCanvas.drawPath(path, mComplicationArcPaint);
 
-            float valRot = (float) ((val - min) * Math.PI * 3 / 2 / (max - min) - startAngle / 180 * Math.PI - Math.PI / 2);
+            final float valRot = (float) ((val - min) * Math.PI * 3 / 2 / (max - min) - startAngle / 180 * Math.PI - Math.PI / 2);
             Path valuePath = new Path();
-            valuePath.addArc(2, 2, radius * 2 + 2, radius * 2 + 2,
-                    -90, (val - min) / (max - min) * 270 + 0.0001f);
+            valuePath.addArc(2, 2, radius * 2 + 2, radius * 2 + 2, -90,
+                    (val - min) / (max - min) * 270 + 0.0001f);
 
-            valuePath.lineTo((float) Math.sin(valRot) * (radius - (0.15f * mCenterX)) + radius + 2, (float) -Math.cos(valRot) * (radius - (0.15f * mCenterX)) + radius + 2);
+            valuePath.lineTo((float) Math.sin(valRot) * (radius - (0.15f * mCenterX)) + radius + 2,
+                    (float) -Math.cos(valRot) * (radius - (0.15f * mCenterX)) + radius + 2);
 
             mComplicationArcValuePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
             arcCanvas.drawPath(valuePath, mComplicationArcValuePaint);
@@ -534,7 +512,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationTextPaint.setTextAlign(Paint.Align.RIGHT);
             canvas.drawText(complicationNumberString(min),
                     centerX + -6,
-                    centerY - radius - mComplicationTextPaint.descent() - mComplicationTextPaint.ascent(),
+                    centerY - radius - mComplicationTextPaint.descent()
+                            - mComplicationTextPaint.ascent(),
                     mComplicationTextPaint);
 
             mComplicationTextPaint.setTextAlign(Paint.Align.LEFT);
@@ -548,7 +527,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 Drawable drawable = icon.loadDrawable(getApplicationContext());
 
                 if (drawable != null) {
-                    int size = (int) Math.round(0.15 * mCenterX);
+                    int size = (int) Math.round(0.13 * mCenterX);
                     drawable.setTint(mComplicationArcValuePaint.getColor());
                     drawable.setBounds(Math.round(centerX - size / 2), Math.round(centerY - size / 2), Math.round(centerX + size / 2), Math.round(centerY + size / 2));
                     drawable.draw(canvas);
