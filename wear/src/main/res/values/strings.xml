@@ -17,11 +17,14 @@
     <string name="settings_complication_style_category">Style</string>
 
     <!--Hand color setting titles-->
-    <string name="settings_watch_face_components_title">Hand colors</string>
-    <string name="settings_hands_category">Hands</string>
-    <string name="settings_hour_hand_color">Hour hand</string>
-    <string name="settings_minute_hand_color">Minute hand</string>
-    <string name="settings_second_hand_color">Second hand</string>
+    <string name="settings_watch_face_components_title">Hands</string>
+    <string name="settings_watch_face_components_summary">Colors and misc</string>
+    <string name="settings_hand_color_category">Hand colors</string>
+    <string name="settings_hand_misc_category">Misc</string>
+    <string name="settings_hour_hand_color">Hour</string>
+    <string name="settings_minute_hand_color">Minute</string>
+    <string name="settings_second_hand_color">Second</string>
+    <string name="settings_show_second_hand">Show second hand</string>
 
     <!--Background color setting titles-->
     <string name="settings_backgrounds_title">Background colors</string>
@@ -33,8 +36,8 @@
     <string name="settings_default_outer_circle_color">@string/settings_default_outer_circle</string>
 
     <!--Donation-->
-    <string name="settings_support_development">Support development</string>
     <string name="settings_donate">Donate</string>
+    <string name="settings_donation_summary">Support development</string>
     <string name="settings_donation_error">There was an error with your donation</string>
 
     <string name="settings_ambient">Ambient</string>

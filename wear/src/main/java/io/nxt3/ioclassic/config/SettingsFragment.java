@@ -229,6 +229,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 donate(getActivity(), preference.getKey());
                 break;
         }
+
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
@@ -370,6 +371,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
     }
 
+    /**
+     * Handles what to do when a preference is altered
+     *
+     * @param sharedPreferences to observe
+     * @param key               of the pref that was altered
+     */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
 
