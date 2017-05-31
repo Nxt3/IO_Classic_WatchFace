@@ -1129,10 +1129,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE));
             mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER));
 
+            //Complication colors
             mComplicationColor = mPrefs.getInt("settings_complication_color_value", Color.parseColor(DEFAULT_WHITE));
-
-            //Accent colors for complications
-            mComplicationColor =
             mTertiaryColor = Color.argb(Math.round(152), Color.red(mComplicationColor), Color.green(mComplicationColor), Color.blue(mComplicationColor));
             mQuaternaryColor = Color.argb(Math.round(48), Color.red(mComplicationColor), Color.green(mComplicationColor), Color.blue(mComplicationColor));
 

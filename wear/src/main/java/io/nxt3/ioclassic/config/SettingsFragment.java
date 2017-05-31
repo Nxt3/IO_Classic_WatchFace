@@ -291,7 +291,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
                 case COMPLICATION_COLOR_REQ:
                     editor.putString("settings_complication_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_complication_value", data.getIntExtra("color_value", 0));
+                    editor.putInt("settings_complication_color_value", data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_complication_color");
                     break;
