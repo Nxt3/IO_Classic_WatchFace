@@ -64,23 +64,23 @@
     </PreferenceScreen>
 
     <!--<SwitchPreference-->
-        <!--android:defaultValue="false"-->
-        <!--android:key="settings_ambient"-->
-        <!--android:summaryOff="@string/settings_grayscale"-->
-        <!--android:summaryOn="@string/settings_color"-->
-        <!--android:title="@string/settings_ambient" />-->
+    <!--android:defaultValue="false"-->
+    <!--android:key="settings_ambient"-->
+    <!--android:summaryOff="@string/settings_grayscale"-->
+    <!--android:summaryOn="@string/settings_color"-->
+    <!--android:title="@string/settings_ambient" />-->
 
     <!--TODO, use for different styles (i.e. with digital time, w/o digital time, etc.)-->
     <!--<ListPreference-->
-        <!--android:defaultValue="0"-->
-        <!--android:dialogTitle=""-->
-        <!--android:entries="@array/style_items"-->
-        <!--android:entryValues="@array/style_values"-->
-        <!--android:icon="@drawable/ic_style_black_24dp"-->
-        <!--android:key="settings_style"-->
-        <!--android:negativeButtonText=""-->
-        <!--android:summary="%s"-->
-        <!--android:title="Style" />-->
+    <!--android:defaultValue="0"-->
+    <!--android:dialogTitle=""-->
+    <!--android:entries="@array/style_items"-->
+    <!--android:entryValues="@array/style_values"-->
+    <!--android:icon="@drawable/ic_style_black_24dp"-->
+    <!--android:key="settings_style"-->
+    <!--android:negativeButtonText=""-->
+    <!--android:summary="%s"-->
+    <!--android:title="Style" />-->
 
     <!--Hand colors-->
     <PreferenceScreen
@@ -131,25 +131,25 @@
 
         <!--Colors for when Ambient mode is activated-->
         <!--<PreferenceCategory android:title="Ambient">-->
-            <!--<Preference-->
-                <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
-                <!--android:key="settings_ambient_color_name"-->
-                <!--android:summary="%s"-->
-                <!--android:title="Primary Color">-->
-                <!--<extra-->
-                    <!--android:name="default"-->
-                    <!--android:value="Cyan" />-->
-            <!--</Preference>-->
+        <!--<Preference-->
+        <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
+        <!--android:key="settings_ambient_color_name"-->
+        <!--android:summary="%s"-->
+        <!--android:title="Primary Color">-->
+        <!--<extra-->
+        <!--android:name="default"-->
+        <!--android:value="Cyan" />-->
+        <!--</Preference>-->
 
-            <!--<Preference-->
-                <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
-                <!--android:key="settings_ambient_accent_color_name"-->
-                <!--android:summary="%s"-->
-                <!--android:title="Accent color">-->
-                <!--<extra-->
-                    <!--android:name="default"-->
-                    <!--android:value="White" />-->
-            <!--</Preference>-->
+        <!--<Preference-->
+        <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
+        <!--android:key="settings_ambient_accent_color_name"-->
+        <!--android:summary="%s"-->
+        <!--android:title="Accent color">-->
+        <!--<extra-->
+        <!--android:name="default"-->
+        <!--android:value="White" />-->
+        <!--</Preference>-->
         <!--</PreferenceCategory>-->
     </PreferenceScreen>
 
@@ -195,6 +195,7 @@
             </Preference>
         </PreferenceCategory>
 
+        <!--Number of tick marks to show-->
         <PreferenceCategory android:title="@string/settings_misc_category">
             <ListPreference
                 android:defaultValue="4"
@@ -204,39 +205,37 @@
                 android:key="settings_number_ticks"
                 android:negativeButtonText=""
                 android:summary="%s"
-                android:title="@string/settings_number_ticks_title">
-            </ListPreference>
-
+                android:title="@string/settings_number_ticks_title" />
         </PreferenceCategory>
     </PreferenceScreen>
 
     <!--TODO, show notification badges-->
     <!--<ListPreference-->
-        <!--android:defaultValue="0"-->
-        <!--android:dialogTitle=""-->
-        <!--android:entries="@array/notification_items"-->
-        <!--android:entryValues="@array/notification_values"-->
-        <!--android:icon="@drawable/ic_notifications_black_24dp"-->
-        <!--android:key="settings_notification_indicator"-->
-        <!--android:negativeButtonText=""-->
-        <!--android:summary="%s"-->
-        <!--android:title="Notification indicator">-->
-        <!--<extra-->
-            <!--android:name="icons"-->
-            <!--android:value="notification_icons" />-->
+    <!--android:defaultValue="0"-->
+    <!--android:dialogTitle=""-->
+    <!--android:entries="@array/notification_items"-->
+    <!--android:entryValues="@array/notification_values"-->
+    <!--android:icon="@drawable/ic_notifications_black_24dp"-->
+    <!--android:key="settings_notification_indicator"-->
+    <!--android:negativeButtonText=""-->
+    <!--android:summary="%s"-->
+    <!--android:title="Notification indicator">-->
+    <!--<extra-->
+    <!--android:name="icons"-->
+    <!--android:value="notification_icons" />-->
     <!--</ListPreference>-->
 
     <!--TODO, time format when we introduce the digital clock setting-->
     <!--<ListPreference-->
-        <!--android:defaultValue="0"-->
-        <!--android:dialogTitle=""-->
-        <!--android:entries="@array/time_format_items"-->
-        <!--android:entryValues="@array/time_format_values"-->
-        <!--android:icon="@drawable/ic_time_black_24dp"-->
-        <!--android:key="settings_time_format"-->
-        <!--android:negativeButtonText=""-->
-        <!--android:summary="%s"-->
-        <!--android:title="Time format" />-->
+    <!--android:defaultValue="0"-->
+    <!--android:dialogTitle=""-->
+    <!--android:entries="@array/time_format_items"-->
+    <!--android:entryValues="@array/time_format_values"-->
+    <!--android:icon="@drawable/ic_time_black_24dp"-->
+    <!--android:key="settings_time_format"-->
+    <!--android:negativeButtonText=""-->
+    <!--android:summary="%s"-->
+    <!--android:title="Time format" />-->
 
     <!--Reset settings-->
     <PreferenceScreen
