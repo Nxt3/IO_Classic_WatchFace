@@ -370,7 +370,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 }
             }
         }
-        
+
         /**
          * Handles drawing the hour hand
          *
@@ -829,12 +829,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onTapCommand(int tapType, int x, int y, long eventTime) {
             switch (tapType) {
-                case TAP_TYPE_TOUCH:
-                    // The user has started touching the screen.
-                    break;
-                case TAP_TYPE_TOUCH_CANCEL:
-                    // The user has started a different gesture or otherwise cancelled the tap.
-                    break;
                 case TAP_TYPE_TAP:
                     // The user has completed the tap gesture.
                     for (int i = 0; i < mComplicationTapBoxes.length; i++) {
@@ -844,7 +838,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     }
                     break;
             }
-            invalidate();
         }
 
         /**
