@@ -86,7 +86,7 @@
     <PreferenceScreen
         android:icon="@drawable/ic_color_lens_black_24dp"
         android:key="settings_hands_screen"
-        android:summary="@string/settings_watch_face_components_summary"
+        android:summary="@string/settings_colors_and_misc_summary"
         android:title="@string/settings_watch_face_components_title">
 
         <PreferenceCategory android:title="@string/settings_hand_color_category">
@@ -122,7 +122,7 @@
             </Preference>
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="@string/settings_hand_misc_category">
+        <PreferenceCategory android:title="@string/settings_misc_category">
             <SwitchPreference
                 android:defaultValue="true"
                 android:key="settings_show_second_hand"
@@ -157,39 +157,57 @@
     <PreferenceScreen
         android:icon="@drawable/ic_background_black_24dp"
         android:key="settings_backgrounds_screen"
-        android:title="@string/settings_backgrounds_title">
-        <Preference
-            android:defaultValue="@string/settings_default_center_circle_color"
-            android:icon="@drawable/ic_color_lens_black_24dp"
-            android:key="settings_center_circle_color"
-            android:summary="%s"
-            android:title="@string/settings_center_circle_color">
-            <extra
-                android:name="default"
-                android:value="@string/settings_default_center_circle_color" />
-        </Preference>
+        android:summary="@string/settings_colors_and_misc_summary"
+        android:title="@string/settings_background_title">
 
-        <Preference
-            android:defaultValue="@string/settings_default_circle_ticks_color"
-            android:icon="@drawable/ic_color_lens_black_24dp"
-            android:key="settings_circle_ticks_color"
-            android:summary="%s"
-            android:title="@string/settings_circle_ticks_color">
-            <extra
-                android:name="default"
-                android:value="@string/settings_default_circle_ticks_color" />
-        </Preference>
+        <PreferenceCategory android:title="@string/settings_background_color_category">
+            <Preference
+                android:defaultValue="@string/settings_default_center_circle_color"
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:key="settings_center_circle_color"
+                android:summary="%s"
+                android:title="@string/settings_center_circle_color">
+                <extra
+                    android:name="default"
+                    android:value="@string/settings_default_center_circle_color" />
+            </Preference>
 
-        <Preference
-            android:defaultValue="@string/settings_default_outer_circle_color"
-            android:icon="@drawable/ic_color_lens_black_24dp"
-            android:key="settings_outer_circle_color"
-            android:summary="%s"
-            android:title="@string/settings_outer_circle_color">
-            <extra
-                android:name="default"
-                android:value="@string/settings_default_outer_circle_color" />
-        </Preference>
+            <Preference
+                android:defaultValue="@string/settings_default_circle_ticks_color"
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:key="settings_circle_ticks_color"
+                android:summary="%s"
+                android:title="@string/settings_circle_ticks_color">
+                <extra
+                    android:name="default"
+                    android:value="@string/settings_default_circle_ticks_color" />
+            </Preference>
+
+            <Preference
+                android:defaultValue="@string/settings_default_outer_circle_color"
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:key="settings_outer_circle_color"
+                android:summary="%s"
+                android:title="@string/settings_outer_circle_color">
+                <extra
+                    android:name="default"
+                    android:value="@string/settings_default_outer_circle_color" />
+            </Preference>
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/settings_misc_category">
+            <ListPreference
+                android:defaultValue="@string/settings_number_ticks_default"
+                android:dialogTitle=""
+                android:entries="@array/number_ticks_items"
+                android:entryValues="@array/number_ticks_values"
+                android:key="settings_number_ticks"
+                android:negativeButtonText=""
+                android:summary="%s"
+                android:title="@string/settings_number_ticks_title">
+            </ListPreference>
+
+        </PreferenceCategory>
     </PreferenceScreen>
 
     <!--TODO, show notification badges-->

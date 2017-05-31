@@ -92,7 +92,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mAmbient;
         private boolean mLowBitAmbient;
         private boolean mBurnInProtection;
-        private boolean mHasChin;
+        private boolean mHasFlatTire;
 
         private boolean mRegisteredTimeZoneReceiver = false;
 
@@ -143,6 +143,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         //Other settings
         private boolean mComplicationBorder;
         private boolean mShowSecondHand;
+        private int mNumberTicks;
 
 
         /**
@@ -280,7 +281,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             drawBackground(canvas);
             drawWatchFace(canvas, bounds);
 
-            final float offset = mHasChin ? -18 : -10; //offset for complications
+            final float offset = mHasFlatTire ? -18 : -10; //offset for complications
             drawComplication(canvas, now, TOP_DIAL_COMPLICATION, mCenterX, mCenterY / 2 - offset);
             drawComplication(canvas, now, LEFT_DIAL_COMPLICATION, mCenterX / 2 - offset, mCenterY);
             drawComplication(canvas, now, BOTTOM_DIAL_COMPLICATION, mCenterX, mCenterY * 1.5f + offset);
@@ -369,12 +370,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final float minHrOverflow = 10f;
             final float secOverflow = 16f;
 
-            //Offset/distance between the edge and the inner circle
-            final float circleOffset = mHasChin ? 38f : 24f;
+            /**
+             * Offset/distance between the edge and the inner circle; bigger if the device
+             * has a flat tire
+             */
+            final float circleOffset = mHasFlatTire ? 38f : 24f;
 
-            // Find the center. Ignore the window insets so that, on round watches with a
-            // "chin", the watch face is centered on the entire screen, not just the usable
-            // portion.
+            //Center X and Y coordinates
             final float centerX = width / 2f;
             final float centerY = height / 2f;
 
@@ -420,12 +422,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             float innerTickRadius = centerX - circleOffset - 14;
             float outerTickRadius = centerX - circleOffset - 1;
 
-            for (int tickIndex = 0; tickIndex < 4; tickIndex++) {
-                float tickRot = (float) (tickIndex * Math.PI * 2 / 4);
+            for (int tickIndex = 0; tickIndex < mNumberTicks; tickIndex++) {
+                float tickRot = (float) (tickIndex * Math.PI * 2 / mNumberTicks);
+
                 innerX = (float) Math.sin(tickRot) * innerTickRadius;
                 innerY = (float) -Math.cos(tickRot) * innerTickRadius;
                 outerX = (float) Math.sin(tickRot) * outerTickRadius;
                 outerY = (float) -Math.cos(tickRot) * outerTickRadius;
+
                 canvas.drawLine(centerX + innerX, centerY + innerY,
                         centerX + outerX, centerY + outerY, mCircleAndTickPaint);
             }
@@ -1052,7 +1056,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         public void onApplyWindowInsets(WindowInsets insets) {
             super.onApplyWindowInsets(insets);
 
-            mHasChin = insets.getSystemWindowInsetBottom() > 0;
+            mHasFlatTire = insets.getSystemWindowInsetBottom() > 0;
         }
 
         /**
@@ -1140,23 +1144,35 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final String DEFAULT_OUTER = "#20272A"; //outer circle
 
             //Hand colors
-            mHourHandColor = mPrefs.getInt("settings_hour_hand_color_value", Color.parseColor(DEFAULT_WHITE));
-            mMinuteHandColor = mPrefs.getInt("settings_minute_hand_color_value", Color.parseColor(DEFAULT_WHITE));
-            mSecondHandColor = mPrefs.getInt("settings_second_hand_color_value", Color.parseColor(DEFAULT_RED));
+            mHourHandColor = mPrefs.getInt("settings_hour_hand_color_value",
+                    Color.parseColor(DEFAULT_WHITE));
+            mMinuteHandColor = mPrefs.getInt("settings_minute_hand_color_value",
+                    Color.parseColor(DEFAULT_WHITE));
+            mSecondHandColor = mPrefs.getInt("settings_second_hand_color_value",
+                    Color.parseColor(DEFAULT_RED));
 
             //Background colors
-            mCenterCircleColor = mPrefs.getInt("settings_center_circle_color_value", Color.parseColor(DEFAULT_CENTER));
-            mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value", Color.parseColor(DEFAULT_WHITE));
-            mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value", Color.parseColor(DEFAULT_OUTER));
+            mCenterCircleColor = mPrefs.getInt("settings_center_circle_color_value",
+                    Color.parseColor(DEFAULT_CENTER));
+            mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value",
+                    Color.parseColor(DEFAULT_WHITE));
+            mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value",
+                    Color.parseColor(DEFAULT_OUTER));
 
             //Complication colors
-            mComplicationColor = mPrefs.getInt("settings_complication_color_value", Color.parseColor(DEFAULT_WHITE));
-            mTertiaryColor = Color.argb(Math.round(152), Color.red(mComplicationColor), Color.green(mComplicationColor), Color.blue(mComplicationColor));
-            mQuaternaryColor = Color.argb(Math.round(48), Color.red(mComplicationColor), Color.green(mComplicationColor), Color.blue(mComplicationColor));
+            mComplicationColor = mPrefs.getInt("settings_complication_color_value",
+                    Color.parseColor(DEFAULT_WHITE));
+            mTertiaryColor = Color.argb(Math.round(152), Color.red(mComplicationColor),
+                    Color.green(mComplicationColor), Color.blue(mComplicationColor));
+            mQuaternaryColor = Color.argb(Math.round(48), Color.red(mComplicationColor),
+                    Color.green(mComplicationColor), Color.blue(mComplicationColor));
 
             //Misc settings
             mComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = mPrefs.getBoolean("settings_show_second_hand", true);
+            mNumberTicks = Integer.parseInt(mPrefs.getString("settings_number_ticks", "4"));
+
+            mPrefs = null;
         }
 
         /**

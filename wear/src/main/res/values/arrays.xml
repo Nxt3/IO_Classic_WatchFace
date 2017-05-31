@@ -102,16 +102,19 @@
         <item>#FFFFFF</item>
     </array>
 
-    <string-array name="style_items">
-        <item>Digitalog</item>
-        <item>Digital</item>
-        <item>Analog</item>
+    <string-array name="number_ticks_items">
+        <item>@string/settings_number_ticks_0</item>
+        <item>@string/settings_number_ticks_default</item>
+        <item>@string/settings_number_ticks_6</item>
+        <item>@string/settings_number_ticks_12</item>
     </string-array>
-    <string-array name="style_values">
+    <string-array name="number_ticks_values">
         <item>0</item>
-        <item>1</item>
-        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>12</item>
     </string-array>
+
 
     <string-array name="notification_items">
         <item>Disabled</item>
