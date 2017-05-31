@@ -153,8 +153,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mCalendar = Calendar.getInstance();
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(IOClassicWatchFaceService.this)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setStatusBarGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL)
+                    .setStatusBarGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL
+                            | Gravity.TOP)
+                    .setViewProtectionMode(WatchFaceStyle.PROTECT_STATUS_BAR
+                            | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
                     .setAcceptsTapEvents(true)
                     .build());
 
