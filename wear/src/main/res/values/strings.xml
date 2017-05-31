@@ -39,6 +39,14 @@
     <string name="settings_donate">Donate</string>
     <string name="settings_donation_summary">Support development</string>
     <string name="settings_donation_error">There was an error with your donation</string>
+    <string name="settings_donate_1">Donate &#36;1</string>
+    <string name="settings_donate_3">Donate &#36;3</string>
+    <string name="settings_donate_5">Donate &#36;5</string>
+    <string name="settings_donate_10">Donate &#36;10</string>
+    <string name="settings_donate_1_summary">Support 0.1 hours of development</string>
+    <string name="settings_donate_3_summary">Support 0.3 hours of development</string>
+    <string name="settings_donate_5_summary">Support 0.5 hours of development</string>
+    <string name="settings_donate_10_summary">Support 1 hour of development</string>
 
     <string name="settings_ambient">Ambient</string>
 

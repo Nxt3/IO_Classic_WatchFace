@@ -241,23 +241,19 @@
         android:title="@string/settings_donate">
         <Preference
             android:key="donation_1"
-            android:summary="Beer"
-            android:title="Donate &#8364;1" />
+            android:summary="@string/settings_donate_1_summary"
+            android:title="@string/settings_donate_1" />
         <Preference
             android:key="donation_3"
-            android:summary="Pizza slice"
-            android:title="Donate &#8364;3" />
+            android:summary="@string/settings_donate_3_summary"
+            android:title="@string/settings_donate_3" />
         <Preference
             android:key="donation_5"
-            android:summary="Pizza"
-            android:title="Donate &#8364;5" />
+            android:summary="@string/settings_donate_5_summary"
+            android:title="@string/settings_donate_5" />
         <Preference
             android:key="donation_10"
-            android:summary="Big pizza and fries"
-            android:title="Donate &#8364;10" />
-        <Preference
-            android:key="donation_20"
-            android:summary="Big pizza, fries and a movie"
-            android:title="Donate &#8364;20" />
+            android:summary="@string/settings_donate_10_summary"
+            android:title="@string/settings_donate_10" />
     </PreferenceScreen>
 </PreferenceScreen>

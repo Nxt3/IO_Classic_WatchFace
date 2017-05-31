@@ -39,6 +39,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
+import android.view.WindowInsets;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -81,15 +82,17 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private static final float THICK_STROKE = 7f;
         private static final float THIN_STROKE = 2f;
 
+        //Used for managing the time
         private Calendar mCalendar;
 
         //SharedPrefs for getting settings
         private SharedPreferences mPrefs;
 
-        //Booleans for various ambient mode styles
+        //Booleans for various device specific settings
         private boolean mAmbient;
         private boolean mLowBitAmbient;
         private boolean mBurnInProtection;
+        private boolean mHasChin;
 
         private boolean mRegisteredTimeZoneReceiver = false;
 
@@ -277,7 +280,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             drawBackground(canvas);
             drawWatchFace(canvas, bounds);
 
-            final float offset = -10; //offset for complications
+            final float offset = mHasChin ? -18 : -10; //offset for complications
             drawComplication(canvas, now, TOP_DIAL_COMPLICATION, mCenterX, mCenterY / 2 - offset);
             drawComplication(canvas, now, LEFT_DIAL_COMPLICATION, mCenterX / 2 - offset, mCenterY);
             drawComplication(canvas, now, BOTTOM_DIAL_COMPLICATION, mCenterX, mCenterY * 1.5f + offset);
@@ -360,20 +363,20 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * @param bounds of the device screen
          */
         private void drawWatchFace(Canvas canvas, Rect bounds) {
-            final int WIDTH = bounds.width();
-            final int HEIGHT = bounds.height();
+            final int width = bounds.width();
+            final int height = bounds.height();
 
             final float minHrOverflow = 10f;
             final float secOverflow = 16f;
 
             //Offset/distance between the edge and the inner circle
-            final float circleOffset = 24f;
+            final float circleOffset = mHasChin ? 38f : 24f;
 
             // Find the center. Ignore the window insets so that, on round watches with a
             // "chin", the watch face is centered on the entire screen, not just the usable
             // portion.
-            float centerX = WIDTH / 2f;
-            float centerY = HEIGHT / 2f;
+            final float centerX = width / 2f;
+            final float centerY = height / 2f;
 
             float innerX, innerY, outerX, outerY;
 
@@ -392,8 +395,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             if (!isInAmbientMode()) {
                 //draws backgrounds
                 canvas.drawColor(mOuterCircleColor);
-                canvas.drawCircle(centerX, centerY, WIDTH / 2, mOuterBackgroundPaint);
-                canvas.drawCircle(centerX, centerY, WIDTH / 2 - circleOffset - 20.0f, mBackgroundPaint);
+                canvas.drawCircle(centerX, centerY, width / 2, mOuterBackgroundPaint);
+                canvas.drawCircle(centerX, centerY, width / 2 - circleOffset - 20.0f, mBackgroundPaint);
 
                 //draws second hand
                 if (mShowSecondHand) {
@@ -428,7 +431,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             //draws circle for the ticks
-            canvas.drawArc(circleOffset, circleOffset, WIDTH - circleOffset, HEIGHT - circleOffset, 0, 360, false, mCircleAndTickPaint);
+            canvas.drawArc(circleOffset, circleOffset, width - circleOffset, height - circleOffset, 0, 360, false, mCircleAndTickPaint);
         }
 
         /**
@@ -1043,6 +1046,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
             mBurnInProtection = properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false);
+        }
+
+        @Override
+        public void onApplyWindowInsets(WindowInsets insets) {
+            super.onApplyWindowInsets(insets);
+
+            mHasChin = insets.getSystemWindowInsetBottom() > 0;
         }
 
         /**
