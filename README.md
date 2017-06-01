@@ -2,6 +2,9 @@
 
 [Minimalistic watch face based on a 2015 Google I/O talk](http://i.imgur.com/ELY80tT.png)
 
+**Compatible with Android Wear 2.0+ ONLY**
+
+## Features
   - Complication support
   - Customizable colors
   - Show/hide second hand
