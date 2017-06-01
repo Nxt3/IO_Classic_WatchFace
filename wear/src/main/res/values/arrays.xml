@@ -5,6 +5,7 @@
         <item>@string/settings_default_seconds</item>
         <item>@string/settings_red</item>
         <item>@string/settings_pink</item>
+        <item>@string/settings_rose_gold</item>
         <item>@string/settings_purple</item>
         <item>@string/settings_deep_purple</item>
         <item>@string/settings_indigo</item>
@@ -30,6 +31,7 @@
         <item>#AA5B34</item>
         <item>#FF5252</item>
         <item>#FF4081</item>
+        <item>#E4AAA9</item>
         <item>#E040FB</item>
         <item>#7C4DFF</item>
         <item>#536DFE</item>
@@ -56,6 +58,7 @@
         <item>@string/settings_default_outer_circle</item>
         <item>@string/settings_red</item>
         <item>@string/settings_pink</item>
+        <item>@string/settings_rose_gold</item>
         <item>@string/settings_purple</item>
         <item>@string/settings_deep_purple</item>
         <item>@string/settings_indigo</item>
@@ -81,6 +84,7 @@
         <item>#20272A</item>
         <item>#B71C1C</item>
         <item>#880E4F</item>
+        <item>#E4AAA9</item>
         <item>#4A148C</item>
         <item>#311B92</item>
         <item>#1A237E</item>
