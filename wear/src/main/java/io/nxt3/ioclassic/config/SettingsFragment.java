@@ -221,7 +221,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             case "donation_3":
             case "donation_5":
             case "donation_10":
-            case "donation_20":
                 getSettingsActivity().donate(getActivity(), preference.getKey());
                 break;
         }
