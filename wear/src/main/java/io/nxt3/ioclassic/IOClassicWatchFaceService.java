@@ -132,9 +132,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
         private RectF[] mComplicationTapBoxes = new RectF[COMPLICATION_IDS.length];
         private final float COMPLICATION_RADIUS = 4.5f;
+        private final float COMPLICATION_BORDER_STROKE = 3f;
 
         //Fonts for complications
         private Typeface mComplicationFont;
+        private Typeface mComplicationAmbientFont;
 
         //Other settings
         private boolean mComplicationBorder;
@@ -224,10 +226,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             /* Set defaults for fonts */
             mComplicationFont = Typeface.create("sans-serif", Typeface.BOLD);
+            mComplicationAmbientFont = Typeface.create("sans-serif-light", Typeface.NORMAL);
 
             mComplicationCirclePaint = new Paint();
             mComplicationCirclePaint.setColor(mQuaternaryColor);
-            mComplicationCirclePaint.setStrokeWidth(3f);
+            mComplicationCirclePaint.setStrokeWidth(COMPLICATION_BORDER_STROKE);
             mComplicationCirclePaint.setAntiAlias(true);
             mComplicationCirclePaint.setStrokeCap(Paint.Cap.ROUND);
             mComplicationCirclePaint.setStyle(Paint.Style.STROKE);
@@ -286,43 +289,43 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 canvas.drawColor(Color.BLACK);
             } else {
                 canvas.drawColor(mCenterCircleColor);
-
-                final int width = bounds.width();
-                final int height = bounds.height();
-
-                /**
-                 * Offset/distance between the edge and the inner circle; bigger if the device
-                 * has a flat tire
-                 */
-                final float circleOffset = mHasFlatTire ? 38f : 24f;
-
-                //draws outer circle
-                canvas.drawColor(mOuterCircleColor);
-                canvas.drawCircle(mCenterX, mCenterY, width / 2,
-                        mOuterBackgroundPaint);
-                canvas.drawCircle(mCenterX, mCenterY, width / 2 - circleOffset - 20.0f,
-                        mBackgroundPaint);
-
-                //draws the tick marks
-                float innerTickRadius = mCenterX - circleOffset - 14;
-                float outerTickRadius = mCenterX - circleOffset - 1;
-
-                for (int tickIndex = 0; tickIndex < mNumberTicks; tickIndex++) {
-                    float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberTicks);
-
-                    float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
-                    float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
-                    float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
-                    float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
-
-                    canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
-                            mCenterX + outerX, mCenterY + outerY, mCircleAndTickPaint);
-                }
-
-                //draws circle for the ticks
-                canvas.drawArc(circleOffset, circleOffset, width - circleOffset,
-                        height - circleOffset, 0, 360, false, mCircleAndTickPaint);
             }
+
+            final int width = bounds.width();
+            final int height = bounds.height();
+
+            /**
+             * Offset/distance between the edge and the inner circle; bigger if the device
+             * has a flat tire
+             */
+            final float circleOffset = mHasFlatTire ? 38f : 24f;
+
+            //draws outer circle
+            canvas.drawColor(mOuterCircleColor);
+            canvas.drawCircle(mCenterX, mCenterY, width / 2,
+                    mOuterBackgroundPaint);
+            canvas.drawCircle(mCenterX, mCenterY, width / 2 - circleOffset - 20.0f,
+                    mBackgroundPaint);
+
+            //draws the tick marks
+            float innerTickRadius = mCenterX - circleOffset - 14;
+            float outerTickRadius = mCenterX - circleOffset - 1;
+
+            for (int tickIndex = 0; tickIndex < mNumberTicks; tickIndex++) {
+                float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberTicks);
+
+                float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
+                float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
+                float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
+                float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
+
+                canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
+                        mCenterX + outerX, mCenterY + outerY, mCircleAndTickPaint);
+            }
+
+            //draws circle for the ticks
+            canvas.drawArc(circleOffset, circleOffset, width - circleOffset,
+                    height - circleOffset, 0, 360, false, mCircleAndTickPaint);
         }
 
         /**
@@ -941,10 +944,19 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setStrokeWidth(THIN_STROKE);
 
                 mComplicationCirclePaint.setColor(Color.WHITE);
+                mComplicationCirclePaint.setStrokeWidth(THIN_STROKE);
+
                 mComplicationPrimaryLongTextPaint.setColor(Color.WHITE);
+                mComplicationPrimaryLongTextPaint.setTypeface(mComplicationAmbientFont);
+
                 mComplicationPrimaryTextPaint.setColor(Color.WHITE);
+                mComplicationPrimaryTextPaint.setTypeface(mComplicationAmbientFont);
+
                 mComplicationSecondaryTextPaint.setColor(Color.WHITE);
+                mComplicationSecondaryTextPaint.setTypeface(mComplicationAmbientFont);
+
                 mComplicationSecondaryLongTextPaint.setColor(Color.WHITE);
+                mComplicationSecondaryLongTextPaint.setTypeface(mComplicationAmbientFont);
 
                 mHourPaint.setAntiAlias(false);
                 mMinutePaint.setAntiAlias(false);
@@ -976,10 +988,18 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setStrokeWidth(THICK_STROKE);
 
                 mComplicationCirclePaint.setColor(mQuaternaryColor);
+                mComplicationCirclePaint.setStrokeWidth(COMPLICATION_BORDER_STROKE);
                 mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
+                mComplicationPrimaryLongTextPaint.setTypeface(mComplicationFont);
+
                 mComplicationPrimaryTextPaint.setColor(mComplicationColor);
+                mComplicationPrimaryTextPaint.setTypeface(mComplicationFont);
+
                 mComplicationSecondaryTextPaint.setColor(mTertiaryColor);
+                mComplicationSecondaryTextPaint.setTypeface(mComplicationFont);
+
                 mComplicationSecondaryLongTextPaint.setColor(mTertiaryColor);
+                mComplicationSecondaryLongTextPaint.setTypeface(mComplicationFont);
 
                 mHourPaint.setAntiAlias(true);
                 mMinutePaint.setAntiAlias(true);
