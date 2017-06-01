@@ -58,3 +58,5 @@ cd
 *.jks
 .signing/
 app/google-services.json
+
+icons/
