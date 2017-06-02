@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">IO Classic</string>
+
+    <string name="tutorial_version_title">Version</string>
+    <string name="tutorial_version_desc">This watch face is only compatible with Wear 2.0&#43;\n\n
+        To check which version your watch is on, go to\nSettings &gt; System &gt; About &gt; Versions</string>
+
+    <string name="tutorial_play_store_title">Play Store</string>
+    <string name="tutorial_play_store_desc">Open the Play Store on your watch\n\nAlternatively,
+        you might have a notification\non your watch telling you to download this app.\nYou can click
+        on that, then skip the next step.</string>
+
+    <string name="tutorial_search_title">Search</string>
+    <string name="tutorial_search_desc">Search for: \&quot;IO NXT3\&quot;</string>
+
+    <string name="tutorial_install_title">Install</string>
+    <string name="tutorial_install_desc">Install the watch face</string>
+
+    <string name="tutorial_done_title">Done</string>
+    <string name="tutorial_done_desc">Enjoy your new watch face&#33;\n\nYou can now uninstall\n
+        this application from your phone.</string>
+    <string name="tutorial_uninstall">Uninstall</string>
+    <string name="tutorial_uninstall_insist">Please uninstall the app</string>
+
+    <string name="tutorial_easter_egg">Stop doing that and uninstall already</string>
+    <string name="tutorial_easter_egg_2">You\'re annoying. Uninstall the app, please :(</string>
+    <string name="tutorial_easter_egg_3">Forget it. You obviously don\'t care. Bye!</string>
 </resources>

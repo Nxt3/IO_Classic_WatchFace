@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<agency.tango.materialintroscreen.parallax.ParallaxLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/slide_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    android:background="@android:color/transparent"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="false"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="164dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="48dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/tutorial_done_title"
+        android:gravity="center"
+        android:src="@drawable/ic_done_white_24dp"
+        app:layout_parallaxFactor="0.6" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/tutorial_done_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_parallaxFactor="0.5" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/tutorial_done_desc"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:visibility="visible"
+        app:layout_parallaxFactor="0.2" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/uninstall_button"
+        style="@style/ButtonStyle"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/tutorial_uninstall"
+        android:textColor="@color/white" />
+
+</agency.tango.materialintroscreen.parallax.ParallaxLinearLayout>
