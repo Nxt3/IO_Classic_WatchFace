@@ -1,4 +1,4 @@
-package io.nxt3.ioclassic;
+package io.nxt3.ioclassic.mobile;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import agency.tango.materialintroscreen.SlideFragment;
-import io.nxt3.ioclassic.R;
 
 
 public class UninstallSlide extends SlideFragment {

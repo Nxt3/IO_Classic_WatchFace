@@ -1,12 +1,10 @@
-package io.nxt3.ioclassic;
+package io.nxt3.ioclassic.mobile;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import agency.tango.materialintroscreen.MaterialIntroActivity;
 import agency.tango.materialintroscreen.SlideFragmentBuilder;
-import io.nxt3.ioclassic.R;
-import io.nxt3.ioclassic.UninstallSlide;
 
 public class TutorialActivity extends MaterialIntroActivity {
 
@@ -47,13 +45,5 @@ public class TutorialActivity extends MaterialIntroActivity {
                 .build());
 
         addSlide(new UninstallSlide());
-
-//        addSlide(new SlideFragmentBuilder()
-//                .backgroundColor(R.color.primary)
-//                .buttonsColor(R.color.accent)
-//                .title(getString(R.string.tutorial_done_title))
-//                .description(getString(R.string.tutorial_done_desc))
-//                .image(agency.tango.materialintroscreen.R.drawable.ic_finish)
-//                .build());
     }
 }
