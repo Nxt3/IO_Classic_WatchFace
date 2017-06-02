@@ -26,7 +26,7 @@ public class UninstallSlide extends SlideFragment {
         //Prompt user to uninstall the app when the user clicks the "Uninstall" button
         mUninstallButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final Uri packageUri = Uri.parse("package:io.nxt3.ioclassic.phone");
+                final Uri packageUri = Uri.parse("package:io.nxt3.ioclassic");
                 final Intent uninstallIntent
                         = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
                 startActivity(uninstallIntent);
