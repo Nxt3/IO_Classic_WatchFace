@@ -1,10 +1,12 @@
-package io.nxt3.ioclassic.phone;
+package io.nxt3.ioclassic;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import agency.tango.materialintroscreen.MaterialIntroActivity;
 import agency.tango.materialintroscreen.SlideFragmentBuilder;
+import io.nxt3.ioclassic.R;
+import io.nxt3.ioclassic.UninstallSlide;
 
 public class TutorialActivity extends MaterialIntroActivity {
 
