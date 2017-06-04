@@ -114,6 +114,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private Paint mSecondPaint;
         private Paint mBackgroundPaint;
         private Paint mCircleAndTickPaint;
+        private Paint mMinuteTickPaint;
         private Paint mOuterBackgroundPaint;
 
         //Colors for each complication component
@@ -142,6 +143,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mComplicationBorder;
         private boolean mShowSecondHand;
         private int mNumberTicks;
+        private boolean mShowMinuteTicks;
 
 
         /**
@@ -184,6 +186,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mCircleAndTickPaint.setStyle(Paint.Style.STROKE);
             mCircleAndTickPaint.setStrokeWidth(THICK_STROKE);
             mCircleAndTickPaint.setAntiAlias(true);
+
+            //Minute ticks
+            mMinuteTickPaint = new Paint();
+            mMinuteTickPaint.setColor(mCircleAndTickColor);
+            mMinuteTickPaint.setStyle(Paint.Style.STROKE);
+            mMinuteTickPaint.setStrokeWidth(THIN_STROKE);
+            mMinuteTickPaint.setAntiAlias(true);
 
             mOuterBackgroundPaint = new Paint();
             mOuterBackgroundPaint.setColor(mOuterCircleColor);
@@ -321,6 +330,18 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
                 canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
                         mCenterX + outerX, mCenterY + outerY, mCircleAndTickPaint);
+            }
+
+            for (int tickIndex = 0; tickIndex < 60 && mShowMinuteTicks; tickIndex++) {
+                float tickRotation = (float) (tickIndex * Math.PI * 2 / 60);
+
+                float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
+                float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
+                float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
+                float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
+
+                canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
+                        mCenterX + outerX, mCenterY + outerY, mMinuteTickPaint);
             }
 
             //draws circle for the ticks
@@ -966,6 +987,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setColor(Color.WHITE);
                 mCircleAndTickPaint.setStrokeWidth(THIN_STROKE);
 
+                mMinuteTickPaint.setColor(Color.WHITE);
+
                 mComplicationCirclePaint.setColor(Color.WHITE);
                 mComplicationCirclePaint.setStrokeWidth(THIN_STROKE);
 
@@ -985,6 +1008,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mHourPaint.setAntiAlias(false);
                     mMinutePaint.setAntiAlias(false);
                     mCircleAndTickPaint.setAntiAlias(false);
+                    mMinuteTickPaint.setAntiAlias(false);
 
                     mComplicationCirclePaint.setAntiAlias(false);
                     mComplicationPrimaryLongTextPaint.setAntiAlias(false);
@@ -1013,6 +1037,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setColor(mCircleAndTickColor);
                 mCircleAndTickPaint.setStrokeWidth(THICK_STROKE);
 
+                mMinuteTickPaint.setColor(mCircleAndTickColor);
+                mMinuteTickPaint.setStrokeWidth(THIN_STROKE);
+
                 mComplicationCirclePaint.setColor(mQuaternaryColor);
                 mComplicationCirclePaint.setStrokeWidth(COMPLICATION_BORDER_STROKE);
                 mComplicationPrimaryLongTextPaint.setColor(mComplicationColor);
@@ -1031,6 +1058,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mHourPaint.setAntiAlias(true);
                     mMinutePaint.setAntiAlias(true);
                     mCircleAndTickPaint.setAntiAlias(true);
+                    mMinuteTickPaint.setAntiAlias(true);
 
                     mComplicationPrimaryLongTextPaint.setAntiAlias(true);
                     mComplicationPrimaryTextPaint.setAntiAlias(true);
@@ -1048,30 +1076,23 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
             //Default colors
-            final String DEFAULT_WHITE = "#98A4A3"; //hours, minutes, ticks, and circle
-            final String DEFAULT_RED = "#AA5B34"; //seconds
-            final String DEFAULT_CENTER = "#1E2327"; //center circle
-            final String DEFAULT_OUTER = "#20272A"; //outer circle
+            final int defaultHands = getColor(R.color.default_hands); //hours, minutes, ticks, and circle
+            final int defaultSeconds = getColor(R.color.default_seconds); //seconds
+            final int defaultCenter = getColor(R.color.default_center_circle); //center circle
+            final int defaultOuter = getColor(R.color.default_outer_circle); //outer circle
 
             //Hand colors
-            mHourHandColor = mPrefs.getInt("settings_hour_hand_color_value",
-                    Color.parseColor(DEFAULT_WHITE));
-            mMinuteHandColor = mPrefs.getInt("settings_minute_hand_color_value",
-                    Color.parseColor(DEFAULT_WHITE));
-            mSecondHandColor = mPrefs.getInt("settings_second_hand_color_value",
-                    Color.parseColor(DEFAULT_RED));
+            mHourHandColor = mPrefs.getInt("settings_hour_hand_color_value", defaultHands);
+            mMinuteHandColor = mPrefs.getInt("settings_minute_hand_color_value", defaultHands);
+            mSecondHandColor = mPrefs.getInt("settings_second_hand_color_value", defaultSeconds);
 
             //Background colors
-            mCenterCircleColor = mPrefs.getInt("settings_center_circle_color_value",
-                    Color.parseColor(DEFAULT_CENTER));
-            mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value",
-                    Color.parseColor(DEFAULT_WHITE));
-            mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value",
-                    Color.parseColor(DEFAULT_OUTER));
+            mCenterCircleColor = mPrefs.getInt("settings_center_circle_color_value", defaultCenter);
+            mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value", defaultHands);
+            mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value", defaultOuter);
 
             //Complication colors
-            mComplicationColor = mPrefs.getInt("settings_complication_color_value",
-                    Color.parseColor(DEFAULT_WHITE));
+            mComplicationColor = mPrefs.getInt("settings_complication_color_value", defaultHands);
             mTertiaryColor = Color.argb(Math.round(152), Color.red(mComplicationColor),
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
             mQuaternaryColor = Color.argb(Math.round(48), Color.red(mComplicationColor),
@@ -1080,6 +1101,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             //Misc settings
             mComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = mPrefs.getBoolean("settings_show_second_hand", true);
+
             final String numberOfTicks = mPrefs.getString("settings_number_ticks", "4");
             if (numberOfTicks.equals(getString(R.string.settings_number_ticks_default))) {
                 /**
@@ -1090,6 +1112,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             } else {
                 mNumberTicks = Integer.parseInt(numberOfTicks);
             }
+
+            mShowMinuteTicks = mPrefs.getBoolean("settings_show_minute_ticks", false);
 
             mPrefs = null;
         }

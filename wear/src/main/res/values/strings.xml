@@ -37,11 +37,12 @@
     <string name="settings_default_outer_circle_color">@string/settings_default_outer_circle</string>
 
     <!--Tick marks setting-->
-    <string name="settings_number_ticks_title">Number of tick marks</string>
+    <string name="settings_number_ticks_title">Number of hour tick marks</string>
     <string name="settings_number_ticks_default">Default &#40;4&#41;</string>
     <string name="settings_number_ticks_0">None</string>
     <string name="settings_number_ticks_6">6</string>
     <string name="settings_number_ticks_12">12</string>
+    <string name="settings_show_minute_ticks_title">Show minute tick marks</string>
 
     <string name="settings_0">0</string>
     <string name="settings_4">4</string>
