@@ -3,107 +3,138 @@
     <array name="color_names">
         <item>@string/settings_default_hands</item>
         <item>@string/settings_default_seconds</item>
+        <item>@string/settings_default_center_circle</item>
+        <item>@string/settings_default_outer_circle</item>
+
         <item>@string/settings_red</item>
+        <item>@string/settings_dark_red</item>
+
         <item>@string/settings_pink</item>
+        <item>@string/settings_dark_pink</item>
+
         <item>@string/settings_rose_gold</item>
+
         <item>@string/settings_purple</item>
+        <item>@string/settings_dark_purple</item>
+
         <item>@string/settings_deep_purple</item>
+        <item>@string/settings_deep_purple</item>
+
         <item>@string/settings_indigo</item>
+        <item>@string/settings_dark_indigo</item>
+
         <item>@string/settings_blue</item>
+        <item>@string/settings_dark_blue</item>
+
         <item>@string/settings_light_blue</item>
+        <item>@string/settings_dark_light_blue</item>
+
         <item>@string/settings_cyan</item>
+        <item>@string/settings_dark_cyan</item>
+
         <item>@string/settings_teal</item>
+        <item>@string/settings_dark_teal</item>
+
         <item>@string/settings_green</item>
+        <item>@string/settings_dark_green</item>
+
         <item>@string/settings_light_green</item>
+        <item>@string/settings_dark_light_green</item>
+
         <item>@string/settings_lime</item>
+        <item>@string/settings_dark_lime</item>
+
         <item>@string/settings_yellow</item>
+        <item>@string/settings_dark_yellow</item>
+
         <item>@string/settings_amber</item>
+        <item>@string/settings_dark_amber</item>
+
         <item>@string/settings_orange</item>
+        <item>@string/settings_dark_orange</item>
+
         <item>@string/settings_deep_orange</item>
+        <item>@string/settings_dark_deep_orange</item>
+
         <item>@string/settings_brown</item>
+        <item>@string/settings_dark_brown</item>
+
         <item>@string/settings_gray</item>
+        <item>@string/settings_dark_gray</item>
+
         <item>@string/settings_blue_gray</item>
+        <item>@string/settings_dark_blue_gray</item>
+
         <item>@string/settings_black</item>
         <item>@string/settings_white</item>
     </array>
     <array name="color_values">
-        <item>#98A4A3</item>
-        <item>#AA5B34</item>
-        <item>#FF5252</item>
-        <item>#FF4081</item>
-        <item>#E4AAA9</item>
-        <item>#E040FB</item>
-        <item>#7C4DFF</item>
-        <item>#536DFE</item>
-        <item>#448AFF</item>
-        <item>#40C4FF</item>
-        <item>#18FFFF</item>
-        <item>#64FFDA</item>
-        <item>#69F0AE</item>
-        <item>#B2FF59</item>
-        <item>#EEFF41</item>
-        <item>#FFFF00</item>
-        <item>#FFD740</item>
-        <item>#FFAB40</item>
-        <item>#FF6E40</item>
-        <item>#BCAAA4</item>
-        <item>#BDBDBD</item>
-        <item>#90A4AE</item>
-        <item>#000000</item>
-        <item>#FFFFFF</item>
-    </array>
+        <item>@color/default_hands</item>
+        <item>@color/default_seconds</item>
+        <item>@color/default_center_circle</item>
+        <item>@color/default_outer_circle</item>
 
-    <array name="background_color_names">
-        <item>@string/settings_default_center_circle</item>
-        <item>@string/settings_default_outer_circle</item>
-        <item>@string/settings_red</item>
-        <item>@string/settings_pink</item>
-        <item>@string/settings_rose_gold</item>
-        <item>@string/settings_purple</item>
-        <item>@string/settings_deep_purple</item>
-        <item>@string/settings_indigo</item>
-        <item>@string/settings_blue</item>
-        <item>@string/settings_light_blue</item>
-        <item>@string/settings_cyan</item>
-        <item>@string/settings_teal</item>
-        <item>@string/settings_green</item>
-        <item>@string/settings_light_green</item>
-        <item>@string/settings_lime</item>
-        <item>@string/settings_yellow</item>
-        <item>@string/settings_amber</item>
-        <item>@string/settings_orange</item>
-        <item>@string/settings_deep_orange</item>
-        <item>@string/settings_brown</item>
-        <item>@string/settings_gray</item>
-        <item>@string/settings_blue_gray</item>
-        <item>@string/settings_black</item>
-        <item>@string/settings_white</item>
-    </array>
-    <array name="background_color_values">
-        <item>#1E2327</item>
-        <item>#20272A</item>
-        <item>#B71C1C</item>
-        <item>#880E4F</item>
-        <item>#E4AAA9</item>
-        <item>#4A148C</item>
-        <item>#311B92</item>
-        <item>#1A237E</item>
-        <item>#0D47A1</item>
-        <item>#01579B</item>
-        <item>#006064</item>
-        <item>#004D40</item>
-        <item>#1B5E20</item>
-        <item>#33691E</item>
-        <item>#827717</item>
-        <item>#F57F17</item>
-        <item>#FF6F00</item>
-        <item>#E65100</item>
-        <item>#BF360C</item>
-        <item>#3E2723</item>
-        <item>#212121</item>
-        <item>#263238</item>
-        <item>#000000</item>
-        <item>#FFFFFF</item>
+        <item>@color/red</item>
+        <item>@color/dark_red</item>
+
+        <item>@color/pink</item>
+        <item>@color/dark_pink</item>
+
+        <item>@color/rose_gold</item>
+
+        <item>@color/purple</item>
+        <item>@color/dark_purple</item>
+
+        <item>@color/deep_purple</item>
+        <item>@color/dark_deep_purple</item>
+
+        <item>@color/indigo</item>
+        <item>@color/dark_indigo</item>
+
+        <item>@color/blue</item>
+        <item>@color/dark_blue</item>
+
+        <item>@color/light_blue</item>
+        <item>@color/dark_light_blue</item>
+
+        <item>@color/cyan</item>
+        <item>@color/dark_cyan</item>
+
+        <item>@color/teal</item>
+        <item>@color/dark_teal</item>
+
+        <item>@color/green</item>
+        <item>@color/light_green</item>
+
+        <item>@color/light_green</item>
+        <item>@color/dark_light_green</item>
+
+        <item>@color/lime</item>
+        <item>@color/dark_lime</item>
+
+        <item>@color/yellow</item>
+        <item>@color/dark_yellow</item>
+
+        <item>@color/amber</item>
+        <item>@color/dark_amber</item>
+
+        <item>@color/orange</item>
+        <item>@color/dark_orange</item>
+
+        <item>@color/deep_orange</item>
+        <item>@color/dark_deep_orange</item>
+
+        <item>@color/brown</item>
+        <item>@color/dark_brown</item>
+
+        <item>@color/gray</item>
+        <item>@color/dark_gray</item>
+
+        <item>@color/blue_gray</item>
+        <item>@color/dark_blue_gray</item>
+
+        <item>@color/black</item>
+        <item>@color/white</item>
     </array>
 
     <string-array name="number_ticks_items">
@@ -118,7 +149,6 @@
         <item>6</item>
         <item>12</item>
     </string-array>
-
 
     <string-array name="notification_items">
         <item>Disabled</item>
@@ -135,17 +165,6 @@
         <item>@drawable/ic_notifications_black_24dp</item>
         <item>@drawable/ic_notifications_active_black_24dp</item>
     </array>
-
-    <string-array name="time_format_items">
-        <item>Use watch settings</item>
-        <item>Use 24-hour format</item>
-        <item>Use 12-hour format</item>
-    </string-array>
-    <string-array name="time_format_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
 
     <string-array name="empty_array" />
 </resources>

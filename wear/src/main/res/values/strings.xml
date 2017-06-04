@@ -70,7 +70,7 @@
     <string name="settings_confirmation_hands_reset">Hand colors reset</string>
     <string name="settings_confirmation_background_reset">Background colors reset</string>
 
-    <!--Colors-->
+    <!--Normal Colors-->
     <string name="settings_default_hands">Default hands</string>
     <string name="settings_default_seconds">Default seconds</string>
     <string name="settings_default_center_circle">Default center</string>
@@ -95,6 +95,29 @@
     <string name="settings_brown">Brown</string>
     <string name="settings_gray">Gray</string>
     <string name="settings_blue_gray">Blue gray</string>
+
+    <!--Dark colors-->
+    <string name="settings_dark_red">Dark red</string>
+    <string name="settings_dark_pink">Dark pink</string>
+    <string name="settings_dark_rose_gold">Dark rose gold</string>
+    <string name="settings_dark_purple">Dark purple</string>
+    <string name="settings_dark_deep_purple">Dark deep purple</string>
+    <string name="settings_dark_indigo">Dark indigo</string>
+    <string name="settings_dark_blue">Dark blue</string>
+    <string name="settings_dark_light_blue">Dark light blue</string>
+    <string name="settings_dark_cyan">Dark cyan</string>
+    <string name="settings_dark_teal">Dark teal</string>
+    <string name="settings_dark_green">Dark green</string>
+    <string name="settings_dark_light_green">Dark light green</string>
+    <string name="settings_dark_lime">Dark lime</string>
+    <string name="settings_dark_yellow">Dark yellow</string>
+    <string name="settings_dark_amber">Dark amber</string>
+    <string name="settings_dark_orange">Dark orange</string>
+    <string name="settings_dark_deep_orange">Dark deep orange</string>
+    <string name="settings_dark_brown">Dark brown</string>
+    <string name="settings_dark_gray">Dark gray</string>
+    <string name="settings_dark_blue_gray">Dark blue gray</string>
+
     <string name="settings_black">Black</string>
     <string name="settings_white">White</string>
 </resources>

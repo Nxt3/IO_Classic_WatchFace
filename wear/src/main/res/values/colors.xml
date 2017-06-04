@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_hands">#98A4A3</color>
+    <color name="default_seconds">#AA5B34</color>
+    <color name="default_center_circle">#1E2327</color>
+    <color name="default_outer_circle">#20272A</color>
+
+    <color name="red">#FF5252</color>
+    <color name="dark_red">#C62828</color>
+
+    <color name="pink">#FF4081</color>
+    <color name="dark_pink">#AD1457</color>
+
+    <color name="rose_gold">#E4AAA9</color>
+
+    <color name="purple">#E040FB</color>
+    <color name="dark_purple">#6A1B9A</color>
+
+    <color name="deep_purple">#7C4DFF</color>
+    <color name="dark_deep_purple">#4527A0</color>
+
+    <color name="indigo">#536DFE</color>
+    <color name="dark_indigo">#283593</color>
+
+    <color name="blue">#448AFF</color>
+    <color name="dark_blue">#1565C0</color>
+
+    <color name="light_blue">#40C4FF</color>
+    <color name="dark_light_blue">#0277BD</color>
+
+    <color name="cyan">#18FFFF</color>
+    <color name="dark_cyan">#00838F</color>
+
+    <color name="teal">#64FFDA</color>
+    <color name="dark_teal">#00695C</color>
+
+    <color name="green">#69F0AE</color>
+    <color name="dark_green">#2E7D32</color>
+
+    <color name="light_green">#B2FF59</color>
+    <color name="dark_light_green">#558B2F</color>
+
+    <color name="lime">#EEFF41</color>
+    <color name="dark_lime">#9E9D24</color>
+
+    <color name="yellow">#FFFF00</color>
+    <color name="dark_yellow">#F9A825</color>
+
+    <color name="amber">#FFD740</color>
+    <color name="dark_amber">#FF8F00</color>
+
+    <color name="orange">#FFAB40</color>
+    <color name="dark_orange">#EF6C00</color>
+
+    <color name="deep_orange">#FF6E40</color>
+    <color name="dark_deep_orange">#D84315</color>
+
+    <color name="brown">#8D6E63</color>
+    <color name="dark_brown">#4E342E</color>
+
+    <color name="gray">#BDBDBD</color>
+    <color name="dark_gray">#424242</color>
+
+    <color name="blue_gray">#78909C</color>
+    <color name="dark_blue_gray">#37474F</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>
+

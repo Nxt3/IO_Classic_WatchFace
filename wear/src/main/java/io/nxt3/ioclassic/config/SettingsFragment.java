@@ -16,7 +16,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
 import android.support.wearable.complications.ComplicationHelperActivity;
@@ -148,8 +147,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             case "settings_center_circle_color":
                 intent = new Intent(getContext(), ColorActivity.class);
                 intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_CENTER)));
-                intent.putExtra("color_names_id", R.array.background_color_names);
-                intent.putExtra("color_values_id", R.array.background_color_values);
+                intent.putExtra("color_names_id", R.array.color_names);
+                intent.putExtra("color_values_id", R.array.color_values);
                 startActivityForResult(intent, CENTER_CIRCLE_COLOR_REQ);
                 break;
 
@@ -164,15 +163,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             case "settings_outer_circle_color":
                 intent = new Intent(getContext(), ColorActivity.class);
                 intent.putExtra("color", getPreferenceScreen().getSharedPreferences().getInt("settings_background_color_value", Color.parseColor(DEFAULT_OUTER)));
-                intent.putExtra("color_names_id", R.array.background_color_names);
-                intent.putExtra("color_values_id", R.array.background_color_values);
+                intent.putExtra("color_names_id", R.array.color_names);
+                intent.putExtra("color_values_id", R.array.color_values);
                 startActivityForResult(intent, OUTER_CIRCLE_COLOR_REQ);
                 break;
             
-            case "time_format":
-                startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
-                break;
-
             case "settings_reset_hand_colors":
                 editor.putString("settings_hour_hand_color", getString(R.string.settings_default_hands));
                 editor.putInt("settings_hour_hand_color_value", Color.parseColor(DEFAULT_WHITE));
