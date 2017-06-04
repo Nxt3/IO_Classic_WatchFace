@@ -1038,7 +1038,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setStrokeWidth(THICK_STROKE);
 
                 mMinuteTickPaint.setColor(mCircleAndTickColor);
-                mMinuteTickPaint.setStrokeWidth(THIN_STROKE);
 
                 mComplicationCirclePaint.setColor(mQuaternaryColor);
                 mComplicationCirclePaint.setStrokeWidth(COMPLICATION_BORDER_STROKE);
