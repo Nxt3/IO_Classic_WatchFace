@@ -317,28 +317,34 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mBackgroundPaint);
 
             //draws the tick marks
-            float innerTickRadius = mCenterX - circleOffset - 14;
-            float outerTickRadius = mCenterX - circleOffset - 1;
+            final float innerTickRadius = mCenterX - circleOffset - 14;
 
+            //if mShowMinuteTicks, make the hour ticks slightly longer
+            final float innerHourTickRadius = mShowMinuteTicks
+                    ? innerTickRadius - 2.75f : innerTickRadius;
+            final float outerTickRadius = mCenterX - circleOffset - 1;
+
+            //draw hour tick marks
             for (int tickIndex = 0; tickIndex < mNumberTicks; tickIndex++) {
                 float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberTicks);
 
-                float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
-                float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
-                float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
-                float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
+                final float innerX = (float) Math.sin(tickRotation) * innerHourTickRadius;
+                final float innerY = (float) -Math.cos(tickRotation) * innerHourTickRadius;
+                final float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
+                final float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
 
                 canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
                         mCenterX + outerX, mCenterY + outerY, mCircleAndTickPaint);
             }
 
+            //draws minute tick marks
             for (int tickIndex = 0; tickIndex < 60 && mShowMinuteTicks; tickIndex++) {
                 float tickRotation = (float) (tickIndex * Math.PI * 2 / 60);
 
-                float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
-                float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
-                float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
-                float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
+                final float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
+                final float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
+                final float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
+                final float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
 
                 canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
                         mCenterX + outerX, mCenterY + outerY, mMinuteTickPaint);
