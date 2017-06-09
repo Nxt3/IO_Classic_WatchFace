@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">IO Classic</string>
 
+    <!--Hour labels-->
+    <string name="hour_label_1">1</string>
+    <string name="hour_label_2">2</string>
+    <string name="hour_label_3">3</string>
+    <string name="hour_label_4">4</string>
+    <string name="hour_label_5">5</string>
+    <string name="hour_label_6">6</string>
+    <string name="hour_label_7">7</string>
+    <string name="hour_label_8">8</string>
+    <string name="hour_label_9">9</string>
+    <string name="hour_label_10">10</string>
+    <string name="hour_label_11">11</string>
+    <string name="hour_label_12">12</string>
+
     <string name="settings">Settings</string>
 
     <!--Complication settings-->
@@ -28,6 +42,7 @@
 
     <!--Background color settings-->
     <string name="settings_background_title">Background</string>
+    <string name="settings_colors_and_ticks_summary">Colors and ticks</string>
     <string name="settings_background_color_category">Background colors</string>
     <string name="settings_center_circle_color">Center circle</string>
     <string name="settings_circle_ticks_color">Circle and ticks</string>
@@ -53,6 +68,8 @@
     <!--Classic watch face mode-->
     <string name="settings_classic_mode_title">Classic mode</string>
     <string name="settings_classic_mode_summary">Full size tick mark circle</string>
+    <string name="settings_show_hour_labels_title">Show hour tick mark labels</string>
+    <string name="settings_show_hour_labels_summary">Classic mode must be enabled</string>
 
     <!--Donations-->
     <string name="settings_donate">Donate</string>

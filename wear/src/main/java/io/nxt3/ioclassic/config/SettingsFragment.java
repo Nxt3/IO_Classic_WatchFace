@@ -60,6 +60,12 @@ public class SettingsFragment extends PreferenceFragment
 
         addPreferencesFromResource(R.xml.settings);
         updateAll();
+
+        //only enable the "Show hour labels" setting if Classic mode is enabled
+        mClassicModeStatus = getPreferenceScreen().getSharedPreferences()
+                .getBoolean("settings_classic_mode", false);
+        getPreferenceScreen().findPreference("settings_show_hour_labels")
+                .setEnabled(mClassicModeStatus);
     }
 
     @Override
@@ -185,8 +191,12 @@ public class SettingsFragment extends PreferenceFragment
                 break;
 
             case "settings_classic_mode":
+                //only enable the "Show hour labels" setting if Classic mode is enabled
                 mClassicModeStatus = getPreferenceScreen().getSharedPreferences()
                         .getBoolean("settings_classic_mode", false);
+                getPreferenceScreen().findPreference("settings_show_hour_labels")
+                        .setEnabled(mClassicModeStatus);
+                editor.putBoolean("settings_show_hour_labels", false).apply();
                 break;
 
             case "settings_reset_hand_colors":

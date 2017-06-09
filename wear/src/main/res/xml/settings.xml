@@ -157,7 +157,7 @@
     <PreferenceScreen
         android:icon="@drawable/ic_background_black_24dp"
         android:key="settings_backgrounds_screen"
-        android:summary="@string/settings_colors_and_misc_summary"
+        android:summary="@string/settings_colors_and_ticks_summary"
         android:title="@string/settings_background_title">
 
         <PreferenceCategory android:title="@string/settings_background_color_category">
@@ -212,6 +212,12 @@
                 android:key="settings_classic_mode"
                 android:summary="@string/settings_classic_mode_summary"
                 android:title="@string/settings_classic_mode_title" />
+
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="settings_show_hour_labels"
+                android:summary="@string/settings_show_hour_labels_summary"
+                android:title="@string/settings_show_hour_labels_title" />
 
             <SwitchPreference
                 android:defaultValue="false"

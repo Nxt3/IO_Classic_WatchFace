@@ -147,6 +147,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private int mNumberTicks;
         private boolean mShowMinuteTicks;
         private boolean mClassicMode;
+        private boolean mShowHourLabels;
 
 
         /**
@@ -364,17 +365,21 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             //draws hour text labels
-            for (int hourIndex = 0; hourIndex < 60; hourIndex++) {
-                final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberTicks);
+            for (int hourIndex = 0; hourIndex < 12 && mShowHourLabels; hourIndex++) {
+                //if (mNumberTicks == 0), default to showing 12 hour labels
+                final int numberOfTicks = (mNumberTicks == 0) ? 12 : mNumberTicks;
 
-                final float textOffset = 15; //offset from the hour tick marks
+                final float tickRotation = (float) (hourIndex * Math.PI * 2 / numberOfTicks);
+
+                final float textOffset = 19; //offset from the hour tick marks
                 final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
                 final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
 
-                final int hourLabelNumber = (hourIndex == 0) ? 12 : hourIndex / 5;
-                final String hourLabelString = String.valueOf(hourLabelNumber);
+                final int multiplyOffset = 12 / numberOfTicks;
+                final int hourLabelNumber = (hourIndex == 0) ? 12 : hourIndex * multiplyOffset;
+                final String hourLabelString = getHourLabel(hourLabelNumber);
 
-                if (hourIndex % 15 == 0 || hourIndex % 5 == 0) {
+                if (hourIndex / numberOfTicks == 0) {
                     canvas.drawText(hourLabelString,
                             mCenterX + x,
                             mCenterY + y
@@ -1149,7 +1154,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = mPrefs.getBoolean("settings_show_second_hand", true);
 
-            final String numberOfTicks = mPrefs.getString("settings_number_ticks", "4");
+            final String numberOfTicks = mPrefs.getString("settings_number_ticks", getString(R.string.hour_label_4));
             if (numberOfTicks.equals(getString(R.string.settings_number_ticks_default))) {
                 /*
                   This is a workaround for the pref not showing the correct default value upon a
@@ -1162,6 +1167,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mShowMinuteTicks = mPrefs.getBoolean("settings_show_minute_ticks", false);
             mClassicMode = mPrefs.getBoolean("settings_classic_mode", false);
+            mShowHourLabels = mPrefs.getBoolean("settings_show_hour_labels", false);
 
             mPrefs = null;
         }
@@ -1245,6 +1251,44 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          */
         private boolean shouldTimerBeRunning() {
             return isVisible() && !mAmbient;
+        }
+
+        /**
+         * Gets the hour String based on the input hour
+         * This is done so that it's possible to translate the hour numbers!
+         *
+         * @param hour to find the String for
+         * @return String of the hour number
+         */
+        private String getHourLabel(int hour) {
+            switch (hour) {
+                case 1:
+                    return getString(R.string.hour_label_1);
+                case 2:
+                    return getString(R.string.hour_label_2);
+                case 3:
+                    return getString(R.string.hour_label_3);
+                case 4:
+                    return getString(R.string.hour_label_4);
+                case 5:
+                    return getString(R.string.hour_label_5);
+                case 6:
+                    return getString(R.string.hour_label_6);
+                case 7:
+                    return getString(R.string.hour_label_7);
+                case 8:
+                    return getString(R.string.hour_label_8);
+                case 9:
+                    return getString(R.string.hour_label_9);
+                case 10:
+                    return getString(R.string.hour_label_10);
+                case 11:
+                    return getString(R.string.hour_label_11);
+                case 12:
+                    return getString(R.string.hour_label_12);
+                default:
+                    return "";
+            }
         }
     }
 }
