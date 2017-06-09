@@ -44,10 +44,15 @@
     <string name="settings_number_ticks_12">12</string>
     <string name="settings_show_minute_ticks_title">Show minute tick marks</string>
 
+    <!--Tick mark numbers-->
     <string name="settings_0">0</string>
     <string name="settings_4">4</string>
     <string name="settings_6">6</string>
     <string name="settings_12">12</string>
+    
+    <!--Classic watch face mode-->
+    <string name="settings_classic_mode_title">Classic mode</string>
+    <string name="settings_classic_mode_summary">Full size tick mark circle</string>
 
     <!--Donations-->
     <string name="settings_donate">Donate</string>

@@ -144,6 +144,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mShowSecondHand;
         private int mNumberTicks;
         private boolean mShowMinuteTicks;
+        private boolean mClassicMode;
 
 
         /**
@@ -303,11 +304,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final int width = bounds.width();
             final int height = bounds.height();
 
-            /**
-             * Offset/distance between the edge and the inner circle; bigger if the device
-             * has a flat tire
+            /*
+              Offset/distance between the edge and the inner circle; bigger if the device
+              has a flat tire.
+              If mClassicMode is true, then reduce the offset
              */
-            final float circleOffset = mHasFlatTire ? 38f : 24f;
+            final float circleOffset = mHasFlatTire ? 38f
+                    : mClassicMode ? 3f : 24f;
 
             //draws outer circle
             canvas.drawColor(mOuterCircleColor);
@@ -471,6 +474,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
         /**
          * Handles drawing long text complications
+         * Example of this: bottom complication showing the watch battery
          *
          * @param canvas            to draw to
          * @param data              of the complication
@@ -494,7 +498,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     ? data.getBurnInProtectionIcon() : data.getIcon();
             Icon image = data.getSmallImage();
 
-            float height = mCenterY / 4;
+            final float height = mCenterY / 4;
             float width = mCenterX * 1.2f;
             float maxWidth = width;
 
@@ -529,6 +533,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             } else if (icon != null) {
                 width += height;
             }
+
             boolean ellipsize = false;
 
             if (width > maxWidth) {
@@ -565,6 +570,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             if (image != null && !(mAmbient && mBurnInProtection)) {
                 Drawable drawable = image.loadDrawable(getApplicationContext());
+
                 if (drawable != null) {
                     if (mAmbient) {
                         drawable = convertToGrayscale(drawable);
@@ -581,9 +587,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 }
             } else if (icon != null) {
                 Drawable drawable = icon.loadDrawable(getApplicationContext());
+
                 if (drawable != null) {
                     drawable.setTint(mComplicationPrimaryLongTextPaint.getColor());
                     int size = (int) Math.round(0.15 * mCenterX);
+
                     drawable.setBounds(Math.round(tapBox.left + height / 2 - size / 2),
                             Math.round(tapBox.top + height / 2 - size / 2),
                             Math.round(tapBox.left + height / 2 + size / 2),
@@ -610,16 +618,16 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 textY = centerY - 4;
             }
 
-            canvas.drawText(
-                    ellipsize ? TextUtils.ellipsize(
-                            textText,
-                            mComplicationPrimaryLongTextPaint,
-                            textW,
-                            TextUtils.TruncateAt.END
-                    ).toString() : textText,
-                    textX,
-                    textY,
-                    mComplicationPrimaryLongTextPaint);
+            if (ellipsize) {
+                final String ellipseSizeText = TextUtils.ellipsize(
+                        textText,
+                        mComplicationPrimaryLongTextPaint,
+                        textW, TextUtils.TruncateAt.END)
+                        .toString();
+                canvas.drawText(ellipseSizeText, textX, textY, mComplicationPrimaryLongTextPaint);
+            } else {
+                canvas.drawText(textText, textX, textY, mComplicationPrimaryLongTextPaint);
+            }
         }
 
         /**
@@ -817,6 +825,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                     bitmap.getHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(output);
+
             final Paint paint = new Paint();
             final Rect rect = new Rect(0, 0, bitmap.getWidth(),
                     bitmap.getHeight());
@@ -827,7 +836,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
             canvas.drawBitmap(bitmap, rect, rect, paint);
-            return new BitmapDrawable(output);
+
+            return new BitmapDrawable(getApplicationContext().getResources(), output);
         }
 
         @Override
@@ -1109,7 +1119,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             final String numberOfTicks = mPrefs.getString("settings_number_ticks", "4");
             if (numberOfTicks.equals(getString(R.string.settings_number_ticks_default))) {
-                /**
+                /*
                  * This is a workaround for the pref not showing the correct default value upon a
                  * fresh install
                  */
@@ -1119,6 +1129,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             mShowMinuteTicks = mPrefs.getBoolean("settings_show_minute_ticks", false);
+            mClassicMode = mPrefs.getBoolean("settings_classic_mode", false);
 
             mPrefs = null;
         }
