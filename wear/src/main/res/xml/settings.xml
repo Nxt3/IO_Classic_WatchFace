@@ -195,14 +195,8 @@
             </Preference>
         </PreferenceCategory>
 
-        <!--Number of tick marks to show-->
+        <!--Misc background settings-->
         <PreferenceCategory android:title="@string/settings_misc_category">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="settings_classic_mode"
-                android:summary="@string/settings_classic_mode_summary"
-                android:title="@string/settings_classic_mode_title" />
-
             <ListPreference
                 android:defaultValue="4"
                 android:dialogTitle=""
@@ -212,6 +206,12 @@
                 android:negativeButtonText=""
                 android:summary="%s"
                 android:title="@string/settings_number_ticks_title" />
+
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="settings_classic_mode"
+                android:summary="@string/settings_classic_mode_summary"
+                android:title="@string/settings_classic_mode_title" />
 
             <SwitchPreference
                 android:defaultValue="false"

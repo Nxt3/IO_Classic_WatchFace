@@ -36,7 +36,8 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * Request codes for the color settings
@@ -48,6 +49,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private final int CIRCLE_AND_TICKS_COLOR_REQ = 14;
     private final int OUTER_CIRCLE_COLOR_REQ = 15;
     private final int COMPLICATION_COLOR_REQ = 16;
+
+    private boolean mClassicModeStatus;
 
     private ProviderInfoRetriever mProviderInfoRetriever;
 
@@ -81,18 +84,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mProviderInfoRetriever.release();
-    }
-
-    @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         Bundle extras = preference.getExtras();
         Intent intent;
 
         SharedPreferences.Editor editor = getPreferenceScreen().getSharedPreferences().edit();
-        
+
         final Context context = getContext();
 
         //Default colors
@@ -124,7 +121,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 intent.putExtra("color_values_id", R.array.color_values);
                 startActivityForResult(intent, COMPLICATION_COLOR_REQ);
                 break;
-            
+
             case "settings_hour_hand_color":
                 intent = new Intent(context, ColorActivity.class);
                 intent.putExtra("color",
@@ -186,7 +183,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 intent.putExtra("color_values_id", R.array.color_values);
                 startActivityForResult(intent, OUTER_CIRCLE_COLOR_REQ);
                 break;
-            
+
+            case "settings_classic_mode":
+                mClassicModeStatus = getPreferenceScreen().getSharedPreferences()
+                        .getBoolean("settings_classic_mode", false);
+                break;
+
             case "settings_reset_hand_colors":
                 editor.putString("settings_hour_hand_color", getString(R.string.settings_default_hands));
                 editor.putInt("settings_hour_hand_color_value", defaultHands);
@@ -230,7 +232,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         getString(R.string.settings_confirmation_background_reset),
                         Toast.LENGTH_SHORT).show();
                 break;
-            
+
             case "donation_1":
             case "donation_3":
             case "donation_5":
@@ -323,6 +325,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mProviderInfoRetriever.release();
+    }
+
     /**
      * Gets the SettingsActivity so that we can call donate()
      *
@@ -370,7 +378,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 setStyleIcon(preference, icon);
             }
 
-            onSharedPreferenceChanged(getPreferenceScreen().getSharedPreferences(), preference.getKey());
+            onSharedPreferenceChanged(getPreferenceScreen().getSharedPreferences(),
+                    preference.getKey());
         }
     }
 
@@ -395,11 +404,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
      * @param sharedPreferences to observe
      * @param key               of the pref that was altered
      */
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Preference preference = findPreference(key);
+        final Preference preference = findPreference(key);
 
         if (preference != null) {
-            Bundle extras = preference.getExtras();
+//            final Bundle extras = preference.getExtras();
 
             if (preference instanceof ListPreference) {
                 //Do nothing
@@ -433,7 +443,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
      * @param key of the setting to update its summary for
      */
     private void setSummary(String key) {
-        Preference preference = findPreference(key);
+        final Preference preference = findPreference(key);
 
         if (preference != null) {
             Bundle extras = preference.getExtras();
