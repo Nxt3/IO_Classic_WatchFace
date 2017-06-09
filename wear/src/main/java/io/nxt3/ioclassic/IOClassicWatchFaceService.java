@@ -307,10 +307,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             /*
               Offset/distance between the edge and the inner circle; bigger if the device
               has a flat tire.
-              If mClassicMode is true, then reduce the offset
+              If mClassicMode is true, then reduce the offset even further
              */
-            final float circleOffset = mHasFlatTire ? 38f
-                    : mClassicMode ? 3f : 24f;
+            final float circleOffset = mClassicMode ? 3f : (mHasFlatTire ? 38f : 24f);
 
             //draws outer circle
             canvas.drawColor(mOuterCircleColor);
@@ -1120,8 +1119,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final String numberOfTicks = mPrefs.getString("settings_number_ticks", "4");
             if (numberOfTicks.equals(getString(R.string.settings_number_ticks_default))) {
                 /*
-                 * This is a workaround for the pref not showing the correct default value upon a
-                 * fresh install
+                  This is a workaround for the pref not showing the correct default value upon a
+                  fresh install
                  */
                 mNumberTicks = 4;
             } else {

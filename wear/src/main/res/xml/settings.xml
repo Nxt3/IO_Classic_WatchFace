@@ -197,6 +197,12 @@
 
         <!--Number of tick marks to show-->
         <PreferenceCategory android:title="@string/settings_misc_category">
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="settings_classic_mode"
+                android:summary="@string/settings_classic_mode_summary"
+                android:title="@string/settings_classic_mode_title" />
+
             <ListPreference
                 android:defaultValue="4"
                 android:dialogTitle=""
@@ -229,13 +235,6 @@
     <!--android:name="icons"-->
     <!--android:value="notification_icons" />-->
     <!--</ListPreference>-->
-
-    <!--Classic Mode setting-->
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="settings_classic_mode"
-        android:summary="@string/settings_classic_mode_summary"
-        android:title="@string/settings_classic_mode_title" />
 
     <!--Reset settings-->
     <PreferenceScreen
