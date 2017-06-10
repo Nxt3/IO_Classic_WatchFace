@@ -61,10 +61,10 @@ public class SettingsFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.settings);
         updateAll();
 
-        //only enable the "Show hour labels" setting if Classic mode is enabled
+        //only enable the "Number of hour labels" setting if Classic mode is enabled
         mClassicModeStatus = getPreferenceScreen().getSharedPreferences()
                 .getBoolean("settings_classic_mode", false);
-        getPreferenceScreen().findPreference("settings_show_hour_labels")
+        getPreferenceScreen().findPreference("settings_number_hour_labels")
                 .setEnabled(mClassicModeStatus);
     }
 
@@ -194,9 +194,10 @@ public class SettingsFragment extends PreferenceFragment
                 //only enable the "Show hour labels" setting if Classic mode is enabled
                 mClassicModeStatus = getPreferenceScreen().getSharedPreferences()
                         .getBoolean("settings_classic_mode", false);
-                getPreferenceScreen().findPreference("settings_show_hour_labels")
-                        .setEnabled(mClassicModeStatus);
-                editor.putBoolean("settings_show_hour_labels", false).apply();
+
+                editor.putString("settings_number_hour_labels",
+                        getString(R.string.settings_number_hour_labels_default)).apply();
+                setSummary("settings_number_hour_labels");
                 break;
 
             case "settings_reset_hand_colors":
@@ -204,10 +205,10 @@ public class SettingsFragment extends PreferenceFragment
                 editor.putInt("settings_hour_hand_color_value", defaultHands);
 
                 editor.putString("settings_minute_hand_color", getString(R.string.settings_default_hands));
-                editor.putInt("settings_minute_hand_color_value", defaultHands).apply();
+                editor.putInt("settings_minute_hand_color_value", defaultHands);
 
                 editor.putString("settings_second_hand_color", getString(R.string.settings_default_seconds));
-                editor.putInt("settings_second_hand_color_value", defaultSeconds).apply();
+                editor.putInt("settings_second_hand_color_value", defaultSeconds);
 
                 editor.apply();
                 setSummary("settings_hour_hand_color");
@@ -418,10 +419,16 @@ public class SettingsFragment extends PreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         final Preference preference = findPreference(key);
 
+        //only enable the "Number of hour labels" setting if Classic mode is enabled
+        findPreference("settings_number_hour_labels").setEnabled(mClassicModeStatus);
+
         if (preference != null) {
 //            final Bundle extras = preference.getExtras();
 
             if (preference instanceof ListPreference) {
+                if (preference.getKey().equals("settings_number_hour_labels")) {
+                    setSummary(key);
+                }
                 //Do nothing
                 //TODO, for when we want to handle notification icons
 //                String name = extras.getString("icons");

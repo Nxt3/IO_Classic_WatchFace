@@ -54,13 +54,10 @@
     <!--Tick marks setting-->
     <string name="settings_number_ticks_title">Number of hour tick marks</string>
     <string name="settings_number_ticks_default">Default &#40;4&#41;</string>
-    <string name="settings_number_ticks_0">None</string>
-    <string name="settings_number_ticks_6">6</string>
-    <string name="settings_number_ticks_12">12</string>
     <string name="settings_show_minute_ticks_title">Show minute tick marks</string>
 
-    <!--Tick mark numbers-->
-    <string name="settings_0">0</string>
+    <!--Number selections for hour tick marks and number of hour labels-->
+    <string name="settings_none">None</string>
     <string name="settings_4">4</string>
     <string name="settings_6">6</string>
     <string name="settings_12">12</string>
@@ -68,8 +65,10 @@
     <!--Classic watch face mode-->
     <string name="settings_classic_mode_title">Classic mode</string>
     <string name="settings_classic_mode_summary">Full size tick mark circle</string>
-    <string name="settings_show_hour_labels_title">Show hour tick mark labels</string>
-    <string name="settings_show_hour_labels_summary">Classic mode must be enabled</string>
+
+    <!--Number of hour labels-->
+    <string name="settings_number_hour_labels_title">Number of hour labels</string>
+    <string name="settings_number_hour_labels_default">Default &#40;0&#41;</string>
 
     <!--Donations-->
     <string name="settings_donate">Donate</string>

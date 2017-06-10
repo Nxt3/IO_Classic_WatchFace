@@ -213,11 +213,15 @@
                 android:summary="@string/settings_classic_mode_summary"
                 android:title="@string/settings_classic_mode_title" />
 
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="settings_show_hour_labels"
-                android:summary="@string/settings_show_hour_labels_summary"
-                android:title="@string/settings_show_hour_labels_title" />
+            <ListPreference
+                android:defaultValue="0"
+                android:dialogTitle=""
+                android:entries="@array/number_hour_labels_items"
+                android:entryValues="@array/number_hour_labels_values"
+                android:key="settings_number_hour_labels"
+                android:negativeButtonText=""
+                android:summary="%s"
+                android:title="@string/settings_number_hour_labels_title" />
 
             <SwitchPreference
                 android:defaultValue="false"

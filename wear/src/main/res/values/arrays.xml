@@ -137,13 +137,28 @@
         <item>@color/white</item>
     </array>
 
+    <!--Number of hour tick marks to show-->
     <string-array name="number_ticks_items">
-        <item>@string/settings_number_ticks_0</item>
+        <item>@string/settings_none</item>
         <item>@string/settings_number_ticks_default</item>
-        <item>@string/settings_number_ticks_6</item>
-        <item>@string/settings_number_ticks_12</item>
+        <item>@string/settings_6</item>
+        <item>@string/settings_12</item>
     </string-array>
     <string-array name="number_ticks_values">
+        <item>0</item>
+        <item>4</item>
+        <item>6</item>
+        <item>12</item>
+    </string-array>
+
+    <!--Number of hour labels to show-->
+    <string-array name="number_hour_labels_items">
+        <item>@string/settings_number_hour_labels_default</item>
+        <item>@string/settings_4</item>
+        <item>@string/settings_6</item>
+        <item>@string/settings_12</item>
+    </string-array>
+    <string-array name="number_hour_labels_values">
         <item>0</item>
         <item>4</item>
         <item>6</item>

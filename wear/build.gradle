@@ -29,6 +29,8 @@ dependencies {
     provided 'com.google.android.wearable:wearable:2.0.2'
     compile 'com.google.android.support:wearable:2.0.2'
 
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:preference-v7:25.3.1'
     compile 'com.google.android.gms:play-services-wearable:10.2.6'
     compile 'com.anjlab.android.iab.v3:library:1.0.+'
 }

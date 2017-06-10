@@ -144,10 +144,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         //Other settings
         private boolean mComplicationBorder;
         private boolean mShowSecondHand;
-        private int mNumberTicks;
+        private int mNumberHourTicks;
         private boolean mShowMinuteTicks;
         private boolean mClassicMode;
-        private boolean mShowHourLabels;
+        private int mNumberHourLabels;
 
 
         /**
@@ -339,8 +339,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final float outerTickRadius = mCenterX - circleOffset - 1;
 
             //draw hour tick marks
-            for (int tickIndex = 0; tickIndex < mNumberTicks; tickIndex++) {
-                final float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberTicks);
+            for (int tickIndex = 0; tickIndex < mNumberHourTicks; tickIndex++) {
+                final float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberHourTicks);
 
                 final float innerX = (float) Math.sin(tickRotation) * innerHourTickRadius;
                 final float innerY = (float) -Math.cos(tickRotation) * innerHourTickRadius;
@@ -365,21 +365,18 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             //draws hour text labels
-            for (int hourIndex = 0; hourIndex < 12 && mShowHourLabels; hourIndex++) {
-                //if (mNumberTicks == 0), default to showing 12 hour labels
-                final int numberOfTicks = (mNumberTicks == 0) ? 12 : mNumberTicks;
-
-                final float tickRotation = (float) (hourIndex * Math.PI * 2 / numberOfTicks);
+            for (int hourIndex = 0; hourIndex < mNumberHourLabels; hourIndex++) {
+                final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberHourLabels);
 
                 final float textOffset = 19; //offset from the hour tick marks
                 final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
                 final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
 
-                final int multiplyOffset = 12 / numberOfTicks;
+                final int multiplyOffset = 12 / mNumberHourLabels;
                 final int hourLabelNumber = (hourIndex == 0) ? 12 : hourIndex * multiplyOffset;
                 final String hourLabelString = getHourLabel(hourLabelNumber);
 
-                if (hourIndex / numberOfTicks == 0) {
+                if (hourIndex / mNumberHourLabels == 0) {
                     canvas.drawText(hourLabelString,
                             mCenterX + x,
                             mCenterY + y
@@ -1154,20 +1151,34 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = mPrefs.getBoolean("settings_show_second_hand", true);
 
-            final String numberOfTicks = mPrefs.getString("settings_number_ticks", getString(R.string.hour_label_4));
-            if (numberOfTicks.equals(getString(R.string.settings_number_ticks_default))) {
+            final String numberHourTicks = mPrefs.getString("settings_number_ticks",
+                    getString(R.string.settings_number_ticks_default));
+            Log.d(TAG, "numberHourTicks: " + numberHourTicks);
+            if (numberHourTicks.equals(getString(R.string.settings_number_ticks_default))) {
                 /*
                   This is a workaround for the pref not showing the correct default value upon a
                   fresh install
                  */
-                mNumberTicks = 4;
+                mNumberHourTicks = 4;
             } else {
-                mNumberTicks = Integer.parseInt(numberOfTicks);
+                mNumberHourTicks = Integer.parseInt(numberHourTicks);
             }
 
             mShowMinuteTicks = mPrefs.getBoolean("settings_show_minute_ticks", false);
             mClassicMode = mPrefs.getBoolean("settings_classic_mode", false);
-            mShowHourLabels = mPrefs.getBoolean("settings_show_hour_labels", false);
+
+            final String numberHourLabels = mPrefs.getString("settings_number_hour_labels",
+                    getString(R.string.settings_number_hour_labels_default));
+            Log.d(TAG, "numberOfHourLabels: " + numberHourLabels);
+            if (numberHourLabels.equals(getString(R.string.settings_number_hour_labels_default))) {
+                /*
+                  This is a workaround for the pref not showing the correct default value upon a
+                  fresh install
+                 */
+                mNumberHourLabels = 0;
+            } else {
+                mNumberHourLabels = Integer.parseInt(numberHourLabels);
+            }
 
             mPrefs = null;
         }
