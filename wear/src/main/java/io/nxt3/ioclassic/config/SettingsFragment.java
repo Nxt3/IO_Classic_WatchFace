@@ -48,6 +48,7 @@ public class SettingsFragment extends PreferenceFragment
     private final int CIRCLE_AND_TICKS_COLOR_REQ = 14;
     private final int OUTER_CIRCLE_COLOR_REQ = 15;
     private final int COMPLICATION_COLOR_REQ = 16;
+    private final int HOUR_LABELS_COLOR_REQ = 17;
 
     private boolean mClassicModeStatus;
     private String mNumberHourLabels;
@@ -224,6 +225,17 @@ public class SettingsFragment extends PreferenceFragment
                 }
                 break;
 
+            case "settings_hour_labels_color":
+                intent = new Intent(context, ColorActivity.class);
+                intent.putExtra("color",
+                        getPreferenceScreen().getSharedPreferences()
+                                .getInt("settings_hour_labels_color_value",
+                                        defaultOuter));
+                intent.putExtra("color_names_id", R.array.color_names);
+                intent.putExtra("color_values_id", R.array.color_values);
+                startActivityForResult(intent, HOUR_LABELS_COLOR_REQ);
+                break;
+
             case "settings_reset_hand_colors":
                 editor.putString("settings_hour_hand_color", getString(R.string.settings_default_hands));
                 editor.putInt("settings_hour_hand_color_value", defaultHands);
@@ -245,23 +257,32 @@ public class SettingsFragment extends PreferenceFragment
                 break;
 
             case "settings_reset_background_colors":
-                editor.putString("settings_center_circle_color", getString(R.string.settings_default_center_circle));
+                editor.putString("settings_center_circle_color",
+                        getString(R.string.settings_default_center_circle));
                 editor.putInt("settings_center_circle_color_value", defaultCenter);
 
-                editor.putString("settings_circle_ticks_color", getString(R.string.settings_default_hands));
+                editor.putString("settings_circle_ticks_color",
+                        getString(R.string.settings_default_hands));
                 editor.putInt("settings_circle_ticks_color_value", defaultHands);
 
-                editor.putString("settings_outer_circle_color", getString(R.string.settings_default_outer_circle));
+                editor.putString("settings_outer_circle_color",
+                        getString(R.string.settings_default_outer_circle));
                 editor.putInt("settings_outer_circle_color_value", defaultOuter);
 
-                editor.putString("settings_complication_color", getString(R.string.settings_default_hands));
+                editor.putString("settings_complication_color",
+                        getString(R.string.settings_default_hands));
                 editor.putInt("settings_complication_color_value", defaultHands);
+
+                editor.putString("settings_hour_labels_color",
+                        getString(R.string.settings_default_hands));
+                editor.putInt("settings_hour_labels_color_value", defaultHands);
 
                 editor.apply();
                 setSummary("settings_center_circle_color");
                 setSummary("settings_circle_ticks_color");
                 setSummary("settings_outer_circle_color");
                 setSummary("settings_complication_color");
+                setSummary("settings_hour_labels_color");
 
                 Toast.makeText(context,
                         getString(R.string.settings_confirmation_background_reset),
@@ -295,50 +316,73 @@ public class SettingsFragment extends PreferenceFragment
                     break;
 
                 case HOUR_HAND_COLOR_REQ:
-                    editor.putString("settings_hour_hand_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_hour_hand_color_value", data.getIntExtra("color_value", 0));
+                    editor.putString("settings_hour_hand_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_hour_hand_color_value",
+                            data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_hour_hand_color");
                     break;
 
                 case MINUTE_HAND_COLOR_REQ:
-                    editor.putString("settings_minute_hand_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_minute_hand_color_value", data.getIntExtra("color_value", 0));
+                    editor.putString("settings_minute_hand_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_minute_hand_color_value",
+                            data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_minute_hand_color");
                     break;
 
                 case SECOND_HAND_COLOR_REQ:
-                    editor.putString("settings_second_hand_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_second_hand_color_value", data.getIntExtra("color_value", 0));
+                    editor.putString("settings_second_hand_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_second_hand_color_value",
+                            data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_second_hand_color");
                     break;
 
                 case CENTER_CIRCLE_COLOR_REQ:
-                    editor.putString("settings_center_circle_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_center_circle_color_value", data.getIntExtra("color_value", 0));
+                    editor.putString("settings_center_circle_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_center_circle_color_value",
+                            data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_center_circle_color");
                     break;
 
                 case CIRCLE_AND_TICKS_COLOR_REQ:
-                    editor.putString("settings_circle_ticks_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_circle_ticks_color_value", data.getIntExtra("color_value", 0));
+                    editor.putString("settings_circle_ticks_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_circle_ticks_color_value",
+                            data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_circle_ticks_color");
                     break;
 
                 case OUTER_CIRCLE_COLOR_REQ:
-                    editor.putString("settings_outer_circle_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_outer_circle_color_value", data.getIntExtra("color_value", 0));
+                    editor.putString("settings_outer_circle_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_outer_circle_color_value",
+                            data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_outer_circle_color");
                     break;
 
+                case HOUR_LABELS_COLOR_REQ:
+                    editor.putString("settings_hour_labels_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_hour_labels_color_value",
+                            data.getIntExtra("color_value", 0));
+                    editor.apply();
+                    setSummary("settings_hour_labels_color");
+                    break;
+
                 case COMPLICATION_COLOR_REQ:
-                    editor.putString("settings_complication_color", data.getStringExtra("color_name"));
-                    editor.putInt("settings_complication_color_value", data.getIntExtra("color_value", 0));
+                    editor.putString("settings_complication_color",
+                            data.getStringExtra("color_name"));
+                    editor.putInt("settings_complication_color_value",
+                            data.getIntExtra("color_value", 0));
                     editor.apply();
                     setSummary("settings_complication_color");
                     break;

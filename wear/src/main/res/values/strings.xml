@@ -69,7 +69,7 @@
 
     <!--Number of hour labels-->
     <string name="settings_number_hour_labels_title">Number of hour labels</string>
-    <string name="settings_must_enable_classic_mode">You must enable Classic mode to change this setting</string>
+    <string name="settings_hour_labels_color_title">Hour label color</string>
 
     <!--Donations-->
     <string name="settings_donate">Donate</string>

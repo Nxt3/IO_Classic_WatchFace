@@ -107,6 +107,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private int mCenterCircleColor;
         private int mCircleAndTickColor;
         private int mOuterCircleColor;
+        private int mHourLabelsColor;
 
         //Paint objects for each component
         private Paint mHourPaint;
@@ -204,7 +205,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mHourLabelFont = Typeface.create("sans-serif-medium", Typeface.NORMAL);
             mHourLabelTextPaint = new TextPaint();
-            mHourLabelTextPaint.setColor(Color.WHITE);
+            mHourLabelTextPaint.setColor(mHourLabelsColor);
             mHourLabelTextPaint.setTextAlign(Paint.Align.CENTER);
             mHourLabelTextPaint.setTypeface(mHourLabelFont);
             mHourLabelTextPaint.setAntiAlias(true);
@@ -1037,6 +1038,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setColor(Color.WHITE);
                 mCircleAndTickPaint.setStrokeWidth(THIN_STROKE);
 
+                mHourLabelTextPaint.setColor(Color.WHITE);
+                mHourLabelTextPaint.setTypeface(mAmbientFont);
+
                 mMinuteTickPaint.setColor(Color.WHITE);
 
                 mComplicationCirclePaint.setColor(Color.WHITE);
@@ -1059,6 +1063,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mMinutePaint.setAntiAlias(false);
                     mCircleAndTickPaint.setAntiAlias(false);
                     mMinuteTickPaint.setAntiAlias(false);
+
+                    mHourLabelTextPaint.setAntiAlias(false);
 
                     mComplicationCirclePaint.setAntiAlias(false);
                     mComplicationPrimaryLongTextPaint.setAntiAlias(false);
@@ -1087,6 +1093,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mCircleAndTickPaint.setColor(mCircleAndTickColor);
                 mCircleAndTickPaint.setStrokeWidth(THICK_STROKE);
 
+                mHourLabelTextPaint.setColor(mHourLabelsColor);
+                mHourLabelTextPaint.setTypeface(mHourLabelFont);
+
                 mMinuteTickPaint.setColor(mCircleAndTickColor);
 
                 mComplicationCirclePaint.setColor(mQuaternaryColor);
@@ -1108,6 +1117,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mMinutePaint.setAntiAlias(true);
                     mCircleAndTickPaint.setAntiAlias(true);
                     mMinuteTickPaint.setAntiAlias(true);
+
+                    mHourLabelTextPaint.setAntiAlias(true);
 
                     mComplicationPrimaryLongTextPaint.setAntiAlias(true);
                     mComplicationPrimaryTextPaint.setAntiAlias(true);
@@ -1139,6 +1150,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mCenterCircleColor = mPrefs.getInt("settings_center_circle_color_value", defaultCenter);
             mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value", defaultHands);
             mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value", defaultOuter);
+            mHourLabelsColor = mPrefs.getInt("settings_hour_labels_color_value", defaultHands);
 
             //Complication colors
             mComplicationColor = mPrefs.getInt("settings_complication_color_value", defaultHands);

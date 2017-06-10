@@ -63,25 +63,6 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <!--<SwitchPreference-->
-    <!--android:defaultValue="false"-->
-    <!--android:key="settings_ambient"-->
-    <!--android:summaryOff="@string/settings_grayscale"-->
-    <!--android:summaryOn="@string/settings_color"-->
-    <!--android:title="@string/settings_ambient" />-->
-
-    <!--TODO, use for different styles (i.e. with digital time, w/o digital time, etc.)-->
-    <!--<ListPreference-->
-    <!--android:defaultValue="0"-->
-    <!--android:dialogTitle=""-->
-    <!--android:entries="@array/style_items"-->
-    <!--android:entryValues="@array/style_values"-->
-    <!--android:icon="@drawable/ic_style_black_24dp"-->
-    <!--android:key="settings_style"-->
-    <!--android:negativeButtonText=""-->
-    <!--android:summary="%s"-->
-    <!--android:title="Style" />-->
-
     <!--Hand colors-->
     <PreferenceScreen
         android:icon="@drawable/ic_color_lens_black_24dp"
@@ -128,29 +109,6 @@
                 android:key="settings_show_second_hand"
                 android:title="@string/settings_show_second_hand" />
         </PreferenceCategory>
-
-        <!--Colors for when Ambient mode is activated-->
-        <!--<PreferenceCategory android:title="Ambient">-->
-        <!--<Preference-->
-        <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
-        <!--android:key="settings_ambient_color_name"-->
-        <!--android:summary="%s"-->
-        <!--android:title="Primary Color">-->
-        <!--<extra-->
-        <!--android:name="default"-->
-        <!--android:value="Cyan" />-->
-        <!--</Preference>-->
-
-        <!--<Preference-->
-        <!--android:icon="@drawable/ic_color_lens_black_24dp"-->
-        <!--android:key="settings_ambient_accent_color_name"-->
-        <!--android:summary="%s"-->
-        <!--android:title="Accent color">-->
-        <!--<extra-->
-        <!--android:name="default"-->
-        <!--android:value="White" />-->
-        <!--</Preference>-->
-        <!--</PreferenceCategory>-->
     </PreferenceScreen>
 
     <!--Background colors-->
@@ -227,6 +185,16 @@
                 android:negativeButtonText=""
                 android:summary="%s"
                 android:title="@string/settings_number_hour_labels_title" />
+
+            <Preference
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:key="settings_hour_labels_color"
+                android:summary="%s"
+                android:title="@string/settings_hour_labels_color_title">
+                <extra
+                    android:name="default"
+                    android:value="@string/settings_default_hands" />
+            </Preference>
         </PreferenceCategory>
     </PreferenceScreen>
 
