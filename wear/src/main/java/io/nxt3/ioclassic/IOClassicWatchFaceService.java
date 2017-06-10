@@ -334,7 +334,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             //if mShowMinuteTicks, make the hour ticks slightly longer
             final float innerHourTickRadius = mShowMinuteTicks
-                    ? innerTickRadius - 2.75f : innerTickRadius;
+                    ? innerTickRadius - 2.50f : innerTickRadius;
 
             //used as the stopping point for drawing the ticks
             final float outerTickRadius = mCenterX - circleOffset - 1;
@@ -369,7 +369,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             for (int hourIndex = 0; hourIndex < mNumberHourLabels; hourIndex++) {
                 final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberHourLabels);
 
-                final float textOffset = 19; //offset from the hour tick marks
+                final float textOffset = 22; //offset from the hour tick marks
                 final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
                 final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
 

@@ -51,7 +51,7 @@ public class SettingsFragment extends PreferenceFragment
     private final int HOUR_LABELS_COLOR_REQ = 17;
 
     private boolean mClassicModeStatus;
-    private String mNumberHourLabels;
+    private String mNumberHourLabels = "";
 
     private ProviderInfoRetriever mProviderInfoRetriever;
 
