@@ -21,8 +21,8 @@ public class SettingsActivity  extends PreferenceActivity implements BillingProc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SettingsFragment settingsPreferenceFragment = new SettingsFragment();
-        getFragmentManager().beginTransaction().replace(android.R.id.content, settingsPreferenceFragment).commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
+                new SettingsFragment()).commit();
 
         mBillingProcessor = new BillingProcessor(this, null, this);
         mBillingProcessor.loadOwnedPurchasesFromGoogle();

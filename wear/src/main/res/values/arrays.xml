@@ -153,7 +153,7 @@
 
     <!--Number of hour labels to show-->
     <string-array name="number_hour_labels_items">
-        <item>@string/settings_number_hour_labels_default</item>
+        <item>@string/settings_none</item>
         <item>@string/settings_4</item>
         <item>@string/settings_6</item>
         <item>@string/settings_12</item>

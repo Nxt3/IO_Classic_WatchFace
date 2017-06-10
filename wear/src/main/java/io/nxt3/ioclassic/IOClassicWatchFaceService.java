@@ -1153,7 +1153,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             final String numberHourTicks = mPrefs.getString("settings_number_ticks",
                     getString(R.string.settings_number_ticks_default));
-            Log.d(TAG, "numberHourTicks: " + numberHourTicks);
             if (numberHourTicks.equals(getString(R.string.settings_number_ticks_default))) {
                 /*
                   This is a workaround for the pref not showing the correct default value upon a
@@ -1168,9 +1167,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mClassicMode = mPrefs.getBoolean("settings_classic_mode", false);
 
             final String numberHourLabels = mPrefs.getString("settings_number_hour_labels",
-                    getString(R.string.settings_number_hour_labels_default));
-            Log.d(TAG, "numberOfHourLabels: " + numberHourLabels);
-            if (numberHourLabels.equals(getString(R.string.settings_number_hour_labels_default))) {
+                    getString(R.string.settings_none));
+            if (numberHourLabels.equals(getString(R.string.settings_none))) {
                 /*
                   This is a workaround for the pref not showing the correct default value upon a
                   fresh install

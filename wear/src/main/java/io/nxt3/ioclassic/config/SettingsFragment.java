@@ -23,6 +23,7 @@ import android.support.wearable.complications.ComplicationHelperActivity;
 import android.support.wearable.complications.ComplicationProviderInfo;
 import android.support.wearable.complications.ProviderChooserIntent;
 import android.support.wearable.complications.ProviderInfoRetriever;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ import static android.app.Activity.RESULT_OK;
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private final String TAG = "Settings";
+
     /**
      * Request codes for the color settings
      */
@@ -51,6 +54,7 @@ public class SettingsFragment extends PreferenceFragment
     private final int COMPLICATION_COLOR_REQ = 16;
 
     private boolean mClassicModeStatus;
+    private String mNumberHourLabels;
 
     private ProviderInfoRetriever mProviderInfoRetriever;
 
@@ -66,6 +70,11 @@ public class SettingsFragment extends PreferenceFragment
                 .getBoolean("settings_classic_mode", false);
         getPreferenceScreen().findPreference("settings_number_hour_labels")
                 .setEnabled(mClassicModeStatus);
+
+        //Get the setting to reset to if the user toggles "Classic mode" in the same session
+        mNumberHourLabels = getPreferenceScreen().getSharedPreferences()
+                .getString("settings_number_hour_labels",
+                        getString(R.string.settings_0));
     }
 
     @Override
@@ -194,10 +203,32 @@ public class SettingsFragment extends PreferenceFragment
                 //only enable the "Show hour labels" setting if Classic mode is enabled
                 mClassicModeStatus = getPreferenceScreen().getSharedPreferences()
                         .getBoolean("settings_classic_mode", false);
+                findPreference("settings_number_hour_labels").setEnabled(mClassicModeStatus);
 
-                editor.putString("settings_number_hour_labels",
-                        getString(R.string.settings_number_hour_labels_default)).apply();
-                setSummary("settings_number_hour_labels");
+                if (!mClassicModeStatus) {
+                    mNumberHourLabels = getPreferenceScreen().getSharedPreferences()
+                            .getString("settings_number_hour_labels",
+                                    getString(R.string.settings_0));
+
+                    boolean result = editor.remove("settings_number_hour_labels").commit();
+                    if (result) {
+                        editor.putString("settings_number_hour_labels",
+                                getString(R.string.settings_0)).commit();
+                    }
+                } else {
+                    if (!mNumberHourLabels
+                            .equals(getString(R.string.settings_0))) {
+                        editor.putString("settings_number_hour_labels", mNumberHourLabels).commit();
+                    }
+                }
+                break;
+
+            case "settings_number_hour_labels":
+                if (!findPreference("settings_number_hour_labels").isEnabled()) {
+                    Toast.makeText(context,
+                            getString(R.string.settings_must_enable_classic_mode),
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case "settings_reset_hand_colors":
@@ -419,17 +450,10 @@ public class SettingsFragment extends PreferenceFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         final Preference preference = findPreference(key);
 
-        //only enable the "Number of hour labels" setting if Classic mode is enabled
-        findPreference("settings_number_hour_labels").setEnabled(mClassicModeStatus);
-
         if (preference != null) {
 //            final Bundle extras = preference.getExtras();
 
             if (preference instanceof ListPreference) {
-                if (preference.getKey().equals("settings_number_hour_labels")) {
-                    setSummary(key);
-                }
-                //Do nothing
                 //TODO, for when we want to handle notification icons
 //                String name = extras.getString("icons");
 //
@@ -445,7 +469,6 @@ public class SettingsFragment extends PreferenceFragment
 //                            setStyleIcon(preference, getResources().getDrawable(icons.getResourceId(x, 0)));
 //                        }
 //                    }
-//
 //                    icons.recycle();
 //                }
             } else if (preference.getSummary() != null && preference.getSummary().equals("%s")) {
@@ -466,7 +489,15 @@ public class SettingsFragment extends PreferenceFragment
             Bundle extras = preference.getExtras();
 
             String def = extras.getString("default");
-            String value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(key, def);
+
+            if (preference.getKey().equals("settings_number_hour_labels")) {
+                def = getString(R.string.settings_none);
+            }
+
+            String value = PreferenceManager
+                    .getDefaultSharedPreferences(getContext()).getString(key, def);
+
+            Log.d(TAG, "default: " + def + "; (key,value): " + "(" + key + ", " + value + ")");
 
             preference.setSummary(value);
         }
