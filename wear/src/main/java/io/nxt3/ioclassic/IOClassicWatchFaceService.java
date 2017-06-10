@@ -37,6 +37,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
@@ -369,7 +370,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             for (int hourIndex = 0; hourIndex < mNumberHourLabels; hourIndex++) {
                 final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberHourLabels);
 
-                final float textOffset = 22; //offset from the hour tick marks
+                final float textOffset = dpToPx(12); //offset from the hour tick marks
                 final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
                 final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
 
@@ -1272,6 +1273,16 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          */
         private boolean shouldTimerBeRunning() {
             return isVisible() && !mAmbient;
+        }
+
+        /**
+         * Converts density pixels to pixels
+         * @param dp desired density pixels
+         * @return converted dp to pixels
+         */
+        private float dpToPx(final int dp) {
+            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                    getResources().getDisplayMetrics());
         }
 
         /**
