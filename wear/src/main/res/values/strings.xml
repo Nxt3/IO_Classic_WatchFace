@@ -65,7 +65,7 @@
 
     <!--Classic watch face mode-->
     <string name="settings_classic_mode_title">Classic mode</string>
-    <string name="settings_classic_mode_summary">Full size tick mark circle</string>
+    <string name="settings_classic_mode_summary">More traditional style &#38; allows setting hour labels</string>
 
     <!--Number of hour labels-->
     <string name="settings_number_hour_labels_title">Number of hour labels</string>

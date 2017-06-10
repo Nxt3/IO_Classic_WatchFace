@@ -1,7 +1,6 @@
 package io.nxt3.ioclassic.config;
 
 
-import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +22,6 @@ import android.support.wearable.complications.ComplicationHelperActivity;
 import android.support.wearable.complications.ComplicationProviderInfo;
 import android.support.wearable.complications.ProviderChooserIntent;
 import android.support.wearable.complications.ProviderInfoRetriever;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,9 +32,7 @@ import io.nxt3.ioclassic.R;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -205,13 +201,18 @@ public class SettingsFragment extends PreferenceFragment
                         .getBoolean("settings_classic_mode", false);
                 findPreference("settings_number_hour_labels").setEnabled(mClassicModeStatus);
 
+                /**
+                 * This will all handle a user toggling "Classic mode" in the same session.
+                 * Instead of losing the value for settings_number_hour_labels, we retain
+                 * it and restore it if necessary. This helps make the UI look responsive af.
+                 */
                 if (!mClassicModeStatus) {
                     mNumberHourLabels = getPreferenceScreen().getSharedPreferences()
                             .getString("settings_number_hour_labels",
                                     getString(R.string.settings_0));
 
-                    boolean result = editor.remove("settings_number_hour_labels").commit();
-                    if (result) {
+                    boolean committed = editor.remove("settings_number_hour_labels").commit();
+                    if (committed) {
                         editor.putString("settings_number_hour_labels",
                                 getString(R.string.settings_0)).commit();
                     }
@@ -220,14 +221,6 @@ public class SettingsFragment extends PreferenceFragment
                             .equals(getString(R.string.settings_0))) {
                         editor.putString("settings_number_hour_labels", mNumberHourLabels).commit();
                     }
-                }
-                break;
-
-            case "settings_number_hour_labels":
-                if (!findPreference("settings_number_hour_labels").isEnabled()) {
-                    Toast.makeText(context,
-                            getString(R.string.settings_must_enable_classic_mode),
-                            Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -488,16 +481,10 @@ public class SettingsFragment extends PreferenceFragment
         if (preference != null) {
             Bundle extras = preference.getExtras();
 
-            String def = extras.getString("default");
-
-            if (preference.getKey().equals("settings_number_hour_labels")) {
-                def = getString(R.string.settings_none);
-            }
+            String defaultValue = extras.getString("default");
 
             String value = PreferenceManager
-                    .getDefaultSharedPreferences(getContext()).getString(key, def);
-
-            Log.d(TAG, "default: " + def + "; (key,value): " + "(" + key + ", " + value + ")");
+                    .getDefaultSharedPreferences(getContext()).getString(key, defaultValue);
 
             preference.setSummary(value);
         }
