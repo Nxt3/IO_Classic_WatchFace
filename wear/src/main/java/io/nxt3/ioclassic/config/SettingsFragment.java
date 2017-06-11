@@ -121,7 +121,8 @@ public class SettingsFragment extends PreferenceFragment
                                 context,
                                 new ComponentName(context.getApplicationContext(),
                                         IOClassicWatchFaceService.class),
-                                id, IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES[id]), id);
+                                id,
+                                IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES[id]), id);
                 break;
 
             case "settings_complication_color":
@@ -202,10 +203,10 @@ public class SettingsFragment extends PreferenceFragment
                         .getBoolean("settings_classic_mode", false);
                 findPreference("settings_number_hour_labels").setEnabled(mClassicModeStatus);
 
-                /**
-                 * This will all handle a user toggling "Classic mode" in the same session.
-                 * Instead of losing the value for settings_number_hour_labels, we retain
-                 * it and restore it if necessary. This helps make the UI look responsive af.
+                /*
+                  This will all handle a user toggling "Classic mode" in the same session.
+                  Instead of losing the value for settings_number_hour_labels, we retain
+                  it and restore it if necessary. This helps make the UI look responsive af.
                  */
                 if (!mClassicModeStatus) {
                     mNumberHourLabels = getPreferenceScreen().getSharedPreferences()
@@ -312,7 +313,8 @@ public class SettingsFragment extends PreferenceFragment
                 case 1:
                 case 2:
                 case 3:
-                    setComplicationSummary(requestCode, data.getParcelableExtra(ProviderChooserIntent.EXTRA_PROVIDER_INFO));
+                    setComplicationSummary(requestCode,
+                            data.getParcelableExtra(ProviderChooserIntent.EXTRA_PROVIDER_INFO));
                     break;
 
                 case HOUR_HAND_COLOR_REQ:
@@ -560,10 +562,10 @@ public class SettingsFragment extends PreferenceFragment
                 return;
         }
 
-        Preference preference = findPreference(key);
+        final Preference preference = findPreference(key);
 
         if (preference != null) {
-            final String providerName = providerInfo != null
+            final String providerName = (providerInfo != null)
                     ? providerInfo.providerName : getString(R.string.settings_empty);
             preference.setSummary(providerName);
         }

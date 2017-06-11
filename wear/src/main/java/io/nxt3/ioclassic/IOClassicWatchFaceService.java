@@ -47,16 +47,20 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class IOClassicWatchFaceService extends CanvasWatchFaceService {
-    private static final String TAG = "IOClassic";
+    private final String TAG = "IOClassic";
     //Update rate in milliseconds for interactive mode. We update once a second to advance the second hand.
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
     //Left/Right dial support types
     public static final int[][] COMPLICATION_SUPPORTED_TYPES = {
-            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_LONG_TEXT, ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON}
+            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
+                    ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
+                    ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
+                    ComplicationData.TYPE_ICON},
+            {ComplicationData.TYPE_LONG_TEXT, ComplicationData.TYPE_SHORT_TEXT,
+                    ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON}
     };
     private static final int TOP_DIAL_COMPLICATION = 0;
     private static final int LEFT_DIAL_COMPLICATION = 1;
@@ -404,7 +408,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * @param centerX           x coordinate of the center
          * @param centerY           y coordinate of the center
          */
-        private void drawComplication(Canvas canvas, long currentTimeMillis, int id, float centerX, float centerY) {
+        private void drawComplication(Canvas canvas, long currentTimeMillis, int id, float centerX,
+                                      float centerY) {
             ComplicationData complicationData = mActiveComplicationDataSparseArray.get(id);
 
             if ((complicationData != null) && (complicationData.isActive(currentTimeMillis))) {
