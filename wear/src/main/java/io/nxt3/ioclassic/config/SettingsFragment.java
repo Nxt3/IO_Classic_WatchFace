@@ -219,8 +219,7 @@ public class SettingsFragment extends PreferenceFragment
                                 getString(R.string.settings_0)).commit();
                     }
                 } else {
-                    if (!mNumberHourLabels
-                            .equals(getString(R.string.settings_0))) {
+                    if (!mNumberHourLabels.equals(getString(R.string.settings_0))) {
                         editor.putString("settings_number_hour_labels", mNumberHourLabels).commit();
                     }
                 }
