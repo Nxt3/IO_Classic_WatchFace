@@ -81,7 +81,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private final int MSG_UPDATE_TIME = 0;
         private final float TWO_PI = (float) Math.PI * 2f;
         private final float THICK_STROKE = 7f;
-        private final float THIN_STROKE = 2f;
+        private final float MINUTE_TICK_STROKE = 2f;
+        private final float SECOND_HAND_STROKE = 3f;
+        private final float AMBIENT_STROKE = 2f;
 
         //Used for managing the time
         private Calendar mCalendar;
@@ -197,7 +199,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mMinuteTickPaint = new Paint();
             mMinuteTickPaint.setColor(mCircleAndTickColor);
             mMinuteTickPaint.setStyle(Paint.Style.STROKE);
-            mMinuteTickPaint.setStrokeWidth(THIN_STROKE);
+            mMinuteTickPaint.setStrokeWidth(MINUTE_TICK_STROKE);
             mMinuteTickPaint.setAntiAlias(true);
 
             mOuterBackgroundPaint = new Paint();
@@ -273,7 +275,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mSecondPaint = new Paint();
                 mSecondPaint.setColor(mSecondHandColor);
                 mSecondPaint.setStyle(Paint.Style.STROKE);
-                mSecondPaint.setStrokeWidth(THIN_STROKE);
+                mSecondPaint.setStrokeWidth(SECOND_HAND_STROKE);
                 mSecondPaint.setAntiAlias(true);
             }
         }
@@ -370,7 +372,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             for (int hourIndex = 0; hourIndex < mNumberHourLabels; hourIndex++) {
                 final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberHourLabels);
 
-                final float textOffset = dpToPx(12); //offset from the hour tick marks
+                final float textOffset = dpToPx(13); //offset from the hour tick marks
                 final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
                 final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
 
@@ -1023,10 +1025,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mOuterBackgroundPaint.setColor(Color.BLACK);
 
                 mHourPaint.setColor(Color.WHITE);
-                mHourPaint.setStrokeWidth(THIN_STROKE);
+                mHourPaint.setStrokeWidth(AMBIENT_STROKE);
 
                 mMinutePaint.setColor(Color.WHITE);
-                mMinutePaint.setStrokeWidth(THIN_STROKE);
+                mMinutePaint.setStrokeWidth(AMBIENT_STROKE);
 
                 if (mShowSecondHand) {
                     mSecondPaint.setColor(Color.WHITE);
@@ -1037,7 +1039,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 }
 
                 mCircleAndTickPaint.setColor(Color.WHITE);
-                mCircleAndTickPaint.setStrokeWidth(THIN_STROKE);
+                mCircleAndTickPaint.setStrokeWidth(AMBIENT_STROKE);
 
                 mHourLabelTextPaint.setColor(Color.WHITE);
                 mHourLabelTextPaint.setTypeface(mAmbientFont);
@@ -1045,7 +1047,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mMinuteTickPaint.setColor(Color.WHITE);
 
                 mComplicationCirclePaint.setColor(Color.WHITE);
-                mComplicationCirclePaint.setStrokeWidth(THIN_STROKE);
+                mComplicationCirclePaint.setStrokeWidth(AMBIENT_STROKE);
 
                 mComplicationPrimaryLongTextPaint.setColor(Color.WHITE);
                 mComplicationPrimaryLongTextPaint.setTypeface(mAmbientFont);
