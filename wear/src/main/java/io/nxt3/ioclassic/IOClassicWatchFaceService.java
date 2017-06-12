@@ -50,8 +50,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     ComplicationData.TYPE_ICON},
             {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
                     ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_LONG_TEXT, ComplicationData.TYPE_SHORT_TEXT,
-                    ComplicationData.TYPE_SMALL_IMAGE, ComplicationData.TYPE_ICON}
+            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
+                    ComplicationData.TYPE_ICON}
     };
     private static final int TOP_COMPLICATION_ID = 0;
     private static final int LEFT_COMPLICATION_ID = 1;
@@ -878,8 +878,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
             mBurnInProtection = properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false);
 
-            // Updates complications to properly render in ambient mode based on the
-            // screen's capabilities.
+            //Updates complications to properly render in Ambient Mode based on device
             for (int COMPLICATION_ID : COMPLICATION_IDS) {
                 final ComplicationDrawable complicationDrawable
                         = mComplicationDrawableSparseArray.get(COMPLICATION_ID);
