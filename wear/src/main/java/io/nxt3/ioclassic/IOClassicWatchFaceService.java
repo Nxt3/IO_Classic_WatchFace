@@ -42,7 +42,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     //Update rate in milliseconds for interactive mode. We update once a second to advance the second hand.
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
-    //Left/Right dial support types
+    //Supported complication types
     public static final int[][] COMPLICATION_SUPPORTED_TYPES = {
             {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
                     ComplicationData.TYPE_ICON},
@@ -128,8 +128,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private final float COMPLICATION_RADIUS = 4.5f;
 
         //Fonts
-        private final Typeface mAmbientFont = Typeface.create("sans-serif-light", Typeface.NORMAL);
-        private Typeface mHourLabelFont;
+        private final Typeface mAmbientFont
+                = Typeface.create("sans-serif-light", Typeface.NORMAL);
+        private final Typeface mHourLabelFont
+                = Typeface.create("sans-serif-medium", Typeface.NORMAL);
 
         //Other settings
         private boolean mShowComplicationBorder;
@@ -219,7 +221,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mOuterBackgroundPaint.setColor(mOuterCircleColor);
             mOuterBackgroundPaint.setAntiAlias(true);
 
-            mHourLabelFont = Typeface.create("sans-serif-medium", Typeface.NORMAL);
             mHourLabelTextPaint = new TextPaint();
             mHourLabelTextPaint.setColor(mHourLabelsColor);
             mHourLabelTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -239,6 +240,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             for (int COMPLICATION_ID : COMPLICATION_IDS) {
                 createComplication(COMPLICATION_ID);
             }
+
             setActiveComplications(COMPLICATION_IDS);
         }
 
@@ -450,11 +452,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         }
 
 
-        @Override
-        public void onTimeTick() {
-            super.onTimeTick();
-            invalidate();
-        }
 
         @Override
         public void onVisibilityChanged(boolean visible) {
@@ -499,6 +496,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             //Check and trigger whether or not timer should be running (only in active mode)
             updateTimer();
         }
+
 
         /**
          * Captures tap event (and tap type).
@@ -607,6 +605,25 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             invalidate();
         }
 
+        /**
+         * Creates the rectangles objects for the complication to be placed in
+         *
+         * @param centerX x coordinate of the center
+         * @param centerY y coordinate of the center
+         * @return the complication rectangle
+         */
+        private Rect createComplicationRect(float centerX, float centerY) {
+            final int radius = Math.round(mCenterX / COMPLICATION_RADIUS);
+
+            final int centerXInt = Math.round(centerX);
+            final int centerYInt = Math.round(centerY);
+
+            return new Rect(centerXInt - radius,
+                    centerYInt - radius,
+                    centerXInt + radius,
+                    centerYInt + radius);
+        }
+
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             super.onSurfaceChanged(holder, format, width, height);
@@ -615,13 +632,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mHourLabelTextPaint.setTextSize(width / 15);
 
-//            drawComplication(canvas, now, TOP_COMPLICATION_ID, mCenterX, mCenterY / 2 - offset);
-//            drawComplication(canvas, now, LEFT_COMPLICATION_ID, mCenterX / 2 - offset, mCenterY);
-//            drawComplication(canvas, now, BOTTOM_COMPLICATION_ID, mCenterX, mCenterY * 1.5f + offset);
-//            drawComplication(canvas, now, RIGHT_COMPLICATION_ID, mCenterX * 1.5f + offset, mCenterY);
-
-            final float offset = mHasFlatTire ? -18 : -10; //offset for complications
-
+            final float offset = mHasFlatTire ? -18f : -10f; //offset for complications
             final Rect topBounds = createComplicationRect(mCenterX, mCenterY / 2 - offset);
             final Rect leftBounds = createComplicationRect(mCenterX / 2 - offset, mCenterY);
             final Rect rightBounds = createComplicationRect(mCenterX * 1.5f + offset, mCenterY);
@@ -642,31 +653,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final ComplicationDrawable bottomComplicationDrawable =
                     mComplicationDrawableSparseArray.get(BOTTOM_COMPLICATION_ID);
             bottomComplicationDrawable.setBounds(bottomBounds);
-//            mNotificationTextPaint.setTextSize(width / 25);
 
+//            mNotificationTextPaint.setTextSize(width / 25);
 //            int gradientColor = Color.argb(128, Color.red(mBackgroundColor), Color.green(mBackgroundColor), Color.blue(mBackgroundColor));
 //            Shader shader = new LinearGradient(0, height - height / 4, 0, height, Color.TRANSPARENT, gradientColor, Shader.TileMode.CLAMP);
 //            mNotificationBackgroundPaint.setShader(shader);
         }
 
-        /**
-         * Creates the rectangles objects for the complication to be placed in
-         *
-         * @param centerX x coordinate of the center
-         * @param centerY y coordinate of the center
-         * @return the complication rectangle
-         */
-        private Rect createComplicationRect(float centerX, float centerY) {
-            final int radius = Math.round(mCenterX / COMPLICATION_RADIUS);
-
-            final int centerXInt = Math.round(centerX);
-            final int centerYInt = Math.round(centerY);
-
-            return new Rect(centerXInt - radius,
-                    centerYInt - radius,
-                    centerXInt + radius,
-                    centerYInt + radius);
-        }
 
         /**
          * Update the watch paint styles when changing between Ambient and Non-Ambient modes
@@ -744,6 +737,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        /**
+         * Update the complication styles
+         *
+         * @param complicationDrawable to set styles for
+         */
         private void updateComplicationStyles(ComplicationDrawable complicationDrawable) {
             final Typeface complicationActiveFont = Typeface.create("sans-serif", Typeface.BOLD);
 
@@ -754,8 +752,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 complicationDrawable.setTitleTypefaceActive(complicationActiveFont);
                 complicationDrawable.setTextColorActive(mComplicationColor);
                 complicationDrawable.setTitleColorActive(mComplicationTitleColor);
+                complicationDrawable.setIconColorActive(mComplicationColor);
                 complicationDrawable.setHighlightColorActive(mComplicationColor);
-                complicationDrawable.setHighlightColorAmbient(Color.WHITE);
+                complicationDrawable.setRangedValuePrimaryColorActive(mComplicationColor);
+                complicationDrawable.setRangedValueSecondaryColorActive(mComplicationTitleColor);
 
                 //Grayscale images when in Ambient Mode
                 final ColorMatrix matrix = new ColorMatrix();
@@ -798,9 +798,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             //Complication colors
             mComplicationColor = mPrefs.getInt("settings_complication_color_value", defaultHands);
-            mComplicationTitleColor = Color.argb(Math.round(152), Color.red(mComplicationColor),
+            mComplicationTitleColor = Color.argb(Math.round(169), Color.red(mComplicationColor),
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
-            mComplicationBorderColor = Color.argb(Math.round(48), Color.red(mComplicationColor),
+            mComplicationBorderColor = Color.argb(Math.round(69), Color.red(mComplicationColor),
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
 
             //Misc settings
@@ -836,6 +836,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mPrefs = null;
         }
+
 
         /**
          * Handles changing timezones
@@ -901,6 +902,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             super.onDestroy();
+        }
+
+        @Override
+        public void onTimeTick() {
+            super.onTimeTick();
+            invalidate();
         }
 
         /**
