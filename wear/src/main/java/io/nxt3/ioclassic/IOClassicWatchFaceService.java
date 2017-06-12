@@ -764,10 +764,27 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
                 if (mShowComplicationBorder) {
                     complicationDrawable.setBorderStyleActive(ComplicationDrawable.BORDER_STYLE_SOLID);
+                    complicationDrawable.setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_SOLID);
                     complicationDrawable.setBorderColorActive(mComplicationBorderColor);
-                    complicationDrawable.setBorderWidthAmbient((int) AMBIENT_STROKE);
+
+                    complicationDrawable.setTextSizeActive(spToPx(13));
+                    complicationDrawable.setTitleSizeActive(spToPx(13));
+                    complicationDrawable.setTextSizeAmbient(spToPx(13));
+                    complicationDrawable.setTitleSizeAmbient(spToPx(13));
+
+                    complicationDrawable.setBorderRadiusActive((int) dpToPx(50));
+                    complicationDrawable.setBorderRadiusAmbient((int) dpToPx(50));
                 } else {
                     complicationDrawable.setBorderStyleActive(ComplicationDrawable.BORDER_STYLE_NONE);
+                    complicationDrawable.setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_NONE);
+
+                    complicationDrawable.setTextSizeActive(spToPx(12));
+                    complicationDrawable.setTitleSizeActive(spToPx(12));
+                    complicationDrawable.setTextSizeAmbient(spToPx(12));
+                    complicationDrawable.setTitleSizeAmbient(spToPx(12));
+
+                    complicationDrawable.setBorderRadiusActive(0);
+                    complicationDrawable.setBorderRadiusAmbient(0);
                 }
             }
         }
@@ -953,12 +970,23 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
         /**
          * Converts density pixels to pixels
+         *
          * @param dp desired density pixels
          * @return converted dp to pixels
          */
         private float dpToPx(final int dp) {
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                     getResources().getDisplayMetrics());
+        }
+
+        /**
+         * Converts scale pixels to pixels -- used for setting text sizes
+         *
+         * @param sp desired scale pixels pixels
+         * @return converted sp to pixels
+         */
+        private int spToPx(float sp) {
+            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getResources().getDisplayMetrics());
         }
 
         /**

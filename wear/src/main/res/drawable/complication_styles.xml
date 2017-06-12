@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.wearable.complications.rendering.ComplicationDrawable
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:borderRadius="50dp"
-    app:borderStyle="solid"
-    app:borderWidth="1dp"
-    app:rangedValueRingWidth="1dp"
-    app:textColor="@color/white"
-    app:titleColor="@color/gray"
-    app:textSize="14sp"
-    app:titleSize="14sp">
+    app:borderWidth="2dp"
+    app:rangedValueRingWidth="1dp">
 
     <ambient
+        app:borderWidth="1dp"
         app:borderColor="@color/white"
         app:highlightColor="@color/white"
         app:iconColor="@color/white"
