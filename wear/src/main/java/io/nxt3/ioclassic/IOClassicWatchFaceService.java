@@ -12,10 +12,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -124,7 +122,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         //Paint objects for notification icons
         private Paint mNotificationTextPaint;
         private Paint mNotificationCirclePaint;
-        private Paint mNotificationBackgroundPaint;
+
+        //Colors for the notification indicator
+        private int mNotificationTextColor;
+        private int mNotificationCircleColor;
+
+        //Notification counts
+        private int mNotificationCount;
+        private int mUnreadNotificationCount;
 
         //Complication stuff
         private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
@@ -147,10 +152,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mShowNotificationIndicator;
         private boolean mNotificationIndicatorUnread;
         private boolean mNotificationIndicatorAll;
-
-        //Notification counts
-        private int mNotificationCount;
-        private int mUnreadNotificationCount;
 
 
         /**
@@ -275,18 +276,16 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * Init notification counts
          */
         private void initializeNotificationCount() {
-            mNotificationBackgroundPaint = new Paint();
-
             mNotificationCirclePaint = new Paint();
             mNotificationCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            mNotificationCirclePaint.setColor(Color.BLACK);
+            mNotificationCirclePaint.setColor(mNotificationCircleColor);
             mNotificationCirclePaint.setAntiAlias(true);
-            mNotificationCirclePaint.setStrokeWidth(2);
+            mNotificationCirclePaint.setStrokeWidth(2f);
 
             final Typeface notificationFont = Typeface.create("sans-serif", Typeface.BOLD);
 
             mNotificationTextPaint = new Paint();
-            mNotificationTextPaint.setColor(Color.WHITE);
+            mNotificationTextPaint.setColor(mNotificationTextColor);
             mNotificationTextPaint.setTextAlign(Paint.Align.CENTER);
             mNotificationTextPaint.setAntiAlias(true);
             mNotificationTextPaint.setTypeface(notificationFont);
@@ -309,7 +308,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             drawMinuteHand(canvas);
             drawHourHand(canvas);
 
-            if (mNotificationIndicatorAll || mNotificationIndicatorUnread) {
+            if (mShowNotificationIndicator) {
                 drawNotificationCount(canvas);
             }
         }
@@ -437,13 +436,25 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             if (count > 0) {
-                canvas.drawRect(0, mCenterY * 2 - 100, mCenterX * 2, mCenterY * 2,
-                        mNotificationBackgroundPaint);
-                canvas.drawCircle(mCenterX, mCenterY * 2 - 6 - mCenterX * 0.1f, mCenterX * 0.08f,
-                        mNotificationCirclePaint);
-                canvas.drawText(String.valueOf(mNotificationCount),
-                        mCenterX, mCenterY * 2 - 6
-                                - mCenterX * 0.1f - (mNotificationTextPaint.descent()
+                //(x,y) coordinates for where to draw the notification indicator
+                float xPos = mCenterX;
+                float yPos = mCenterY + dpToPx(18);
+
+                /*
+                  Draw the notification indicator offset if there is a bottom complication.
+                  Otherwise, draw it below the center of the screen.
+                 */
+                if (mActiveComplicationDataSparseArray.get(BOTTOM_COMPLICATION_ID) != null) {
+                    if (mActiveComplicationDataSparseArray.get(BOTTOM_COMPLICATION_ID).getType()
+                            != ComplicationData.TYPE_EMPTY) {
+                        xPos = mCenterX + dpToPx(34);
+                        yPos = mCenterY * 1.34f;
+                    }
+                }
+
+                canvas.drawCircle(xPos, yPos, mCenterX * 0.08f, mNotificationCirclePaint);
+                canvas.drawText(String.valueOf(mNotificationCount), xPos,
+                        yPos - (mNotificationTextPaint.descent()
                                 + mNotificationTextPaint.ascent()) / 2, mNotificationTextPaint);
             }
         }
@@ -655,7 +666,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * @param complicationData data to update the complication with
          */
         @Override
-        public void onComplicationDataUpdate(int complicationId, ComplicationData complicationData) {
+        public void onComplicationDataUpdate(int complicationId,
+                                             ComplicationData complicationData) {
             //Adds/updates active complication data in the array.
             mActiveComplicationDataSparseArray.put(complicationId, complicationData);
 
@@ -697,14 +709,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             //Handle measuring the notification text and gradient
             mNotificationTextPaint.setTextSize(width / 25);
             mNotificationTextPaint.setTextSize(width / 25);
-            final int gradientColor = Color.argb(128,
-                    Color.red(mCenterCircleColor),
-                    Color.green(mCenterCircleColor),
-                    Color.blue(mCenterCircleColor));
-            final Shader shader = new LinearGradient(0, height - height / 4, 0, height,
-                    Color.TRANSPARENT, gradientColor, Shader.TileMode.CLAMP);
-            mNotificationBackgroundPaint.setShader(shader);
-
 
             //Below is for measuring the complications
             final float offset = mHasFlatTire ? -18f : -10f; //offset for complications
@@ -762,8 +766,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mMinuteTickPaint.setColor(Color.WHITE);
 
                 if (mShowNotificationIndicator) {
-                    mNotificationCirclePaint.setStyle(Paint.Style.STROKE);
                     mNotificationTextPaint.setColor(Color.WHITE);
+                    mNotificationCirclePaint.setColor(Color.TRANSPARENT);
                 }
 
                 if (mLowBitAmbient) {
@@ -806,8 +810,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mMinuteTickPaint.setColor(mCircleAndTickColor);
 
                 if (mShowNotificationIndicator) {
-                    mNotificationCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-                    mNotificationTextPaint.setColor(mCenterCircleColor);
+                    mNotificationTextPaint.setColor(mNotificationTextColor);
+                    mNotificationCirclePaint.setColor(mNotificationCircleColor);
                 }
 
                 if (mLowBitAmbient) {
@@ -962,6 +966,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     = mNotificationIndicator != null && mNotificationIndicator.equals("2");
             mShowNotificationIndicator
                     = (mNotificationIndicatorAll || mNotificationIndicatorUnread);
+
+            mNotificationTextColor = mCenterCircleColor;
+            mNotificationCircleColor = mHourHandColor;
         }
 
 
