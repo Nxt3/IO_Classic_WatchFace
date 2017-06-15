@@ -1,3 +1,8 @@
+v1.9 / June 15, 2017
+=========================
+* Added a setting for displaying a notification indicator (Disabled, Unread, All)
+    * The circle will take the color of the hour hand; the text will take the color of the center circle color
+
 v1.8 / June 15, 2017
 =========================
 * Changed how complications are displayed--now uses `ComplicationDrawable`
