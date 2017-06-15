@@ -1,3 +1,11 @@
+v1.8 / June 15, 2017
+=========================
+* Changed how complications are displayed--now uses `ComplicationDrawable`
+    * Only thing that changes user facing is that certain text will be smaller in complications when you have the border enabled. Nothing I can do about this unfortunately; also, the bottom complication will now look like the left/right/top complications regardless of data displayed (no more "long text" if that makes sense)
+    * Makes the codebase easier to read and gets rid of lots of code pertaining to drawing complications
+    * Makes modifying complication styles super easy for future changes
+    * Theoretically makes the watch face more efficient since we're not constantly measuring where to draw complications and we only do the measurements once in `onSurfaceChanged()`
+
 v1.7.1 / June 11, 2017
 =========================
 * Fixed "Dark green" being the wrong shade of green in the color selections
