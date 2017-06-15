@@ -71,6 +71,12 @@
     <string name="settings_number_hour_labels_title">Number of hour labels</string>
     <string name="settings_hour_labels_color_title">Hour label color</string>
 
+    <!--Notification label-->
+    <string name="settings_notification_indicator_title">Notification indicator</string>
+    <string name="settings_notifications_disabled">Disabled</string>
+    <string name="settings_notifications_unread">Unread notifications</string>
+    <string name="settings_notifications_all">All notifications</string>
+
     <!--Donations-->
     <string name="settings_donate">Donate</string>
     <string name="settings_donation_summary">Support development</string>
