@@ -166,9 +166,9 @@
     </string-array>
 
     <string-array name="notification_items">
-        <item>Disabled</item>
-        <item>Unread notifications</item>
-        <item>All notifications</item>
+        <item>@string/settings_notifications_disabled</item>
+        <item>@string/settings_notifications_unread</item>
+        <item>@string/settings_notifications_all</item>
     </string-array>
     <string-array name="notification_values">
         <item>0</item>

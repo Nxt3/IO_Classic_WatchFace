@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -489,26 +490,28 @@ public class SettingsFragment extends PreferenceFragment
         final Preference preference = findPreference(key);
 
         if (preference != null) {
-//            final Bundle extras = preference.getExtras();
+            final Bundle extras = preference.getExtras();
 
             if (preference instanceof ListPreference) {
-                //TODO, for when we want to handle notification icons
-//                String name = extras.getString("icons");
-//
-//                if (name != null) {
-//                    String value = sharedPreferences.getString(key, null);
-//                    int id = getResources().getIdentifier(name, "array", getActivity().getPackageName());
-//
-//                    final TypedArray icons = getResources().obtainTypedArray(id);
-//                    final CharSequence[] entryValues = ((ListPreference) preference).getEntryValues();
-//
-//                    for (int x = 0; x < entryValues.length; x++) {
-//                        if (value != null && value.equals(entryValues[x])) {
-//                            setStyleIcon(preference, getResources().getDrawable(icons.getResourceId(x, 0)));
-//                        }
-//                    }
-//                    icons.recycle();
-//                }
+                final String name = extras.getString("icons");
+
+                if (name != null) {
+                    final String value = sharedPreferences.getString(key, null);
+                    final int id = getResources()
+                            .getIdentifier(name, "array", getActivity().getPackageName());
+
+                    final TypedArray icons = getResources().obtainTypedArray(id);
+                    final CharSequence[] entryValues
+                            = ((ListPreference) preference).getEntryValues();
+
+                    for (int x = 0; x < entryValues.length; x++) {
+                        if (value != null && value.equals(entryValues[x])) {
+                            setStyleIcon(preference, getResources()
+                                    .getDrawable(icons.getResourceId(x, 0)));
+                        }
+                    }
+                    icons.recycle();
+                }
             } else if (preference.getSummary() != null && preference.getSummary().equals("%s")) {
                 setSummary(key);
             }

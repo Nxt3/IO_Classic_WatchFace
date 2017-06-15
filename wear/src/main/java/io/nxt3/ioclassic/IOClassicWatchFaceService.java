@@ -12,8 +12,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -83,9 +85,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         //Used for managing the time
         private Calendar mCalendar;
 
-        //SharedPrefs for getting settings
-        private SharedPreferences mPrefs;
-
         //Booleans for various device specific settings
         private boolean mAmbient;
         private boolean mLowBitAmbient;
@@ -122,6 +121,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private int mComplicationTitleColor;
         private int mComplicationBorderColor;
 
+        //Paint objects for notification icons
+        private Paint mNotificationTextPaint;
+        private Paint mNotificationCirclePaint;
+        private Paint mNotificationBackgroundPaint;
+
         //Complication stuff
         private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
         private SparseArray<ComplicationDrawable> mComplicationDrawableSparseArray;
@@ -140,6 +144,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mShowMinuteTicks;
         private boolean mClassicMode;
         private int mNumberHourLabels;
+        private boolean mShowNotificationIndicator;
+        private boolean mNotificationIndicatorUnread;
+        private boolean mNotificationIndicatorAll;
+
+        //Notification counts
+        private int mNotificationCount;
+        private int mUnreadNotificationCount;
 
 
         /**
@@ -161,8 +172,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     .build());
 
             loadSavedPrefs();
+
             initializeBackground();
             initializeComplications();
+            initializeNotificationCount();
             initializeWatchFace();
         }
 
@@ -258,6 +271,26 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationDrawableSparseArray.put(complicationId, complicationDrawable);
         }
 
+        /**
+         * Init notification counts
+         */
+        private void initializeNotificationCount() {
+            mNotificationBackgroundPaint = new Paint();
+
+            mNotificationCirclePaint = new Paint();
+            mNotificationCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            mNotificationCirclePaint.setColor(Color.BLACK);
+            mNotificationCirclePaint.setAntiAlias(true);
+            mNotificationCirclePaint.setStrokeWidth(2);
+
+            final Typeface notificationFont = Typeface.create("sans-serif", Typeface.BOLD);
+
+            mNotificationTextPaint = new Paint();
+            mNotificationTextPaint.setColor(Color.WHITE);
+            mNotificationTextPaint.setTextAlign(Paint.Align.CENTER);
+            mNotificationTextPaint.setAntiAlias(true);
+            mNotificationTextPaint.setTypeface(notificationFont);
+        }
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
@@ -275,6 +308,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
             drawMinuteHand(canvas);
             drawHourHand(canvas);
+
+            if (mNotificationIndicatorAll || mNotificationIndicatorUnread) {
+                drawNotificationCount(canvas);
+            }
         }
 
         /**
@@ -386,6 +423,32 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         }
 
         /**
+         * Handles drawing the notification count
+         *
+         * @param canvas to draw to
+         */
+        private void drawNotificationCount(Canvas canvas) {
+            int count = 0;
+
+            if (mNotificationIndicatorUnread) {
+                count = mUnreadNotificationCount;
+            } else if (mNotificationIndicatorAll) {
+                count = mNotificationCount;
+            }
+
+            if (count > 0) {
+                canvas.drawRect(0, mCenterY * 2 - 100, mCenterX * 2, mCenterY * 2,
+                        mNotificationBackgroundPaint);
+                canvas.drawCircle(mCenterX, mCenterY * 2 - 6 - mCenterX * 0.1f, mCenterX * 0.08f,
+                        mNotificationCirclePaint);
+                canvas.drawText(String.valueOf(mNotificationCount),
+                        mCenterX, mCenterY * 2 - 6
+                                - mCenterX * 0.1f - (mNotificationTextPaint.descent()
+                                + mNotificationTextPaint.ascent()) / 2, mNotificationTextPaint);
+            }
+        }
+
+        /**
          * Handles drawing the hour hand
          *
          * @param canvas to draw to
@@ -450,7 +513,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mCenterX + secondX * secondHandLength, mCenterY + secondY * secondHandLength,
                     mSecondPaint);
         }
-
 
 
         @Override
@@ -632,6 +694,19 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mHourLabelTextPaint.setTextSize(width / 15);
 
+            //Handle measuring the notification text and gradient
+            mNotificationTextPaint.setTextSize(width / 25);
+            mNotificationTextPaint.setTextSize(width / 25);
+            final int gradientColor = Color.argb(128,
+                    Color.red(mCenterCircleColor),
+                    Color.green(mCenterCircleColor),
+                    Color.blue(mCenterCircleColor));
+            final Shader shader = new LinearGradient(0, height - height / 4, 0, height,
+                    Color.TRANSPARENT, gradientColor, Shader.TileMode.CLAMP);
+            mNotificationBackgroundPaint.setShader(shader);
+
+
+            //Below is for measuring the complications
             final float offset = mHasFlatTire ? -18f : -10f; //offset for complications
             final Rect topBounds = createComplicationRect(mCenterX, mCenterY / 2 - offset);
             final Rect leftBounds = createComplicationRect(mCenterX / 2 - offset, mCenterY);
@@ -653,11 +728,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final ComplicationDrawable bottomComplicationDrawable =
                     mComplicationDrawableSparseArray.get(BOTTOM_COMPLICATION_ID);
             bottomComplicationDrawable.setBounds(bottomBounds);
-
-//            mNotificationTextPaint.setTextSize(width / 25);
-//            int gradientColor = Color.argb(128, Color.red(mBackgroundColor), Color.green(mBackgroundColor), Color.blue(mBackgroundColor));
-//            Shader shader = new LinearGradient(0, height - height / 4, 0, height, Color.TRANSPARENT, gradientColor, Shader.TileMode.CLAMP);
-//            mNotificationBackgroundPaint.setShader(shader);
         }
 
 
@@ -691,6 +761,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
                 mMinuteTickPaint.setColor(Color.WHITE);
 
+                if (mShowNotificationIndicator) {
+                    mNotificationCirclePaint.setStyle(Paint.Style.STROKE);
+                    mNotificationTextPaint.setColor(Color.WHITE);
+                }
+
                 if (mLowBitAmbient) {
                     mHourPaint.setAntiAlias(false);
                     mMinutePaint.setAntiAlias(false);
@@ -698,6 +773,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mMinuteTickPaint.setAntiAlias(false);
 
                     mHourLabelTextPaint.setAntiAlias(false);
+
+                    if (mShowNotificationIndicator) {
+                        mNotificationTextPaint.setAntiAlias(false);
+                        mNotificationCirclePaint.setAntiAlias(false);
+                    }
                 }
             } else {
                 mBackgroundPaint.setColor(mCenterCircleColor);
@@ -725,6 +805,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
                 mMinuteTickPaint.setColor(mCircleAndTickColor);
 
+                if (mShowNotificationIndicator) {
+                    mNotificationCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+                    mNotificationTextPaint.setColor(mCenterCircleColor);
+                }
+
                 if (mLowBitAmbient) {
                     mHourPaint.setAntiAlias(true);
                     mMinutePaint.setAntiAlias(true);
@@ -733,6 +818,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     mMinuteTickPaint.setAntiAlias(true);
 
                     mHourLabelTextPaint.setAntiAlias(true);
+
+                    if (mShowNotificationIndicator) {
+                        mNotificationTextPaint.setAntiAlias(true);
+                        mNotificationCirclePaint.setAntiAlias(true);
+                    }
                 }
             }
         }
@@ -789,12 +879,25 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        @Override
+        public void onUnreadCountChanged(int count) {
+            super.onUnreadCountChanged(count);
+            mUnreadNotificationCount = count;
+        }
+
+        @Override
+        public void onNotificationCountChanged(int count) {
+            super.onNotificationCountChanged(count);
+            mNotificationCount = count;
+        }
+
 
         /**
          * Loads the user selected colors for each component
          */
         private void loadSavedPrefs() {
-            mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences prefs = PreferenceManager
+                    .getDefaultSharedPreferences(getApplicationContext());
 
             //Default colors
             final int defaultHands = getColor(R.color.default_hands); //hours, minutes, ticks, and circle
@@ -803,28 +906,28 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final int defaultOuter = getColor(R.color.default_outer_circle); //outer circle
 
             //Hand colors
-            mHourHandColor = mPrefs.getInt("settings_hour_hand_color_value", defaultHands);
-            mMinuteHandColor = mPrefs.getInt("settings_minute_hand_color_value", defaultHands);
-            mSecondHandColor = mPrefs.getInt("settings_second_hand_color_value", defaultSeconds);
+            mHourHandColor = prefs.getInt("settings_hour_hand_color_value", defaultHands);
+            mMinuteHandColor = prefs.getInt("settings_minute_hand_color_value", defaultHands);
+            mSecondHandColor = prefs.getInt("settings_second_hand_color_value", defaultSeconds);
 
             //Background colors
-            mCenterCircleColor = mPrefs.getInt("settings_center_circle_color_value", defaultCenter);
-            mCircleAndTickColor = mPrefs.getInt("settings_circle_ticks_color_value", defaultHands);
-            mOuterCircleColor = mPrefs.getInt("settings_outer_circle_color_value", defaultOuter);
-            mHourLabelsColor = mPrefs.getInt("settings_hour_labels_color_value", defaultHands);
+            mCenterCircleColor = prefs.getInt("settings_center_circle_color_value", defaultCenter);
+            mCircleAndTickColor = prefs.getInt("settings_circle_ticks_color_value", defaultHands);
+            mOuterCircleColor = prefs.getInt("settings_outer_circle_color_value", defaultOuter);
+            mHourLabelsColor = prefs.getInt("settings_hour_labels_color_value", defaultHands);
 
             //Complication colors
-            mComplicationColor = mPrefs.getInt("settings_complication_color_value", defaultHands);
+            mComplicationColor = prefs.getInt("settings_complication_color_value", defaultHands);
             mComplicationTitleColor = Color.argb(Math.round(169), Color.red(mComplicationColor),
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
             mComplicationBorderColor = Color.argb(Math.round(69), Color.red(mComplicationColor),
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
 
             //Misc settings
-            mShowComplicationBorder = mPrefs.getBoolean("settings_complication_border", true);
-            mShowSecondHand = mPrefs.getBoolean("settings_show_second_hand", true);
+            mShowComplicationBorder = prefs.getBoolean("settings_complication_border", true);
+            mShowSecondHand = prefs.getBoolean("settings_show_second_hand", true);
 
-            final String numberHourTicks = mPrefs.getString("settings_number_ticks",
+            final String numberHourTicks = prefs.getString("settings_number_ticks",
                     getString(R.string.settings_number_ticks_default));
             if (numberHourTicks.equals(getString(R.string.settings_number_ticks_default))) {
                 /*
@@ -836,10 +939,10 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mNumberHourTicks = Integer.parseInt(numberHourTicks);
             }
 
-            mShowMinuteTicks = mPrefs.getBoolean("settings_show_minute_ticks", false);
-            mClassicMode = mPrefs.getBoolean("settings_classic_mode", false);
+            mShowMinuteTicks = prefs.getBoolean("settings_show_minute_ticks", false);
+            mClassicMode = prefs.getBoolean("settings_classic_mode", false);
 
-            final String numberHourLabels = mPrefs.getString("settings_number_hour_labels",
+            final String numberHourLabels = prefs.getString("settings_number_hour_labels",
                     getString(R.string.settings_none));
             if (numberHourLabels.equals(getString(R.string.settings_none))) {
                 /*
@@ -851,7 +954,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mNumberHourLabels = Integer.parseInt(numberHourLabels);
             }
 
-            mPrefs = null;
+            final String mNotificationIndicator
+                    = prefs.getString("settings_notification_indicator", null);
+            mNotificationIndicatorUnread
+                    = mNotificationIndicator != null && mNotificationIndicator.equals("1");
+            mNotificationIndicatorAll
+                    = mNotificationIndicator != null && mNotificationIndicator.equals("2");
+            mShowNotificationIndicator
+                    = (mNotificationIndicatorAll || mNotificationIndicatorUnread);
         }
 
 
