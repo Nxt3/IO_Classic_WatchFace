@@ -1,3 +1,8 @@
+v1.9.1 / June 15, 2017
+=========================
+* CRITICAL FIX
+    * Fixes watch face crashing constantly. So sorry about that. It was an issue with Proguard stripping out a critical class when building release builds--that's why it didn't show up when I was testing.
+
 v1.9 / June 15, 2017
 =========================
 * Added a setting for displaying a notification indicator (Disabled, Unread, All)

@@ -11,6 +11,9 @@
 -dontwarn java.lang.invoke.*
 -dontwarn **$$Lambda$*
 
+# Needed for complication_styles.xml
+ -keep class android.support.wearable.complications.rendering.ComplicationDrawable { *; }
+
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
