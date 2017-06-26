@@ -45,7 +45,6 @@
         </PreferenceCategory>
 
         <PreferenceCategory android:title="@string/settings_complication_style_category">
-
             <Preference
                 android:icon="@drawable/ic_color_lens_black_24dp"
                 android:key="settings_complication_color"
@@ -71,7 +70,6 @@
         android:title="@string/settings_watch_face_components_title">
 
         <PreferenceCategory android:title="@string/settings_hand_color_category">
-
             <Preference
                 android:icon="@drawable/ic_color_lens_black_24dp"
                 android:key="settings_hour_hand_color"
@@ -225,15 +223,13 @@
             android:key="settings_enable_night_mode"
             android:title="@string/settings_enable_night_mode" />
 
-        <!--suppress AndroidDomInspection -->
         <io.nxt3.ioclassic.config.TimePreference
-            android:defaultValue="1483318830000"
+            android:defaultValue="@string/settings_night_mode_default_start_time"
             android:key="settings_night_mode_start_time"
             android:title="@string/settings_night_mode_start" />
 
-        <!--suppress AndroidDomInspection -->
         <io.nxt3.ioclassic.config.TimePreference
-            android:defaultValue="1483272000000"
+            android:defaultValue="@string/settings_night_mode_default_end_time"
             android:key="settings_night_mode_end_time"
             android:title="@string/settings_night_mode_end" />
     </PreferenceScreen>

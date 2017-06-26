@@ -86,6 +86,11 @@
     <string name="settings_enable_night_mode">Enable night mode</string>
     <string name="settings_night_mode_start">Night mode start</string>
     <string name="settings_night_mode_end">Night mode end</string>
+    <!--8pm is default start time-->
+    <string name="settings_night_mode_default_start_time" translatable="false">1483318830000</string>
+    <!--7am is default end time-->
+    <string name="settings_night_mode_default_end_time" translatable="false">1483272000000</string>
+
 
     <!--Donations-->
     <string name="settings_donate">Donate</string>

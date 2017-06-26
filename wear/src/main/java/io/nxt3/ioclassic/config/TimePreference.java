@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.TimePicker;
@@ -79,9 +78,6 @@ public class TimePreference extends DialogPreference {
         final long timeLongDefault = (defaultValue != null)
                 ? Double.valueOf(getPersistedString((String) defaultValue)).longValue()
                 : 0;
-
-        Log.d("TimePref", "default: " + defaultValue.toString());
-        Log.d("TimePref", "timeLongDefault: " + timeLongDefault + " | " + "1483318800000");
 
         if (restoreValue) {
             if (defaultValue == null) {

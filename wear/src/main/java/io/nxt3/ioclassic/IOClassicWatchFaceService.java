@@ -972,7 +972,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             //Night mode
             final long nightModeStartTime = prefs.getLong("settings_night_mode_start_time",
-                    1483318800000L);
+                    Long.valueOf(getString(R.string.settings_night_mode_default_end_time)));
             Calendar startCalendar = Calendar.getInstance();
             startCalendar.setTimeInMillis(nightModeStartTime);
             int timeFormatted = startCalendar.get(Calendar.HOUR);
