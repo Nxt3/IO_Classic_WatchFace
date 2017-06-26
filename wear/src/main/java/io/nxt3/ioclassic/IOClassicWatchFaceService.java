@@ -198,13 +198,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mMinutePaint.setStrokeWidth(THICK_STROKE);
             mMinutePaint.setAntiAlias(true);
 
-            if (mShowSecondHand) {
-                mSecondPaint = new Paint();
-                mSecondPaint.setColor(mSecondHandColor);
-                mSecondPaint.setStyle(Paint.Style.STROKE);
-                mSecondPaint.setStrokeWidth(SECOND_HAND_STROKE);
-                mSecondPaint.setAntiAlias(true);
-            }
+            mSecondPaint = new Paint();
+            mSecondPaint.setColor(mSecondHandColor);
+            mSecondPaint.setStyle(Paint.Style.STROKE);
+            mSecondPaint.setStrokeWidth(SECOND_HAND_STROKE);
+            mSecondPaint.setAntiAlias(true);
         }
 
         /**
