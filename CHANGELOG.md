@@ -1,3 +1,7 @@
+v1.9.2 / June 26, 2017
+=========================
+* Fixed crash when showing the second hand after it had been hidden
+
 v1.9.1 / June 15, 2017
 =========================
 * CRITICAL FIX
