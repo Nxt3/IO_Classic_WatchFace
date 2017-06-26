@@ -214,6 +214,26 @@
             android:value="notification_icons" />
     </ListPreference>
 
+    <!--Night mode settings-->
+    <PreferenceScreen
+        android:icon="@drawable/ic_brightness_4_black_24dp"
+        android:key="settings_night_mode"
+        android:title="@string/settings_night_mode_title">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="settings_enable_night_mode"
+            android:title="@string/settings_enable_night_mode" />
+
+        <io.nxt3.ioclassic.config.TimePreference
+            android:key="settings_night_mode_start"
+            android:title="Night mode start" />
+
+        <io.nxt3.ioclassic.config.TimePreference
+            android:key="settings_night_mode_end"
+            android:title="Night mode end" />
+    </PreferenceScreen>
+
     <!--Reset settings-->
     <PreferenceScreen
         android:icon="@drawable/ic_format_color_reset_black_24dp"

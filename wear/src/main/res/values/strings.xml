@@ -17,6 +17,10 @@
 
     <string name="settings">Settings</string>
 
+    <!--Used primarily in the TimePicker-->
+    <string name="settings_set">Set</string>
+    <string name="settings_cancel">Cancel</string>
+
     <!--Complication settings-->
     <string name="settings_complications_title">Complications</string>
     <string name="settings_left_complication">Left</string>
@@ -76,6 +80,12 @@
     <string name="settings_notifications_disabled">Disabled</string>
     <string name="settings_notifications_unread">Unread notifications</string>
     <string name="settings_notifications_all">All notifications</string>
+    
+    <!--Night mode-->
+    <string name="settings_night_mode_title">Night mode</string>
+    <string name="settings_enable_night_mode">Enable night mode</string>
+    <string name="settings_night_mode_start">Night mode start</string>
+    <string name="settings_night_mode_end">Night mode end</string>
 
     <!--Donations-->
     <string name="settings_donate">Donate</string>
