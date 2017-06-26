@@ -17,7 +17,7 @@ import io.nxt3.ioclassic.R;
 
 public class TimePreference extends DialogPreference {
     private Calendar mCalendar;
-    private TimePicker mPicker = null;
+    private TimePicker mPicker;
 
     public TimePreference(Context context) {
         this(context, null);
@@ -76,7 +76,7 @@ public class TimePreference extends DialogPreference {
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         final long timeLongDefault = (defaultValue != null)
-                ? Double.valueOf(getPersistedString((String) defaultValue)).longValue()
+                ? Double.valueOf(getPersistedString(defaultValue.toString())).longValue()
                 : 0;
 
         if (restoreValue) {

@@ -33,9 +33,7 @@ import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -291,6 +289,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mNotificationTextPaint.setAntiAlias(true);
             mNotificationTextPaint.setTypeface(notificationFont);
         }
+
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
@@ -985,42 +984,26 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             final String taggy = "NightMode";
 
-            String nightModeStartTimeMillisString = Long.toString(nightModeStartTimeMillis);
-            Log.d(taggy, "nightModeStartTimeMillisString: " + nightModeStartTimeMillisString);
-
-            String nightModeEndTimeMillisString = Long.toString(nightModeEndTimeMillis);
-            Log.d(taggy, "nightModeEndTimeMillisString: " + nightModeEndTimeMillisString);
-
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-            Date dS = new Date(nightModeStartTimeMillis);
-            Date dE = new Date(nightModeEndTimeMillis);
-            String sS = formatter.format(dS);
-            String sE = formatter.format(dE);
-
-            Log.d(taggy, "nightModeStartTimeString: " + sS);
-            Log.d(taggy, "nightModeEndTimeString: " + sE);
-
             final Calendar startCalendar = Calendar.getInstance();
-            startCalendar.setTime(dS);
-            Log.d(taggy, startCalendar.getTime().toString());
+            startCalendar.setTimeInMillis(nightModeStartTimeMillis);
+            final int startTimeHour = startCalendar.get(Calendar.HOUR_OF_DAY);
+            final int startTimeMinute = startCalendar.get(Calendar.MINUTE);
+
+            final int currentTimeHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+            final int currentTimeMinute = mCalendar.get(Calendar.MINUTE);
 
             final Calendar endCalendar = Calendar.getInstance();
-            endCalendar.setTime(dE);
+            endCalendar.setTimeInMillis(nightModeEndTimeMillis);
+            final int endTimeHour = endCalendar.get(Calendar.HOUR_OF_DAY);
+            final int endTimeMinute = endCalendar.get(Calendar.MINUTE);
 
-            final Calendar currentCalendar = mCalendar;
+            Log.d(taggy, String.format("Start_Time  %d:%02d", startTimeHour, startTimeMinute));
+            Log.d(taggy, String.format("Current_Time  %d:%02d", currentTimeHour, currentTimeMinute));
+            Log.d(taggy, String.format("End_Time  %d:%02d", endTimeHour, endTimeMinute));
+//
+//            if ((currentTimeHour >= startTimeHour || currentTimeHour <= endTimeHour)
+//                    && (currentTimeMinute <= startTimeMinute && currentTimeMinute >= ) )
 
-            if (nightModeEndTimeMillisString.compareTo(nightModeStartTimeMillisString) < 0) {
-                Log.d(taggy, "adding 1 to the date");
-                endCalendar.add(Calendar.DATE, 1);
-                currentCalendar.add(Calendar.DATE, 1);
-            }
-
-            Date currentTime = currentCalendar.getTime();
-            if ((currentTime.after(startCalendar.getTime())
-                    || currentTime.compareTo(startCalendar.getTime()) == 0)
-                    && currentTime.before(endCalendar.getTime())) {
-                Log.d(taggy, "Current time is between the two values!");
-            }
         }
 
 
