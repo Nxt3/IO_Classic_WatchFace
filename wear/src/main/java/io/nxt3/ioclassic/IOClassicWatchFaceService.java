@@ -929,6 +929,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mShowComplicationBorder = prefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = prefs.getBoolean("settings_show_second_hand", true);
 
+            //Number of hour ticks
             final String numberHourTicks = prefs.getString("settings_number_ticks",
                     getString(R.string.settings_number_ticks_default));
             if (numberHourTicks.equals(getString(R.string.settings_number_ticks_default))) {
@@ -956,6 +957,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mNumberHourLabels = Integer.parseInt(numberHourLabels);
             }
 
+            //Notification indicator
             final String mNotificationIndicator
                     = prefs.getString("settings_notification_indicator", null);
             mNotificationIndicatorUnread
@@ -967,6 +969,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mNotificationTextColor = mCenterCircleColor;
             mNotificationCircleColor = mHourHandColor;
+
+            //Night mode
+            final long nightModeStartTime = prefs.getLong("settings_night_mode_start_time",
+                    1483318800000L);
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTimeInMillis(nightModeStartTime);
+            int timeFormatted = startCalendar.get(Calendar.HOUR);
+            Log.d(TAG, "start hour: "  + timeFormatted);
         }
 
 

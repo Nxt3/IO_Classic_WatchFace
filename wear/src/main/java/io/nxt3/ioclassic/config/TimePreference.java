@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -37,13 +39,15 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected View onCreateDialogView() {
-        mPicker = new TimePicker(getContext());
-        return (mPicker);
+        mPicker = new TimePicker(new ContextThemeWrapper(getContext(),
+                android.R.style.Theme_DeviceDefault));
+        return mPicker;
     }
 
     @Override
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
+
         mPicker.setCurrentHour(mCalendar.get(Calendar.HOUR_OF_DAY));
         mPicker.setCurrentMinute(mCalendar.get(Calendar.MINUTE));
     }
@@ -67,24 +71,32 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected Object onGetDefaultValue(TypedArray typedArray, int index) {
-        return (typedArray.getString(index));
+        return typedArray.getString(index);
     }
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+        final long timeLongDefault = (defaultValue != null)
+                ? Double.valueOf(getPersistedString((String) defaultValue)).longValue()
+                : 0;
+
+        Log.d("TimePref", "default: " + defaultValue.toString());
+        Log.d("TimePref", "timeLongDefault: " + timeLongDefault + " | " + "1483318800000");
+
         if (restoreValue) {
             if (defaultValue == null) {
                 mCalendar.setTimeInMillis(getPersistedLong(System.currentTimeMillis()));
             } else {
-                mCalendar.setTimeInMillis(Long.parseLong(getPersistedString((String) defaultValue)));
+                mCalendar.setTimeInMillis(timeLongDefault);
             }
         } else {
             if (defaultValue == null) {
                 mCalendar.setTimeInMillis(System.currentTimeMillis());
             } else {
-                mCalendar.setTimeInMillis(Long.parseLong((String) defaultValue));
+                mCalendar.setTimeInMillis(timeLongDefault);
             }
         }
+
         setSummary(getSummary());
     }
 
