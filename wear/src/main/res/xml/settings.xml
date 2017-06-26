@@ -220,8 +220,8 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="settings_enable_night_mode"
-            android:title="@string/settings_enable_night_mode" />
+            android:key="settings_night_mode_enabled"
+            android:title="@string/settings_night_mode_enabled" />
 
         <io.nxt3.ioclassic.config.TimePreference
             android:defaultValue="@string/settings_night_mode_default_start_time"

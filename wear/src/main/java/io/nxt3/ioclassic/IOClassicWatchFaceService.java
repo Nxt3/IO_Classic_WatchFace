@@ -33,7 +33,9 @@ import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -152,6 +154,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mShowNotificationIndicator;
         private boolean mNotificationIndicatorUnread;
         private boolean mNotificationIndicatorAll;
+        private boolean mNightModeEnabled;
 
 
         /**
@@ -925,7 +928,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mComplicationBorderColor = Color.argb(Math.round(69), Color.red(mComplicationColor),
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
 
-            //Misc settings
+            //Complication borders & showing/hiding the second hand
             mShowComplicationBorder = prefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = prefs.getBoolean("settings_show_second_hand", true);
 
@@ -942,6 +945,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mNumberHourTicks = Integer.parseInt(numberHourTicks);
             }
 
+            //Minute ticks & classic mode
             mShowMinuteTicks = prefs.getBoolean("settings_show_minute_ticks", false);
             mClassicMode = prefs.getBoolean("settings_classic_mode", false);
 
@@ -970,13 +974,53 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mNotificationTextColor = mCenterCircleColor;
             mNotificationCircleColor = mHourHandColor;
 
+
             //Night mode
-            final long nightModeStartTime = prefs.getLong("settings_night_mode_start_time",
+            mNightModeEnabled = prefs.getBoolean("settings_night_mode_enabled", false);
+
+            final long nightModeStartTimeMillis = prefs.getLong("settings_night_mode_start_time",
+                    Long.valueOf(getString(R.string.settings_night_mode_default_start_time)));
+            final long nightModeEndTimeMillis = prefs.getLong("settings_night_mode_end_time",
                     Long.valueOf(getString(R.string.settings_night_mode_default_end_time)));
-            Calendar startCalendar = Calendar.getInstance();
-            startCalendar.setTimeInMillis(nightModeStartTime);
-            int timeFormatted = startCalendar.get(Calendar.HOUR);
-            Log.d(TAG, "start hour: "  + timeFormatted);
+
+            final String taggy = "NightMode";
+
+            String nightModeStartTimeMillisString = Long.toString(nightModeStartTimeMillis);
+            Log.d(taggy, "nightModeStartTimeMillisString: " + nightModeStartTimeMillisString);
+
+            String nightModeEndTimeMillisString = Long.toString(nightModeEndTimeMillis);
+            Log.d(taggy, "nightModeEndTimeMillisString: " + nightModeEndTimeMillisString);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+            Date dS = new Date(nightModeStartTimeMillis);
+            Date dE = new Date(nightModeEndTimeMillis);
+            String sS = formatter.format(dS);
+            String sE = formatter.format(dE);
+
+            Log.d(taggy, "nightModeStartTimeString: " + sS);
+            Log.d(taggy, "nightModeEndTimeString: " + sE);
+
+            final Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(dS);
+            Log.d(taggy, startCalendar.getTime().toString());
+
+            final Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(dE);
+
+            final Calendar currentCalendar = mCalendar;
+
+            if (nightModeEndTimeMillisString.compareTo(nightModeStartTimeMillisString) < 0) {
+                Log.d(taggy, "adding 1 to the date");
+                endCalendar.add(Calendar.DATE, 1);
+                currentCalendar.add(Calendar.DATE, 1);
+            }
+
+            Date currentTime = currentCalendar.getTime();
+            if ((currentTime.after(startCalendar.getTime())
+                    || currentTime.compareTo(startCalendar.getTime()) == 0)
+                    && currentTime.before(endCalendar.getTime())) {
+                Log.d(taggy, "Current time is between the two values!");
+            }
         }
 
 

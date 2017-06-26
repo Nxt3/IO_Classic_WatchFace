@@ -83,7 +83,7 @@
     
     <!--Night mode-->
     <string name="settings_night_mode_title">Night mode</string>
-    <string name="settings_enable_night_mode">Enable night mode</string>
+    <string name="settings_night_mode_enabled">Enable night mode</string>
     <string name="settings_night_mode_start">Night mode start</string>
     <string name="settings_night_mode_end">Night mode end</string>
     <!--8pm is default start time-->
