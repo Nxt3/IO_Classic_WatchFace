@@ -116,10 +116,24 @@ public class SettingsFragment extends PreferenceFragment
                 = getPreferenceScreen().getSharedPreferences().edit();
 
         //Default colors
-        final int defaultHands = mContext.getColor(R.color.default_hands); //hours, minutes, ticks, and circle
-        final int defaultSeconds = mContext.getColor(R.color.default_seconds); //seconds
-        final int defaultCenter = mContext.getColor(R.color.default_center_circle); //center circle
-        final int defaultOuter = mContext.getColor(R.color.default_outer_circle); //outer circle
+        final int defaultHands
+                = mContext.getColor(R.color.default_hands); //hours, minutes, ticks, and circle
+        final int defaultSeconds
+                = mContext.getColor(R.color.default_seconds); //seconds
+        final int defaultCenter
+                = mContext.getColor(R.color.default_center_circle); //center circle
+        final int defaultOuter
+                = mContext.getColor(R.color.default_outer_circle); //outer circle
+
+        //Default night mode colors
+        final int defaultNightModeHands
+                = mContext.getColor(R.color.default_hands); //hours, minutes, ticks, and circle
+        final int defaultNightModeSeconds
+                = mContext.getColor(R.color.gray); //seconds
+        final int defaultNightModeCenter
+                = mContext.getColor(R.color.default_center_circle); //center circle
+        final int defaultNightModeOuter
+                = defaultNightModeCenter; //outer circle
 
         switch (preference.getKey()) {
             case "settings_top_complication":
@@ -141,9 +155,21 @@ public class SettingsFragment extends PreferenceFragment
                         defaultHands, COMPLICATION_COLOR_REQ);
                 break;
 
+            case "settings_complication_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_complication_night_mode_color_value",
+                        defaultNightModeHands, COMPLICATION_NIGHT_MODE_COLOR_REQ);
+                break;
+
             case "settings_hour_hand_color":
                 createColorPreferenceActivityIntent(mContext, "settings_hour_hand_color_value",
                         defaultHands, HOUR_HAND_COLOR_REQ);
+                break;
+
+            case "settings_hour_hand_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_hour_hand_night_mode_color_value",
+                        defaultNightModeHands, HOUR_HAND_NIGHT_MODE_COLOR_REQ);
                 break;
 
             case "settings_minute_hand_color":
@@ -151,9 +177,21 @@ public class SettingsFragment extends PreferenceFragment
                         defaultHands, MINUTE_HAND_COLOR_REQ);
                 break;
 
+            case "settings_minute_hand_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_minute_hand_night_mode_color_value",
+                        defaultNightModeHands, MINUTE_HAND_NIGHT_MODE_COLOR_REQ);
+                break;
+
             case "settings_second_hand_color":
                 createColorPreferenceActivityIntent(mContext, "settings_second_hand_color_value",
                         defaultSeconds, SECOND_HAND_COLOR_REQ);
+                break;
+
+            case "settings_second_hand_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_second_hand_night_mode_color_value",
+                        defaultNightModeSeconds, SECOND_HAND_NIGHT_MODE_COLOR_REQ);
                 break;
 
             case "settings_center_circle_color":
@@ -161,14 +199,43 @@ public class SettingsFragment extends PreferenceFragment
                         defaultCenter, CENTER_CIRCLE_COLOR_REQ);
                 break;
 
+            case "settings_center_circle_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_center_circle_night_mode_color_value",
+                        defaultNightModeCenter, CENTER_CIRCLE_NIGHT_MODE_COLOR_REQ);
+                break;
+
             case "settings_circle_ticks_color":
                 createColorPreferenceActivityIntent(mContext, "settings_circle_ticks_color_value",
                         defaultHands, CIRCLE_AND_TICKS_COLOR_REQ);
                 break;
 
+            case "settings_circle_ticks_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_circle_ticks_night_mode_color_value",
+                        defaultNightModeHands, CIRCLE_AND_TICKS_NIGHT_MODE_COLOR_REQ);
+                break;
+
             case "settings_outer_circle_color":
                 createColorPreferenceActivityIntent(mContext, "settings_outer_circle_color_value",
                         defaultOuter, OUTER_CIRCLE_COLOR_REQ);
+                break;
+
+            case "settings_outer_circle_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_outer_circle_night_mode_color_value",
+                        defaultNightModeOuter, OUTER_CIRCLE_NIGHT_MODE_COLOR_REQ);
+                break;
+
+            case "settings_hour_labels_color":
+                createColorPreferenceActivityIntent(mContext, "settings_hour_labels_color_value",
+                        defaultHands, HOUR_LABELS_COLOR_REQ);
+                break;
+
+            case "settings_hour_labels_night_mode_color":
+                createColorPreferenceActivityIntent(mContext,
+                        "settings_hour_labels_night_mode_color_value",
+                        defaultNightModeHands, HOUR_LABELS_NIGHT_MODE_COLOR_REQ);
                 break;
 
             case "settings_classic_mode":
@@ -198,13 +265,6 @@ public class SettingsFragment extends PreferenceFragment
                     }
                 }
                 break;
-
-            case "settings_hour_labels_color":
-                createColorPreferenceActivityIntent(mContext, "settings_hour_labels_color_value",
-                        defaultHands, HOUR_LABELS_COLOR_REQ);
-                break;
-
-            //TODO, make a reset Night mode colors setting
 
             case "settings_reset_hand_colors":
                 editor.putString("settings_hour_hand_color", getString(R.string.settings_default_hands));
@@ -257,6 +317,67 @@ public class SettingsFragment extends PreferenceFragment
                 Toast.makeText(mContext,
                         getString(R.string.settings_confirmation_background_reset),
                         Toast.LENGTH_SHORT).show();
+                break;
+
+            case "settings_reset_night_mode_colors":
+                //Night mode hands
+                editor.putString("settings_hour_hand_night_mode_color",
+                        getString(R.string.settings_default_hands));
+                editor.putInt("settings_hour_hand_night_mode_color_value",
+                        defaultNightModeHands);
+
+                editor.putString("settings_minute_hand_night_mode_color",
+                        getString(R.string.settings_default_hands));
+                editor.putInt("settings_minute_hand_night_mode_color_value",
+                        defaultNightModeHands);
+
+                editor.putString("settings_second_hand_night_mode_color",
+                        getString(R.string.settings_gray));
+                editor.putInt("settings_second_hand_night_mode_color_value",
+                        defaultNightModeSeconds);
+
+                //Night mode background
+                editor.putString("settings_center_circle_night_mode_color",
+                        getString(R.string.settings_default_center_circle));
+                editor.putInt("settings_center_circle_night_mode_color",
+                        defaultNightModeCenter);
+
+                editor.putString("settings_circle_ticks_night_mode_color",
+                        getString(R.string.settings_default_hands));
+                editor.putInt("settings_circle_ticks_night_mode_color_value",
+                        defaultNightModeHands);
+
+                editor.putString("settings_outer_circle_night_mode_color",
+                        getString(R.string.settings_default_outer_circle));
+                editor.putInt("settings_outer_circle_night_mode_color_value",
+                        defaultNightModeOuter);
+
+                editor.putString("settings_complication_night_mode_color",
+                        getString(R.string.settings_default_hands));
+                editor.putInt("settings_complication_night_mode_color_value",
+                        defaultNightModeHands);
+
+                editor.putString("settings_hour_labels_night_mode_color",
+                        getString(R.string.settings_default_hands));
+                editor.putInt("settings_hour_labels_night_mode_color_value",
+                        defaultNightModeHands);
+
+
+                editor.apply();
+                setSummary("settings_hour_hand_night_mode_color");
+                setSummary("settings_minute_hand_night_mode_color");
+                setSummary("settings_second_hand_night_mode_color");
+
+                setSummary("settings_center_circle_night_mode_color");
+                setSummary("settings_circle_ticks_night_mode_color");
+                setSummary("settings_outer_circle_night_mode_color");
+                setSummary("settings_complication_night_mode_color");
+                setSummary("settings_hour_labels_night_mode_color");
+
+                Toast.makeText(mContext,
+                        getString(R.string.settings_confirmation_night_mode_reset),
+                        Toast.LENGTH_SHORT).show();
+
                 break;
 
             case "donation_1":

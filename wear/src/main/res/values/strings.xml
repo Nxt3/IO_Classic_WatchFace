@@ -82,7 +82,7 @@
     <string name="settings_notifications_disabled">Disabled</string>
     <string name="settings_notifications_unread">Unread notifications</string>
     <string name="settings_notifications_all">All notifications</string>
-    
+
     <!--Night mode-->
     <string name="settings_night_mode_title">Night mode</string>
     <string name="settings_night_mode_time_category">Times</string>
@@ -93,7 +93,6 @@
     <string name="settings_night_mode_default_start_time" translatable="false">1483318830000</string>
     <!--7am is default end time-->
     <string name="settings_night_mode_default_end_time" translatable="false">1483272000000</string>
-
 
     <!--Donations-->
     <string name="settings_donate">Donate</string>
@@ -114,8 +113,10 @@
     <string name="settings_reset_settings_title">Reset settings to default</string>
     <string name="settings_reset_hand_colors">Reset hand colors</string>
     <string name="settings_reset_background_colors">Reset background colors</string>
+    <string name="settings_reset_night_mode_colors">Reset night mode colors</string>
     <string name="settings_confirmation_hands_reset">Hand colors reset</string>
     <string name="settings_confirmation_background_reset">Background colors reset</string>
+    <string name="settings_confirmation_night_mode_reset">Night mode colors reset</string>
 
     <!--Normal Colors-->
     <string name="settings_default_hands">Default hands</string>

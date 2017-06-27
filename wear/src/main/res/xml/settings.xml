@@ -356,12 +356,18 @@
         android:icon="@drawable/ic_format_color_reset_black_24dp"
         android:key="settings_reset_settings"
         android:title="@string/settings_reset_settings_title">
+
         <Preference
             android:key="settings_reset_hand_colors"
             android:title="@string/settings_reset_hand_colors" />
+
         <Preference
             android:key="settings_reset_background_colors"
             android:title="@string/settings_reset_background_colors" />
+
+        <Preference
+            android:key="settings_reset_night_mode_colors"
+            android:title="@string/settings_reset_night_mode_colors" />
     </PreferenceScreen>
 
     <!--Donations-->
