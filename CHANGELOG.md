@@ -1,3 +1,7 @@
+v2.0.1 / June 27, 2017
+=========================
+* Fixed a crash when resetting night mode colors
+
 v2.0 / June 27, 2017
 =========================
 * Night mode settings!
