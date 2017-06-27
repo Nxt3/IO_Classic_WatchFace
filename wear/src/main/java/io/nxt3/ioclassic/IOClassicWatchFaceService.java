@@ -28,7 +28,6 @@ import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.TextPaint;
 import android.util.Log;
 import android.util.SparseArray;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
@@ -36,6 +35,8 @@ import android.view.WindowInsets;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import static io.nxt3.ioclassic.HelperFunctions.dpToPx;
 
 public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private final String TAG = "IOClassic";
@@ -79,6 +80,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private final float MINUTE_TICK_STROKE = 2f;
         private final float SECOND_HAND_STROKE = 3f;
         private final float AMBIENT_STROKE = 2f;
+
+        //Context used for HelperFunctions
+        private Context mContext;
 
         //Used for managing the time
         private Calendar mCalendar;
@@ -162,6 +166,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
+
+            mContext = getApplicationContext();
 
             mCalendar = Calendar.getInstance();
 
@@ -383,13 +389,15 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             for (int hourIndex = 0; hourIndex < mNumberHourLabels; hourIndex++) {
                 final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberHourLabels);
 
-                final float textOffset = dpToPx(13); //offset from the hour tick marks
+                //offset from the hour tick marks
+                final float textOffset = HelperFunctions.dpToPx(mContext, 13);
                 final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
                 final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
 
                 final int multiplyOffset = 12 / mNumberHourLabels;
                 final int hourLabelNumber = (hourIndex == 0) ? 12 : hourIndex * multiplyOffset;
-                final String hourLabelString = getHourLabel(hourLabelNumber);
+                final String hourLabelString
+                        = HelperFunctions.getHourLabel(mContext, hourLabelNumber);
 
                 if (hourIndex / mNumberHourLabels == 0) {
                     canvas.drawText(hourLabelString,
@@ -438,7 +446,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             if (count > 0) {
                 //(x,y) coordinates for where to draw the notification indicator
                 float xPos = mCenterX;
-                float yPos = mCenterY + dpToPx(18);
+                float yPos = mCenterY + dpToPx(mContext, 18);
 
                 /*
                   Draw the notification indicator offset if there is a bottom complication.
@@ -447,7 +455,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 if (mActiveComplicationDataSparseArray.get(BOTTOM_COMPLICATION_ID) != null) {
                     if (mActiveComplicationDataSparseArray.get(BOTTOM_COMPLICATION_ID).getType()
                             != ComplicationData.TYPE_EMPTY) {
-                        xPos = mCenterX + dpToPx(34);
+                        xPos = mCenterX + dpToPx(mContext, 34);
                         yPos = mCenterY * 1.34f;
                     }
                 }
@@ -611,12 +619,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
                 } else if (complicationData.getType() == ComplicationData.TYPE_NO_PERMISSION) {
                     ComponentName componentName = new ComponentName(
-                            getApplicationContext(),
-                            WatchFaceService.class);
+                            mContext, WatchFaceService.class);
 
                     Intent permissionRequestIntent =
                             ComplicationHelperActivity.createPermissionRequestHelperIntent(
-                                    getApplicationContext(), componentName);
+                                    mContext, componentName);
 
                     startActivity(permissionRequestIntent);
                 }
@@ -841,7 +848,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             //Sets the styles for the complications
             if (complicationDrawable != null) {
-                complicationDrawable.setContext(getApplicationContext());
+                complicationDrawable.setContext(mContext);
                 complicationDrawable.setTextTypefaceActive(complicationActiveFont);
                 complicationDrawable.setTitleTypefaceActive(complicationActiveFont);
                 complicationDrawable.setTextColorActive(mComplicationColor);
@@ -857,25 +864,31 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 complicationDrawable.setImageColorFilterAmbient(new ColorMatrixColorFilter(matrix));
 
                 if (mShowComplicationBorder) {
-                    complicationDrawable.setBorderStyleActive(ComplicationDrawable.BORDER_STYLE_SOLID);
-                    complicationDrawable.setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_SOLID);
+                    complicationDrawable
+                            .setBorderStyleActive(ComplicationDrawable.BORDER_STYLE_SOLID);
+                    complicationDrawable
+                            .setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_SOLID);
                     complicationDrawable.setBorderColorActive(mComplicationBorderColor);
 
-                    complicationDrawable.setTextSizeActive(spToPx(13));
-                    complicationDrawable.setTitleSizeActive(spToPx(13));
-                    complicationDrawable.setTextSizeAmbient(spToPx(13));
-                    complicationDrawable.setTitleSizeAmbient(spToPx(13));
+                    complicationDrawable.setTextSizeActive(HelperFunctions.spToPx(mContext, 13));
+                    complicationDrawable.setTitleSizeActive(HelperFunctions.spToPx(mContext, 13));
+                    complicationDrawable.setTextSizeAmbient(HelperFunctions.spToPx(mContext, 13));
+                    complicationDrawable.setTitleSizeAmbient(HelperFunctions.spToPx(mContext, 13));
 
-                    complicationDrawable.setBorderRadiusActive((int) dpToPx(50));
-                    complicationDrawable.setBorderRadiusAmbient((int) dpToPx(50));
+                    complicationDrawable
+                            .setBorderRadiusActive((int) HelperFunctions.dpToPx(mContext, 50));
+                    complicationDrawable
+                            .setBorderRadiusAmbient((int) HelperFunctions.dpToPx(mContext, 50));
                 } else {
-                    complicationDrawable.setBorderStyleActive(ComplicationDrawable.BORDER_STYLE_NONE);
-                    complicationDrawable.setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_NONE);
+                    complicationDrawable
+                            .setBorderStyleActive(ComplicationDrawable.BORDER_STYLE_NONE);
+                    complicationDrawable
+                            .setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_NONE);
 
-                    complicationDrawable.setTextSizeActive(spToPx(12));
-                    complicationDrawable.setTitleSizeActive(spToPx(12));
-                    complicationDrawable.setTextSizeAmbient(spToPx(12));
-                    complicationDrawable.setTitleSizeAmbient(spToPx(12));
+                    complicationDrawable.setTextSizeActive(HelperFunctions.spToPx(mContext, 12));
+                    complicationDrawable.setTitleSizeActive(HelperFunctions.spToPx(mContext, 12));
+                    complicationDrawable.setTextSizeAmbient(HelperFunctions.spToPx(mContext, 12));
+                    complicationDrawable.setTitleSizeAmbient(HelperFunctions.spToPx(mContext, 12));
 
                     complicationDrawable.setBorderRadiusActive(0);
                     complicationDrawable.setBorderRadiusAmbient(0);
@@ -900,8 +913,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * Loads the user selected colors for each component
          */
         private void loadSavedPrefs() {
-            SharedPreferences prefs = PreferenceManager
-                    .getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
             //Default colors
             final int defaultHands = getColor(R.color.default_hands); //hours, minutes, ticks, and circle
@@ -973,7 +985,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mNotificationTextColor = mCenterCircleColor;
             mNotificationCircleColor = mHourHandColor;
 
-
             //Night mode
             mNightModeEnabled = prefs.getBoolean("settings_night_mode_enabled", false);
 
@@ -982,30 +993,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final long nightModeEndTimeMillis = prefs.getLong("settings_night_mode_end_time",
                     Long.valueOf(getString(R.string.settings_night_mode_default_end_time)));
 
-            final String taggy = "NightMode";
 
-            final Calendar startCalendar = Calendar.getInstance();
-            startCalendar.setTimeInMillis(nightModeStartTimeMillis);
-            final int startTimeHour = startCalendar.get(Calendar.HOUR_OF_DAY);
-            final int startTimeMinute = startCalendar.get(Calendar.MINUTE);
-
-            final int currentTimeHour = mCalendar.get(Calendar.HOUR_OF_DAY);
-            final int currentTimeMinute = mCalendar.get(Calendar.MINUTE);
-
-            final Calendar endCalendar = Calendar.getInstance();
-            endCalendar.setTimeInMillis(nightModeEndTimeMillis);
-            final int endTimeHour = endCalendar.get(Calendar.HOUR_OF_DAY);
-            final int endTimeMinute = endCalendar.get(Calendar.MINUTE);
-
-            Log.d(taggy, String.format("Start_Time  %d:%02d", startTimeHour, startTimeMinute));
-            Log.d(taggy, String.format("Current_Time  %d:%02d", currentTimeHour, currentTimeMinute));
-            Log.d(taggy, String.format("End_Time  %d:%02d", endTimeHour, endTimeMinute));
-//
-//            if ((currentTimeHour >= startTimeHour || currentTimeHour <= endTimeHour)
-//                    && (currentTimeMinute <= startTimeMinute && currentTimeMinute >= ) )
-
+            boolean x = HelperFunctions.isTimeInRange(mCalendar.getTimeInMillis(),
+                    nightModeStartTimeMillis, nightModeEndTimeMillis);
+            Log.d(TAG, "boolean: " + x);
         }
-
 
         /**
          * Handles changing timezones
@@ -1120,63 +1112,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             return isVisible() && !mAmbient;
         }
 
-        /**
-         * Converts density pixels to pixels
-         *
-         * @param dp desired density pixels
-         * @return converted dp to pixels
-         */
-        private float dpToPx(final int dp) {
-            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                    getResources().getDisplayMetrics());
-        }
-
-        /**
-         * Converts scale pixels to pixels -- used for setting text sizes
-         *
-         * @param sp desired scale pixels pixels
-         * @return converted sp to pixels
-         */
-        private int spToPx(float sp) {
-            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getResources().getDisplayMetrics());
-        }
-
-        /**
-         * Gets the hour String based on the input hour
-         * This is done so that it's possible to translate the hour numbers!
-         *
-         * @param hour to find the String for
-         * @return String of the hour number
-         */
-        private String getHourLabel(int hour) {
-            switch (hour) {
-                case 1:
-                    return getString(R.string.hour_label_1);
-                case 2:
-                    return getString(R.string.hour_label_2);
-                case 3:
-                    return getString(R.string.hour_label_3);
-                case 4:
-                    return getString(R.string.hour_label_4);
-                case 5:
-                    return getString(R.string.hour_label_5);
-                case 6:
-                    return getString(R.string.hour_label_6);
-                case 7:
-                    return getString(R.string.hour_label_7);
-                case 8:
-                    return getString(R.string.hour_label_8);
-                case 9:
-                    return getString(R.string.hour_label_9);
-                case 10:
-                    return getString(R.string.hour_label_10);
-                case 11:
-                    return getString(R.string.hour_label_11);
-                case 12:
-                    return getString(R.string.hour_label_12);
-                default:
-                    return "";
-            }
-        }
+        
     }
 }
