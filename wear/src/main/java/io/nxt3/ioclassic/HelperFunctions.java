@@ -89,22 +89,20 @@ class HelperFunctions {
         calendar.setTimeInMillis(currentMillis);
 
         final int currentMinuteOfDay
-                = calendar.get(Calendar.HOUR_OF_DAY) * 24 + calendar.get(Calendar.MINUTE);
+                = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
         calendar.setTimeInMillis(fromMillis);
 
         final int fromMinuteOfDay
-                = calendar.get(Calendar.HOUR_OF_DAY) * 24 + calendar.get(Calendar.MINUTE);
+                = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
         calendar.setTimeInMillis(toMillis);
 
         final int toMinuteOfDay
-                = calendar.get(Calendar.HOUR_OF_DAY) * 24 + calendar.get(Calendar.MINUTE);
+                = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
 
         if (fromMinuteOfDay <= toMinuteOfDay) {
-            return (currentMinuteOfDay >= fromMinuteOfDay
-                    && currentMinuteOfDay < toMinuteOfDay);
+            return (currentMinuteOfDay >= fromMinuteOfDay && currentMinuteOfDay < toMinuteOfDay);
         } else {
-            return (currentMinuteOfDay >= fromMinuteOfDay
-                    || currentMinuteOfDay < toMinuteOfDay);
+            return (currentMinuteOfDay >= fromMinuteOfDay || currentMinuteOfDay < toMinuteOfDay);
         }
     }
 }

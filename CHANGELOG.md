@@ -1,3 +1,7 @@
+v2.0.2 / June 27, 2017
+=========================
+* Fixed issue with night mode not triggering under certain time ranges
+
 v2.0.1 / June 27, 2017
 =========================
 * Fixed a crash when resetting night mode colors
