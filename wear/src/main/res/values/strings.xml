@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">IO Classic</string>
-
     <!--Hour labels-->
     <string name="hour_label_1">1</string>
     <string name="hour_label_2">2</string>
