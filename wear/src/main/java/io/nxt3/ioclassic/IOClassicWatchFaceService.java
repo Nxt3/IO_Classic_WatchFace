@@ -157,6 +157,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mNotificationIndicatorUnread;
         private boolean mNotificationIndicatorAll;
         private boolean mNightModeEnabled;
+        private long mNightModeStartTimeMillis;
+        private long mNightModeEndTimeMillis;
 
 
         /**
@@ -179,7 +181,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     .setAcceptsTapEvents(true)
                     .build());
 
-            loadSavedPrefs();
+            loadMiscPrefs();
+
+            if (!isInNightMode()) {
+                loadColorPrefs();
+            } else {
+                loadNightModeColorPrefs();
+            }
 
             initializeBackground();
             initializeComplications();
@@ -543,7 +551,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 // Update time zone in case it changed while we weren't visible.
                 mCalendar.setTimeZone(TimeZone.getDefault());
 
-                loadSavedPrefs();
+                loadMiscPrefs();
+
+                if (!isInNightMode()) {
+                    loadColorPrefs();
+                } else {
+                    loadNightModeColorPrefs();
+                }
 
                 for(int COMPLICATION_ID : COMPLICATION_IDS) {
                     final ComplicationDrawable complicationDrawable
@@ -910,10 +924,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
 
         /**
-         * Loads the user selected colors for each component
+         * Loads the normal color settings
          */
-        private void loadSavedPrefs() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        private void loadColorPrefs() {
+            final SharedPreferences prefs
+                    = PreferenceManager.getDefaultSharedPreferences(mContext);
 
             //Default colors
             final int defaultHands = getColor(R.color.default_hands); //hours, minutes, ticks, and circle
@@ -938,6 +953,61 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
             mComplicationBorderColor = Color.argb(Math.round(69), Color.red(mComplicationColor),
                     Color.green(mComplicationColor), Color.blue(mComplicationColor));
+
+            //Notification indicator colors
+            mNotificationTextColor = mCenterCircleColor;
+            mNotificationCircleColor = mHourHandColor;
+        }
+
+        /**
+         * Loads the Night Mode color settings
+         */
+        private void loadNightModeColorPrefs() {
+            final SharedPreferences prefs
+                    = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+            //Default night mode colors
+            final int defaultHands = getColor(R.color.default_hands); //hours, minutes, ticks, and circle
+            final int defaultSeconds = getColor(R.color.gray); //seconds
+            final int defaultCenter = getColor(R.color.default_center_circle); //center circle
+            final int defaultOuter = defaultCenter; //outer circle
+
+            //Hand colors
+            mHourHandColor = prefs.getInt("settings_hour_hand_night_mode_color_value",
+                    defaultHands);
+            mMinuteHandColor = prefs.getInt("settings_minute_hand_night_mode_color_value",
+                    defaultHands);
+            mSecondHandColor = prefs.getInt("settings_second_hand_night_mode_color_value",
+                    defaultSeconds);
+
+            //Background colors
+            mCenterCircleColor = prefs.getInt("settings_center_circle_night_mode_color_value",
+                    defaultCenter);
+            mCircleAndTickColor = prefs.getInt("settings_circle_ticks_night_mode_color_value",
+                    defaultHands);
+            mOuterCircleColor = prefs.getInt("settings_outer_circle_night_mode_color_value",
+                    defaultOuter);
+            mHourLabelsColor = prefs.getInt("settings_hour_labels_night_mode_color_value",
+                    defaultHands);
+
+            //Complication colors
+            mComplicationColor = prefs.getInt("settings_complication_night_mode_color_value", defaultHands);
+            mComplicationTitleColor = Color.argb(Math.round(169), Color.red(mComplicationColor),
+                    Color.green(mComplicationColor), Color.blue(mComplicationColor));
+            mComplicationBorderColor = Color.argb(Math.round(69), Color.red(mComplicationColor),
+                    Color.green(mComplicationColor), Color.blue(mComplicationColor));
+
+            //Notification indicator colors
+            mNotificationTextColor = mCenterCircleColor;
+            mNotificationCircleColor = mHourHandColor;
+        }
+
+        /**
+         * Loads the non-color settings
+         */
+        private void loadMiscPrefs() {
+            final SharedPreferences prefs
+                    = PreferenceManager.getDefaultSharedPreferences(mContext);
 
             //Complication borders & showing/hiding the second hand
             mShowComplicationBorder = prefs.getBoolean("settings_complication_border", true);
@@ -982,22 +1052,17 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mShowNotificationIndicator
                     = (mNotificationIndicatorAll || mNotificationIndicatorUnread);
 
-            mNotificationTextColor = mCenterCircleColor;
-            mNotificationCircleColor = mHourHandColor;
-
             //Night mode
             mNightModeEnabled = prefs.getBoolean("settings_night_mode_enabled", false);
 
-            final long nightModeStartTimeMillis = prefs.getLong("settings_night_mode_start_time",
-                    Long.valueOf(getString(R.string.settings_night_mode_default_start_time)));
-            final long nightModeEndTimeMillis = prefs.getLong("settings_night_mode_end_time",
-                    Long.valueOf(getString(R.string.settings_night_mode_default_end_time)));
-
-
-            boolean x = HelperFunctions.isTimeInRange(mCalendar.getTimeInMillis(),
-                    nightModeStartTimeMillis, nightModeEndTimeMillis);
-            Log.d(TAG, "boolean: " + x);
+            if (mNightModeEnabled) {
+                mNightModeStartTimeMillis = prefs.getLong("settings_night_mode_start_time",
+                        Long.valueOf(getString(R.string.settings_night_mode_default_start_time)));
+                mNightModeEndTimeMillis = prefs.getLong("settings_night_mode_end_time",
+                        Long.valueOf(getString(R.string.settings_night_mode_default_end_time)));
+            }
         }
+
 
         /**
          * Handles changing timezones
@@ -1112,6 +1177,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             return isVisible() && !mAmbient;
         }
 
-        
+        /**
+         * Determines if the watch face is in night mode or not
+         *
+         * @return whether or not night mode colors should be enabled
+         */
+        private boolean isInNightMode() {
+            return (mNightModeEnabled && HelperFunctions.isTimeInRange(mCalendar.getTimeInMillis(),
+                    mNightModeStartTimeMillis, mNightModeEndTimeMillis));
+        }
     }
 }

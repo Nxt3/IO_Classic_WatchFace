@@ -13,6 +13,7 @@ public class ColorActivity extends PreferenceActivity {
         Bundle bundle = getIntent().getExtras();
         colorPreferenceFragment.setArguments(bundle);
 
-        getFragmentManager().beginTransaction().replace(android.R.id.content, colorPreferenceFragment).commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
+                colorPreferenceFragment).commit();
     }
 }

@@ -39,9 +39,9 @@ public class SettingsFragment extends PreferenceFragment
 
     private final String TAG = "Settings";
 
-    /**
-     * Request codes for the color settings
-     */
+    private Context mContext;
+
+    //Normal color request codes
     private final int HOUR_HAND_COLOR_REQ = 10;
     private final int MINUTE_HAND_COLOR_REQ = 11;
     private final int SECOND_HAND_COLOR_REQ = 12;
@@ -51,6 +51,16 @@ public class SettingsFragment extends PreferenceFragment
     private final int COMPLICATION_COLOR_REQ = 16;
     private final int HOUR_LABELS_COLOR_REQ = 17;
 
+    //Night mode request codes
+    private final int HOUR_HAND_NIGHT_MODE_COLOR_REQ = 18;
+    private final int MINUTE_HAND_NIGHT_MODE_COLOR_REQ = 19;
+    private final int SECOND_HAND_NIGHT_MODE_COLOR_REQ = 20;
+    private final int CENTER_CIRCLE_NIGHT_MODE_COLOR_REQ = 21;
+    private final int CIRCLE_AND_TICKS_NIGHT_MODE_COLOR_REQ = 22;
+    private final int OUTER_CIRCLE_NIGHT_MODE_COLOR_REQ = 23;
+    private final int COMPLICATION_NIGHT_MODE_COLOR_REQ = 24;
+    private final int HOUR_LABELS_NIGHT_MODE_COLOR_REQ = 25;
+
     private boolean mClassicModeStatus;
     private String mNumberHourLabels = "";
 
@@ -59,6 +69,8 @@ public class SettingsFragment extends PreferenceFragment
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = getContext();
 
         addPreferencesFromResource(R.xml.settings);
         updateAll();
@@ -88,28 +100,26 @@ public class SettingsFragment extends PreferenceFragment
             }
         };
 
-        mProviderInfoRetriever = new ProviderInfoRetriever(getContext(), executor);
+        mProviderInfoRetriever = new ProviderInfoRetriever(mContext, executor);
 
         mProviderInfoRetriever.init();
         mProviderInfoRetriever.retrieveProviderInfo(callback,
-                new ComponentName(getContext(), IOClassicWatchFaceService.class),
+                new ComponentName(mContext, IOClassicWatchFaceService.class),
                 IOClassicWatchFaceService.COMPLICATION_IDS);
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         Bundle extras = preference.getExtras();
-        Intent intent;
 
-        SharedPreferences.Editor editor = getPreferenceScreen().getSharedPreferences().edit();
-
-        final Context context = getContext();
+        final SharedPreferences.Editor editor
+                = getPreferenceScreen().getSharedPreferences().edit();
 
         //Default colors
-        final int defaultHands = context.getColor(R.color.default_hands); //hours, minutes, ticks, and circle
-        final int defaultSeconds = context.getColor(R.color.default_seconds); //seconds
-        final int defaultCenter = context.getColor(R.color.default_center_circle); //center circle
-        final int defaultOuter = context.getColor(R.color.default_outer_circle); //outer circle
+        final int defaultHands = mContext.getColor(R.color.default_hands); //hours, minutes, ticks, and circle
+        final int defaultSeconds = mContext.getColor(R.color.default_seconds); //seconds
+        final int defaultCenter = mContext.getColor(R.color.default_center_circle); //center circle
+        final int defaultOuter = mContext.getColor(R.color.default_outer_circle); //outer circle
 
         switch (preference.getKey()) {
             case "settings_top_complication":
@@ -119,83 +129,46 @@ public class SettingsFragment extends PreferenceFragment
                 final int id = extras.getInt("id");
                 startActivityForResult(
                         ComplicationHelperActivity.createProviderChooserHelperIntent(
-                                context,
-                                new ComponentName(context.getApplicationContext(),
+                                mContext,
+                                new ComponentName(mContext.getApplicationContext(),
                                         IOClassicWatchFaceService.class),
                                 id,
                                 IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES[id]), id);
                 break;
 
             case "settings_complication_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences().getInt("settings_color_value",
-                                defaultHands));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, COMPLICATION_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_complication_color_value",
+                        defaultHands, COMPLICATION_COLOR_REQ);
                 break;
 
             case "settings_hour_hand_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences().getInt("settings_color_value",
-                                defaultHands));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, HOUR_HAND_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_hour_hand_color_value",
+                        defaultHands, HOUR_HAND_COLOR_REQ);
                 break;
 
             case "settings_minute_hand_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences().getInt("settings_color_value",
-                                defaultHands));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, MINUTE_HAND_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_minute_hand_color_value",
+                        defaultHands, MINUTE_HAND_COLOR_REQ);
                 break;
 
             case "settings_second_hand_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences().getInt("settings_color_value",
-                                defaultSeconds));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, SECOND_HAND_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_second_hand_color_value",
+                        defaultSeconds, SECOND_HAND_COLOR_REQ);
                 break;
 
             case "settings_center_circle_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences()
-                                .getInt("settings_background_color_value",
-                                defaultCenter));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, CENTER_CIRCLE_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_center_circle_color_value",
+                        defaultCenter, CENTER_CIRCLE_COLOR_REQ);
                 break;
 
             case "settings_circle_ticks_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences().getInt("settings_color_value",
-                                defaultHands));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, CIRCLE_AND_TICKS_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_circle_ticks_color_value",
+                        defaultHands, CIRCLE_AND_TICKS_COLOR_REQ);
                 break;
 
             case "settings_outer_circle_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences()
-                                .getInt("settings_background_color_value",
-                                defaultOuter));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, OUTER_CIRCLE_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_outer_circle_color_value",
+                        defaultOuter, OUTER_CIRCLE_COLOR_REQ);
                 break;
 
             case "settings_classic_mode":
@@ -227,15 +200,11 @@ public class SettingsFragment extends PreferenceFragment
                 break;
 
             case "settings_hour_labels_color":
-                intent = new Intent(context, ColorActivity.class);
-                intent.putExtra("color",
-                        getPreferenceScreen().getSharedPreferences()
-                                .getInt("settings_hour_labels_color_value",
-                                        defaultOuter));
-                intent.putExtra("color_names_id", R.array.color_names);
-                intent.putExtra("color_values_id", R.array.color_values);
-                startActivityForResult(intent, HOUR_LABELS_COLOR_REQ);
+                createColorPreferenceActivityIntent(mContext, "settings_hour_labels_color_value",
+                        defaultHands, HOUR_LABELS_COLOR_REQ);
                 break;
+
+            //TODO, make a reset Night mode colors setting
 
             case "settings_reset_hand_colors":
                 editor.putString("settings_hour_hand_color", getString(R.string.settings_default_hands));
@@ -252,7 +221,7 @@ public class SettingsFragment extends PreferenceFragment
                 setSummary("settings_minute_hand_color");
                 setSummary("settings_second_hand_color");
 
-                Toast.makeText(context,
+                Toast.makeText(mContext,
                         getString(R.string.settings_confirmation_hands_reset),
                         Toast.LENGTH_SHORT).show();
                 break;
@@ -285,7 +254,7 @@ public class SettingsFragment extends PreferenceFragment
                 setSummary("settings_complication_color");
                 setSummary("settings_hour_labels_color");
 
-                Toast.makeText(context,
+                Toast.makeText(mContext,
                         getString(R.string.settings_confirmation_background_reset),
                         Toast.LENGTH_SHORT).show();
                 break;
@@ -301,11 +270,31 @@ public class SettingsFragment extends PreferenceFragment
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
+    /**
+     * Creates an intent to start the ColorPreference Activity
+     *
+     * @param context      for the intent
+     * @param key          for the color preference
+     * @param defaultColor for the preference
+     * @param reqCode      request code for the intent, used in onActivityResult()
+     */
+    private void createColorPreferenceActivityIntent(Context context, String key, int defaultColor,
+                                                     int reqCode) {
+        Intent intent = new Intent(context, ColorActivity.class);
+        intent.putExtra("color",
+                getPreferenceScreen().getSharedPreferences().getInt(key,
+                        defaultColor));
+        intent.putExtra("color_names_id", R.array.color_names);
+        intent.putExtra("color_values_id", R.array.color_values);
+        startActivityForResult(intent, reqCode);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        SharedPreferences.Editor editor = getPreferenceScreen().getSharedPreferences().edit();
+        final SharedPreferences.Editor editor
+                = getPreferenceScreen().getSharedPreferences().edit();
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -318,78 +307,87 @@ public class SettingsFragment extends PreferenceFragment
                     break;
 
                 case HOUR_HAND_COLOR_REQ:
-                    editor.putString("settings_hour_hand_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_hour_hand_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_hour_hand_color");
+                    handleActivityOnResult(editor, data, "settings_hour_hand_color");
+                    break;
+
+                case HOUR_HAND_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_hour_hand_night_mode_color");
                     break;
 
                 case MINUTE_HAND_COLOR_REQ:
-                    editor.putString("settings_minute_hand_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_minute_hand_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_minute_hand_color");
+                    handleActivityOnResult(editor, data, "settings_minute_hand_color");
+                    break;
+
+                case MINUTE_HAND_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_minute_hand_night_mode_color");
                     break;
 
                 case SECOND_HAND_COLOR_REQ:
-                    editor.putString("settings_second_hand_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_second_hand_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_second_hand_color");
+                    handleActivityOnResult(editor, data, "settings_second_hand_color");
+                    break;
+
+                case SECOND_HAND_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_second_hand_night_mode_color");
                     break;
 
                 case CENTER_CIRCLE_COLOR_REQ:
-                    editor.putString("settings_center_circle_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_center_circle_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_center_circle_color");
+                    handleActivityOnResult(editor, data, "settings_center_circle_color");
+                    break;
+
+                case CENTER_CIRCLE_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_center_circle_night_mode_color");
                     break;
 
                 case CIRCLE_AND_TICKS_COLOR_REQ:
-                    editor.putString("settings_circle_ticks_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_circle_ticks_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_circle_ticks_color");
+                    handleActivityOnResult(editor, data, "settings_circle_ticks_color");
+                    break;
+
+                case CIRCLE_AND_TICKS_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_circle_ticks_night_mode_color");
                     break;
 
                 case OUTER_CIRCLE_COLOR_REQ:
-                    editor.putString("settings_outer_circle_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_outer_circle_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_outer_circle_color");
+                    handleActivityOnResult(editor, data, "settings_outer_circle_color");
+                    break;
+
+                case OUTER_CIRCLE_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_outer_circle_night_mode_color");
                     break;
 
                 case HOUR_LABELS_COLOR_REQ:
-                    editor.putString("settings_hour_labels_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_hour_labels_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_hour_labels_color");
+                    handleActivityOnResult(editor, data, "settings_hour_labels_color");
+                    break;
+
+                case HOUR_LABELS_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_hour_labels_night_mode_color");
                     break;
 
                 case COMPLICATION_COLOR_REQ:
-                    editor.putString("settings_complication_color",
-                            data.getStringExtra("color_name"));
-                    editor.putInt("settings_complication_color_value",
-                            data.getIntExtra("color_value", 0));
-                    editor.apply();
-                    setSummary("settings_complication_color");
+                    handleActivityOnResult(editor, data, "settings_complication_color");
+                    break;
+
+                case COMPLICATION_NIGHT_MODE_COLOR_REQ:
+                    handleActivityOnResult(editor, data, "settings_complication_night_mode_color");
                     break;
             }
         }
+    }
+
+    /**
+     * Handles the onActivityResult for ColorPreference
+     *
+     * @param editor SharedPrefs editor to store the selected colors
+     * @param data   intent to handle the result for
+     * @param key    of the preference to handle
+     */
+    private void handleActivityOnResult(SharedPreferences.Editor editor, Intent data, String key) {
+        editor.putString(key,
+                data.getStringExtra("color_name"));
+        editor.putInt(key.concat("_value"),
+                data.getIntExtra("color_value", 0));
+
+        editor.apply();
+        setSummary(key);
     }
 
     @Override
@@ -432,7 +430,7 @@ public class SettingsFragment extends PreferenceFragment
         if (p instanceof PreferenceCategory || p instanceof PreferenceScreen) {
             PreferenceGroup prefGroup = (PreferenceGroup) p;
 
-            int prefCount = prefGroup.getPreferenceCount();
+            final int prefCount = prefGroup.getPreferenceCount();
 
             for (int i = 0; i < prefCount; i++) {
                 getPreferenceList(prefGroup.getPreference(i), list);
@@ -450,7 +448,8 @@ public class SettingsFragment extends PreferenceFragment
      * Updates all of the preferences
      */
     private void updateAll() {
-        ArrayList<Preference> preferences = getPreferenceList(getPreferenceScreen(), new ArrayList<>());
+        final ArrayList<Preference> preferences
+                = getPreferenceList(getPreferenceScreen(), new ArrayList<>());
 
         for (Preference preference : preferences) {
             final Drawable icon = preference.getIcon();
@@ -471,7 +470,8 @@ public class SettingsFragment extends PreferenceFragment
      * @param icon       to set the styles of
      */
     private void setStyleIcon(Preference preference, Drawable icon) {
-        LayerDrawable layerDrawable = (LayerDrawable) getContext().getDrawable(R.drawable.config_icon);
+        final LayerDrawable layerDrawable
+                = (LayerDrawable) mContext.getDrawable(R.drawable.config_icon);
         icon.setTint(Color.WHITE);
 
         if (layerDrawable != null && layerDrawable.setDrawableByLayerId(R.id.nested_icon, icon)) {

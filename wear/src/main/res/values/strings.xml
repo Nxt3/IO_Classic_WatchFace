@@ -23,6 +23,7 @@
 
     <!--Complication settings-->
     <string name="settings_complications_title">Complications</string>
+    <string name="settings_complications_night_mode_title">Complications (Night mode)</string>
     <string name="settings_left_complication">Left</string>
     <string name="settings_right_complication">Right</string>
     <string name="settings_top_complication">Top</string>
@@ -30,12 +31,14 @@
     <string name="settings_draw_border_complications">Draw border</string>
     <string name="settings_empty">Empty</string>
     <string name="settings_color">Color</string>
+    <string name="settings_colors">Colors</string>
     <string name="settings_grayscale">Grayscale</string>
     <string name="settings_complication_data_category">Data</string>
     <string name="settings_complication_style_category">Style</string>
 
     <!--Hand color settings-->
     <string name="settings_watch_face_components_title">Hands</string>
+    <string name="settings_watch_face_components_night_mode_title">Hands (Night mode)</string>
     <string name="settings_colors_and_misc_summary">Colors and misc</string>
     <string name="settings_hand_color_category">Hand colors</string>
     <string name="settings_misc_category">Misc</string>
@@ -46,6 +49,7 @@
 
     <!--Background color settings-->
     <string name="settings_background_title">Background</string>
+    <string name="settings_background_night_mode_title">Background (Night mode)</string>
     <string name="settings_colors_and_ticks_summary">Colors and ticks</string>
     <string name="settings_background_color_category">Background colors</string>
     <string name="settings_center_circle_color">Center circle</string>
@@ -83,6 +87,7 @@
     
     <!--Night mode-->
     <string name="settings_night_mode_title">Night mode</string>
+    <string name="settings_night_mode_time_category">Times</string>
     <string name="settings_night_mode_enabled">Enable night mode</string>
     <string name="settings_night_mode_start">Night mode start</string>
     <string name="settings_night_mode_end">Night mode end</string>
