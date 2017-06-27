@@ -548,6 +548,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             if (visible) {
                 registerReceiver();
+
                 // Update time zone in case it changed while we weren't visible.
                 mCalendar.setTimeZone(TimeZone.getDefault());
 
@@ -584,6 +585,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 final ComplicationDrawable complicationDrawable
                         = mComplicationDrawableSparseArray.get(COMPLICATION_ID);
                 complicationDrawable.setInAmbientMode(mAmbient);
+            }
+
+            if (!mAmbient) {
+                if (!isInNightMode()) {
+                    loadColorPrefs();
+                } else {
+                    loadNightModeColorPrefs();
+                }
             }
 
             updateWatchStyles();
