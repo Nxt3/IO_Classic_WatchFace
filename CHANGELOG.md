@@ -1,3 +1,10 @@
+v2.0 / June 27, 2017
+=========================
+* Night mode settings!
+    * Choose the time night mode is active and the colors for the mode as well!
+    * Reset all night mode colors to their defaults with the new reset option
+* Optimized code and improved readability drastically
+
 v1.9.2 / June 26, 2017
 =========================
 * Fixed crash when showing the second hand after it had been hidden
