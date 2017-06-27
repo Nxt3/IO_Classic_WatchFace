@@ -338,8 +338,8 @@ public class SettingsFragment extends PreferenceFragment
 
                 //Night mode background
                 editor.putString("settings_center_circle_night_mode_color",
-                        getString(R.string.settings_default_center_circle));
-                editor.putInt("settings_center_circle_night_mode_color",
+                        getString(R.string.settings_default_outer_circle));
+                editor.putInt("settings_center_circle_night_mode_color_value",
                         defaultNightModeCenter);
 
                 editor.putString("settings_circle_ticks_night_mode_color",
@@ -362,7 +362,6 @@ public class SettingsFragment extends PreferenceFragment
                 editor.putInt("settings_hour_labels_night_mode_color_value",
                         defaultNightModeHands);
 
-
                 editor.apply();
                 setSummary("settings_hour_hand_night_mode_color");
                 setSummary("settings_minute_hand_night_mode_color");
@@ -377,7 +376,6 @@ public class SettingsFragment extends PreferenceFragment
                 Toast.makeText(mContext,
                         getString(R.string.settings_confirmation_night_mode_reset),
                         Toast.LENGTH_SHORT).show();
-
                 break;
 
             case "donation_1":
@@ -650,10 +648,10 @@ public class SettingsFragment extends PreferenceFragment
         if (preference != null) {
             Bundle extras = preference.getExtras();
 
-            String defaultValue = extras.getString("default");
+            final String defaultValue = extras.getString("default");
 
-            String value = PreferenceManager
-                    .getDefaultSharedPreferences(getContext()).getString(key, defaultValue);
+            final String value = PreferenceManager
+                    .getDefaultSharedPreferences(mContext).getString(key, defaultValue);
 
             preference.setSummary(value);
         }
