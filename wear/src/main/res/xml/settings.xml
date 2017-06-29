@@ -205,7 +205,14 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="settings_night_mode_enabled"
-            android:title="@string/settings_night_mode_enabled" />
+            android:summary="@string/settings_night_mode_auto_enabled_summary"
+            android:title="@string/settings_night_mode_auto_enabled" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="settings_night_mode_manual_enabled"
+            android:summary="@string/settings_night_mode_manual_summary"
+            android:title="@string/settings_night_mode_manual_enabled" />
 
         <PreferenceCategory android:title="@string/settings_night_mode_time_category">
             <io.nxt3.ioclassic.config.TimePreference

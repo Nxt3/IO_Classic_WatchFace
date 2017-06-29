@@ -85,8 +85,11 @@
 
     <!--Night mode-->
     <string name="settings_night_mode_title">Night mode</string>
+    <string name="settings_night_mode_auto_enabled">Auto night mode</string>
+    <string name="settings_night_mode_auto_enabled_summary">Select the time range below</string>
+    <string name="settings_night_mode_manual_enabled">Manual night mode</string>
+    <string name="settings_night_mode_manual_summary">Tap center of watch to toggle night mode</string>
     <string name="settings_night_mode_time_category">Times</string>
-    <string name="settings_night_mode_enabled">Enable night mode</string>
     <string name="settings_night_mode_start">Night mode start</string>
     <string name="settings_night_mode_end">Night mode end</string>
     <!--8pm is default start time-->

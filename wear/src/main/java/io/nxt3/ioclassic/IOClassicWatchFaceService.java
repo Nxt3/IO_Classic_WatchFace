@@ -153,12 +153,18 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mShowMinuteTicks;
         private boolean mClassicMode;
         private int mNumberHourLabels;
+
+        //Notification indicators
         private boolean mShowNotificationIndicator;
         private boolean mNotificationIndicatorUnread;
         private boolean mNotificationIndicatorAll;
+
+        //Night mode
         private boolean mNightModeEnabled;
         private long mNightModeStartTimeMillis;
         private long mNightModeEndTimeMillis;
+        private boolean mManualNightModeEnabled;
+        private boolean mForceNightMode;
 
 
         /**
@@ -560,13 +566,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     loadNightModeColorPrefs();
                 }
 
-                for(int COMPLICATION_ID : COMPLICATION_IDS) {
+                updateWatchStyles();
+
+                for (int COMPLICATION_ID : COMPLICATION_IDS) {
                     final ComplicationDrawable complicationDrawable
                             = mComplicationDrawableSparseArray.get(COMPLICATION_ID);
                     updateComplicationStyles(complicationDrawable);
                 }
 
-                updateWatchStyles();
                 invalidate();
             } else {
                 unregisterReceiver();
@@ -619,6 +626,31 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     int tappedComplicationId = getTappedComplicationId(x, y);
                     if (tappedComplicationId != -1) {
                         onComplicationTapped(tappedComplicationId);
+                    }
+
+                    if (mManualNightModeEnabled) {
+                        final Rect centerBounds = createComplicationRect(mCenterX, mCenterY, 5.5f);
+
+                        if (centerBounds.contains(x, y)) {
+                            mForceNightMode = !mForceNightMode; //toggle the boolean
+
+                            if (!isInNightMode()) {
+                                loadColorPrefs();
+                            } else {
+                                loadNightModeColorPrefs();
+                            }
+                            updateWatchStyles();
+
+                            for (int COMPLICATION_ID : COMPLICATION_IDS) {
+                                final ComplicationDrawable complicationDrawable
+                                        = mComplicationDrawableSparseArray.get(COMPLICATION_ID);
+                                updateComplicationStyles(complicationDrawable);
+                            }
+
+                            final SharedPreferences prefs
+                                    = PreferenceManager.getDefaultSharedPreferences(mContext);
+                            prefs.edit().putBoolean("force_night_mode", mForceNightMode).apply();
+                        }
                     }
                     break;
             }
@@ -712,12 +744,13 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         /**
          * Creates the rectangles objects for the complication to be placed in
          *
-         * @param centerX x coordinate of the center
-         * @param centerY y coordinate of the center
+         * @param centerX       x coordinate of the center
+         * @param centerY       y coordinate of the center
+         * @param desiredRadius radius to use for dividing by the mCenterX coordinate
          * @return the complication rectangle
          */
-        private Rect createComplicationRect(float centerX, float centerY) {
-            final int radius = Math.round(mCenterX / COMPLICATION_RADIUS);
+        private Rect createComplicationRect(float centerX, float centerY, float desiredRadius) {
+            final int radius = Math.round(mCenterX / desiredRadius);
 
             final int centerXInt = Math.round(centerX);
             final int centerYInt = Math.round(centerY);
@@ -742,10 +775,14 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             //Below is for measuring the complications
             final float offset = mHasFlatTire ? -18f : -10f; //offset for complications
-            final Rect topBounds = createComplicationRect(mCenterX, mCenterY / 2 - offset);
-            final Rect leftBounds = createComplicationRect(mCenterX / 2 - offset, mCenterY);
-            final Rect rightBounds = createComplicationRect(mCenterX * 1.5f + offset, mCenterY);
-            final Rect bottomBounds = createComplicationRect(mCenterX, mCenterY * 1.5f + offset);
+            final Rect topBounds = createComplicationRect(mCenterX, mCenterY / 2 - offset,
+                    COMPLICATION_RADIUS);
+            final Rect leftBounds = createComplicationRect(mCenterX / 2 - offset, mCenterY,
+                    COMPLICATION_RADIUS);
+            final Rect rightBounds = createComplicationRect(mCenterX * 1.5f + offset, mCenterY,
+                    COMPLICATION_RADIUS);
+            final Rect bottomBounds = createComplicationRect(mCenterX, mCenterY * 1.5f + offset,
+                    COMPLICATION_RADIUS);
 
             final ComplicationDrawable topComplicationDrawable =
                     mComplicationDrawableSparseArray.get(TOP_COMPLICATION_ID);
@@ -1070,6 +1107,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 mNightModeEndTimeMillis = prefs.getLong("settings_night_mode_end_time",
                         Long.valueOf(getString(R.string.settings_night_mode_default_end_time)));
             }
+
+            mManualNightModeEnabled = prefs.getBoolean("settings_night_mode_manual_enabled", false);
+            mForceNightMode = prefs.getBoolean("force_night_mode", false);
         }
 
 
@@ -1192,8 +1232,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
          * @return whether or not night mode colors should be enabled
          */
         private boolean isInNightMode() {
-            return (mNightModeEnabled && HelperFunctions.isTimeInRange(mCalendar.getTimeInMillis(),
-                    mNightModeStartTimeMillis, mNightModeEndTimeMillis));
+            if (mNightModeEnabled) {
+                return HelperFunctions.isTimeInRange(mCalendar.getTimeInMillis(),
+                        mNightModeStartTimeMillis, mNightModeEndTimeMillis);
+            } else {
+                return mForceNightMode;
+            }
         }
     }
 }

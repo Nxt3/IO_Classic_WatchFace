@@ -64,6 +64,9 @@ public class SettingsFragment extends PreferenceFragment
     private boolean mClassicModeStatus;
     private String mNumberHourLabels = "";
 
+    private boolean mAutoNightModeEnabled;
+    private boolean mManualNightModeEnabled;
+
     private ProviderInfoRetriever mProviderInfoRetriever;
 
     @Override
@@ -80,11 +83,21 @@ public class SettingsFragment extends PreferenceFragment
                 .getBoolean("settings_classic_mode", false);
         getPreferenceScreen().findPreference("settings_number_hour_labels")
                 .setEnabled(mClassicModeStatus);
-
         //Get the setting to reset to if the user toggles "Classic mode" in the same session
         mNumberHourLabels = getPreferenceScreen().getSharedPreferences()
                 .getString("settings_number_hour_labels",
                         getString(R.string.settings_0));
+
+        //Disable the inverse of each of these Night mode settings
+        //(only one can be enabled at any time)
+        mAutoNightModeEnabled = getPreferenceScreen().getSharedPreferences()
+                .getBoolean("settings_night_mode_enabled", false);
+        mManualNightModeEnabled = getPreferenceScreen().getSharedPreferences()
+                .getBoolean("settings_night_mode_manual_enabled", false);
+        findPreference("settings_night_mode_manual_enabled")
+                .setEnabled(!mAutoNightModeEnabled);
+        findPreference("settings_night_mode_enabled")
+                .setEnabled(!mManualNightModeEnabled);
     }
 
     @Override
@@ -236,6 +249,29 @@ public class SettingsFragment extends PreferenceFragment
                 createColorPreferenceActivityIntent(mContext,
                         "settings_hour_labels_night_mode_color_value",
                         defaultNightModeHands, HOUR_LABELS_NIGHT_MODE_COLOR_REQ);
+                break;
+
+            case "settings_night_mode_enabled":
+                //If auto night mode is enabled, disable manual night mode
+                mAutoNightModeEnabled = getPreferenceScreen().getSharedPreferences()
+                        .getBoolean("settings_night_mode_enabled", false);
+                findPreference("settings_night_mode_manual_enabled")
+                        .setEnabled(!mAutoNightModeEnabled);
+
+                editor.putBoolean("force_night_mode", false).apply();
+                editor.putBoolean("settings_night_mode_manual_enabled", false).commit();
+
+                break;
+
+            case "settings_night_mode_manual_enabled":
+                //If manual night mode is enabled, disable auto night mode
+                mManualNightModeEnabled = getPreferenceScreen().getSharedPreferences()
+                        .getBoolean("settings_night_mode_manual_enabled", false);
+                findPreference("settings_night_mode_enabled").setEnabled(!mManualNightModeEnabled);
+
+                editor.putBoolean("force_night_mode", false).apply();
+                editor.putBoolean("settings_night_mode_enabled", false).commit();
+
                 break;
 
             case "settings_classic_mode":
