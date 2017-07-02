@@ -1,16 +1,16 @@
-v2.1 / June 29, 2017
+v2.1 / June 29, 2017 (PRODUCTION: v2.0 - 2.1)
 =========================
 * Added a setting for manually toggling night mode by tapping the center of the watch face
 
-v2.0.2 / June 27, 2017
+v2.0.2 / June 27, 2017 (BETA)
 =========================
 * Fixed issue with night mode not triggering under certain time ranges
 
-v2.0.1 / June 27, 2017
+v2.0.1 / June 27, 2017 (BETA)
 =========================
 * Fixed a crash when resetting night mode colors
 
-v2.0 / June 27, 2017
+v2.0 / June 27, 2017 (BETA)
 =========================
 * Night mode settings!
     * Choose the time night mode is active and the colors for the mode as well!
