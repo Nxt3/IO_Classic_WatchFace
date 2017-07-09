@@ -41,7 +41,7 @@ public class SettingsActivity  extends PreferenceActivity implements BillingProc
 
     @Override
     public void onBillingError(int errorCode, Throwable error) {
-        Toast.makeText(this, getResources().getString(R.string.settings_donation_error), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getResources().getString(R.string.settings_donation_error_toast), Toast.LENGTH_LONG).show();
         finish();
     }
 

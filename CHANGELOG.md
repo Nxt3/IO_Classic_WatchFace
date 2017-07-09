@@ -1,3 +1,7 @@
+v2.2 / July 9, 2017
+=========================
+* Added "About" page in the settings to show the current version and allow the user to open this changelog on your phone
+
 v2.1 / June 29, 2017 (PRODUCTION: v2.0 - 2.1)
 =========================
 * Added a setting for manually toggling night mode by tapping the center of the watch face

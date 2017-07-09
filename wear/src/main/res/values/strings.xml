@@ -97,10 +97,19 @@
     <!--7am is default end time-->
     <string name="settings_night_mode_default_end_time" translatable="false">1483272000000</string>
 
+    <!--Reset to default-->
+    <string name="settings_reset_settings_title">Reset settings to default</string>
+    <string name="settings_reset_hand_colors">Reset hand colors</string>
+    <string name="settings_reset_background_colors">Reset background colors</string>
+    <string name="settings_reset_night_mode_colors">Reset night mode colors</string>
+    <string name="settings_confirmation_hands_reset">Hand colors reset</string>
+    <string name="settings_confirmation_background_reset_toast">Background colors reset</string>
+    <string name="settings_confirmation_night_mode_reset_toast">Night mode colors reset</string>
+
     <!--Donations-->
     <string name="settings_donate">Donate</string>
     <string name="settings_donation_summary">Support development</string>
-    <string name="settings_donation_error">There was an error with your donation</string>
+    <string name="settings_donation_error_toast">There was an error with your donation</string>
     <string name="settings_donate_1">Donate &#36;1</string>
     <string name="settings_donate_3">Donate &#36;3</string>
     <string name="settings_donate_5">Donate &#36;5</string>
@@ -110,16 +119,13 @@
     <string name="settings_donate_5_summary">Support 0.5 hours of development</string>
     <string name="settings_donate_10_summary">Support 1 hour of development</string>
 
-    <string name="settings_ambient">Ambient</string>
-
-    <!--Reset to default-->
-    <string name="settings_reset_settings_title">Reset settings to default</string>
-    <string name="settings_reset_hand_colors">Reset hand colors</string>
-    <string name="settings_reset_background_colors">Reset background colors</string>
-    <string name="settings_reset_night_mode_colors">Reset night mode colors</string>
-    <string name="settings_confirmation_hands_reset">Hand colors reset</string>
-    <string name="settings_confirmation_background_reset">Background colors reset</string>
-    <string name="settings_confirmation_night_mode_reset">Night mode colors reset</string>
+    <!--About screen-->
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_summary">Version &amp; changelog</string>
+    <string name="settings_about_current_version">Current version</string>
+    <string name="settings_about_view_changelog">View changelog</string>
+    <string name="settings_about_view_changelog_summary">Open changelog on phone</string>
+    <string name="settings_about_opening_toast">Opening on phone&#8230;</string>
 
     <!--Normal Colors-->
     <string name="settings_default_hands">Default hands</string>
@@ -171,4 +177,7 @@
 
     <string name="settings_black">Black</string>
     <string name="settings_white">White</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
 </resources>

@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -25,9 +26,12 @@ import android.support.wearable.complications.ProviderChooserIntent;
 import android.support.wearable.complications.ProviderInfoRetriever;
 import android.widget.Toast;
 
+import com.google.android.wearable.intent.RemoteIntent;
+
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
+import io.nxt3.ioclassic.BuildConfig;
 import io.nxt3.ioclassic.IOClassicWatchFaceService;
 import io.nxt3.ioclassic.R;
 
@@ -98,6 +102,9 @@ public class SettingsFragment extends PreferenceFragment
                 .setEnabled(!mAutoNightModeEnabled);
         findPreference("settings_night_mode_enabled")
                 .setEnabled(!mManualNightModeEnabled);
+
+        //Set the current version
+        getPreferenceScreen().findPreference("app_version").setSummary(BuildConfig.VERSION_NAME);
     }
 
     @Override
@@ -351,7 +358,7 @@ public class SettingsFragment extends PreferenceFragment
                 setSummary("settings_hour_labels_color");
 
                 Toast.makeText(mContext,
-                        getString(R.string.settings_confirmation_background_reset),
+                        getString(R.string.settings_confirmation_background_reset_toast),
                         Toast.LENGTH_SHORT).show();
                 break;
 
@@ -410,7 +417,7 @@ public class SettingsFragment extends PreferenceFragment
                 setSummary("settings_hour_labels_night_mode_color");
 
                 Toast.makeText(mContext,
-                        getString(R.string.settings_confirmation_night_mode_reset),
+                        getString(R.string.settings_confirmation_night_mode_reset_toast),
                         Toast.LENGTH_SHORT).show();
                 break;
 
@@ -419,6 +426,17 @@ public class SettingsFragment extends PreferenceFragment
             case "donation_5":
             case "donation_10":
                 getSettingsActivity().donate(getActivity(), preference.getKey());
+                break;
+
+            case "settings_open_changelog":
+                Intent openChangelogIntent
+                        = new Intent(Intent.ACTION_VIEW)
+                        .addCategory(Intent.CATEGORY_BROWSABLE)
+                        .setData(Uri.parse("https://github.com/Nxt3/IO_Classic_WatchFace/blob/master/CHANGELOG.md"));
+
+                RemoteIntent.startRemoteActivity(mContext, openChangelogIntent, null);
+                Toast.makeText(mContext, getString(R.string.settings_about_opening_toast),
+                        Toast.LENGTH_LONG).show();
                 break;
         }
 

@@ -196,7 +196,7 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <!--Night mode settings-->
+    <!--Night mode-->
     <PreferenceScreen
         android:icon="@drawable/ic_brightness_4_black_24dp"
         android:key="settings_night_mode"
@@ -342,7 +342,7 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <!--Notification icon settings-->
+    <!--Notification indicator-->
     <ListPreference
         android:defaultValue="0"
         android:dialogTitle=""
@@ -358,7 +358,7 @@
             android:value="notification_icons" />
     </ListPreference>
 
-    <!--Reset settings-->
+    <!--Reset colors-->
     <PreferenceScreen
         android:icon="@drawable/ic_format_color_reset_black_24dp"
         android:key="settings_reset_settings"
@@ -399,5 +399,25 @@
             android:key="donation_10"
             android:summary="@string/settings_donate_10_summary"
             android:title="@string/settings_donate_10" />
+    </PreferenceScreen>
+
+    <!--About-->
+    <PreferenceScreen
+        android:icon="@drawable/ic_info_black_24dp"
+        android:key="settings_about"
+        android:summary="@string/settings_about_summary"
+        android:title="@string/settings_about_title">
+
+        <Preference
+            android:key="app_version"
+            android:persistent="false"
+            android:selectable="false"
+            android:title="@string/settings_about_current_version" />
+
+        <Preference
+            android:icon="@drawable/ic_open_in_browser_black_24dp"
+            android:key="settings_open_changelog"
+            android:summary="@string/settings_about_view_changelog_summary"
+            android:title="@string/settings_about_view_changelog" />
     </PreferenceScreen>
 </PreferenceScreen>
