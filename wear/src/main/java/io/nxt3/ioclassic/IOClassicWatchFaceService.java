@@ -44,15 +44,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
     //Supported complication types
-    public static final int[][] COMPLICATION_SUPPORTED_TYPES = {
-            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
-                    ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
-                    ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
-                    ComplicationData.TYPE_ICON},
-            {ComplicationData.TYPE_SHORT_TEXT, ComplicationData.TYPE_SMALL_IMAGE,
-                    ComplicationData.TYPE_ICON}
+    //Supported complication types
+    public static final int[] COMPLICATION_SUPPORTED_TYPES = {
+            ComplicationData.TYPE_RANGED_VALUE,
+            ComplicationData.TYPE_ICON,
+            ComplicationData.TYPE_SHORT_TEXT,
+            ComplicationData.TYPE_SMALL_IMAGE
     };
     private static final int TOP_COMPLICATION_ID = 0;
     private static final int LEFT_COMPLICATION_ID = 1;
@@ -919,8 +916,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 complicationDrawable.setTitleColorActive(mComplicationTitleColor);
                 complicationDrawable.setIconColorActive(mComplicationColor);
                 complicationDrawable.setHighlightColorActive(mComplicationColor);
-                complicationDrawable.setRangedValuePrimaryColorActive(mComplicationColor);
-                complicationDrawable.setRangedValueSecondaryColorActive(mComplicationTitleColor);
 
                 //Grayscale images when in Ambient Mode
                 final ColorMatrix matrix = new ColorMatrix();
@@ -934,10 +929,15 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                             .setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_SOLID);
                     complicationDrawable.setBorderColorActive(mComplicationBorderColor);
 
-                    complicationDrawable.setTextSizeActive(HelperFunctions.spToPx(mContext, 13));
-                    complicationDrawable.setTitleSizeActive(HelperFunctions.spToPx(mContext, 13));
-                    complicationDrawable.setTextSizeAmbient(HelperFunctions.spToPx(mContext, 13));
-                    complicationDrawable.setTitleSizeAmbient(HelperFunctions.spToPx(mContext, 13));
+                    final float textSize = 13f;
+                    complicationDrawable
+                            .setTextSizeActive(HelperFunctions.spToPx(mContext, textSize));
+                    complicationDrawable
+                            .setTitleSizeActive(HelperFunctions.spToPx(mContext, textSize));
+                    complicationDrawable
+                            .setTextSizeAmbient(HelperFunctions.spToPx(mContext, textSize));
+                    complicationDrawable
+                            .setTitleSizeAmbient(HelperFunctions.spToPx(mContext, textSize));
 
                     complicationDrawable
                             .setBorderRadiusActive((int) HelperFunctions.dpToPx(mContext, 50));
@@ -949,10 +949,15 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                     complicationDrawable
                             .setBorderStyleAmbient(ComplicationDrawable.BORDER_STYLE_NONE);
 
-                    complicationDrawable.setTextSizeActive(HelperFunctions.spToPx(mContext, 12));
-                    complicationDrawable.setTitleSizeActive(HelperFunctions.spToPx(mContext, 12));
-                    complicationDrawable.setTextSizeAmbient(HelperFunctions.spToPx(mContext, 12));
-                    complicationDrawable.setTitleSizeAmbient(HelperFunctions.spToPx(mContext, 12));
+                    final float textSize = 12f;
+                    complicationDrawable
+                            .setTextSizeActive(HelperFunctions.spToPx(mContext, textSize));
+                    complicationDrawable
+                            .setTitleSizeActive(HelperFunctions.spToPx(mContext, textSize));
+                    complicationDrawable
+                            .setTextSizeAmbient(HelperFunctions.spToPx(mContext, textSize));
+                    complicationDrawable
+                            .setTitleSizeAmbient(HelperFunctions.spToPx(mContext, textSize));
 
                     complicationDrawable.setBorderRadiusActive(0);
                     complicationDrawable.setBorderRadiusAmbient(0);

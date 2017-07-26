@@ -167,7 +167,7 @@ public class SettingsFragment extends PreferenceFragment
                                 new ComponentName(mContext.getApplicationContext(),
                                         IOClassicWatchFaceService.class),
                                 id,
-                                IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES[id]), id);
+                                IOClassicWatchFaceService.COMPLICATION_SUPPORTED_TYPES), id);
                 break;
 
             case "settings_complication_color":
