@@ -1,3 +1,7 @@
+v2.3 / July 26, 2017
+=========================
+* Use Android's auto-backup to backup Settings
+
 v2.2 / July 9, 2017
 =========================
 * Added "About" page in the settings to show the current version and allow the user to open this changelog on your phone
