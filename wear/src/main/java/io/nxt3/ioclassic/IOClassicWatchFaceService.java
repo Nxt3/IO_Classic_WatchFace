@@ -467,8 +467,12 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                   Otherwise, draw it below the center of the screen.
                  */
                 if (mActiveComplicationDataSparseArray.get(BOTTOM_COMPLICATION_ID) != null) {
-                    if (mActiveComplicationDataSparseArray.get(BOTTOM_COMPLICATION_ID).getType()
-                            != ComplicationData.TYPE_EMPTY) {
+                    final int bottomType = mActiveComplicationDataSparseArray
+                            .get(BOTTOM_COMPLICATION_ID).getType();
+
+                    if (bottomType != ComplicationData.TYPE_EMPTY
+                            && bottomType != ComplicationData.TYPE_NOT_CONFIGURED) {
+                        //Offset from center
                         xPos = mCenterX + dpToPx(mContext, 34);
                         yPos = mCenterY * 1.34f;
                     }
