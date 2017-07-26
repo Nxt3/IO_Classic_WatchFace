@@ -44,7 +44,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
     //Supported complication types
-    //Supported complication types
     public static final int[] COMPLICATION_SUPPORTED_TYPES = {
             ComplicationData.TYPE_RANGED_VALUE,
             ComplicationData.TYPE_ICON,

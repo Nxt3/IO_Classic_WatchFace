@@ -1,3 +1,8 @@
+v2.4 / July 26, 2017
+=========================
+* Support RANGED complication types (there is no progress bar around the complication since I felt it looked out of place)
+* Improved internal logic for supported complication types
+
 v2.3 / July 26, 2017
 =========================
 * Use Android's auto-backup to backup Settings

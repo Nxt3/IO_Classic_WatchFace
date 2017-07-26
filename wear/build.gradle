@@ -8,8 +8,8 @@ android {
         applicationId "io.nxt3.ioclassic"
         minSdkVersion 25
         targetSdkVersion 25
-        versionCode 23
-        versionName "2.3"
+        versionCode 24
+        versionName "2.4"
     }
     buildTypes {
         release {
