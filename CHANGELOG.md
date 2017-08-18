@@ -1,3 +1,8 @@
+v2.5 / August 17, 2017
+=========================
+* Added a setting for smooth second animation ticks (sweeping animation)
+* Fixed bug where if you disabled the second hand, the display would continue refreshing once a second anyways. Now, if you hide the second hand, the display will only update once a minute! Embarrassing I never noticed this until today!
+
 v2.4 / July 26, 2017
 =========================
 * Support RANGED complication types (there is no progress bar around the complication since I felt it looked out of place)
