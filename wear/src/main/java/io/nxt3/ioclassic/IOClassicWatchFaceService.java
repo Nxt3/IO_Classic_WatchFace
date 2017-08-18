@@ -40,8 +40,6 @@ import static io.nxt3.ioclassic.HelperFunctions.dpToPx;
 
 public class IOClassicWatchFaceService extends CanvasWatchFaceService {
     private final String TAG = "IOClassic";
-    //Update rate in milliseconds for interactive mode. We update once a second to advance the second hand.
-    private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
     //Supported complication types
     public static final int[] COMPLICATION_SUPPORTED_TYPES = {
@@ -76,6 +74,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private final float MINUTE_TICK_STROKE = 2f;
         private final float SECOND_HAND_STROKE = 3f;
         private final float AMBIENT_STROKE = 2f;
+
+        //Update rate in milliseconds for interactive mode; once a sec by default
+        private long mInteractiveUpdateRate = TimeUnit.SECONDS.toMillis(1);
 
         //Context used for HelperFunctions
         private Context mContext;
@@ -1067,6 +1068,16 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             mShowComplicationBorder = prefs.getBoolean("settings_complication_border", true);
             mShowSecondHand = prefs.getBoolean("settings_show_second_hand", true);
 
+            //Smooth seconds and updating the interactive update rate
+            final boolean smoothSeconds = prefs.getBoolean("settings_smooth_seconds", false);
+            if (smoothSeconds && mShowSecondHand) {
+                mInteractiveUpdateRate = 32;
+            } else if (!mShowSecondHand) {
+                mInteractiveUpdateRate = TimeUnit.MINUTES.toMillis(1);
+            } else {
+                mInteractiveUpdateRate = TimeUnit.SECONDS.toMillis(1);
+            }
+
             //Number of hour ticks
             final String numberHourTicks = prefs.getString("settings_number_ticks",
                     getString(R.string.settings_number_ticks_default));
@@ -1144,8 +1155,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
                         if (shouldTimerBeRunning()) {
                             long timeMs = System.currentTimeMillis();
-                            long delayMs = INTERACTIVE_UPDATE_RATE_MS
-                                    - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
+                            long delayMs = mInteractiveUpdateRate
+                                    - (timeMs % mInteractiveUpdateRate);
 
                             mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
                         }

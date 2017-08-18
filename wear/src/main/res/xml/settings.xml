@@ -106,6 +106,12 @@
                 android:defaultValue="true"
                 android:key="settings_show_second_hand"
                 android:title="@string/settings_show_second_hand" />
+
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="settings_smooth_seconds"
+                android:summary="@string/settings_smooth_seconds_summary"
+                android:title="@string/settings_smooth_seconds_title" />
         </PreferenceCategory>
     </PreferenceScreen>
 

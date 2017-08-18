@@ -44,6 +44,8 @@
     <string name="settings_minute_hand_color">Minute</string>
     <string name="settings_second_hand_color">Second</string>
     <string name="settings_show_second_hand">Show second hand</string>
+    <string name="settings_smooth_seconds_title">Smooth seconds tick</string>
+    <string name="settings_smooth_seconds_summary">May reduce battery life</string>
 
     <!--Background color settings-->
     <string name="settings_background_title">Background</string>
