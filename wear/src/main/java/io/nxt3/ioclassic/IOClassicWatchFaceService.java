@@ -651,6 +651,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                             final SharedPreferences prefs
                                     = PreferenceManager.getDefaultSharedPreferences(mContext);
                             prefs.edit().putBoolean("force_night_mode", mForceNightMode).apply();
+                            invalidate();
                         }
                     }
                     break;
