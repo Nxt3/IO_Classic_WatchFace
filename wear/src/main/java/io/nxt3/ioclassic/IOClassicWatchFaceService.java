@@ -771,9 +771,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             mHourLabelTextPaint.setTextSize(width / 15);
 
-            //Handle measuring the notification text and gradient
-            mNotificationTextPaint.setTextSize(width / 25);
-            mNotificationTextPaint.setTextSize(width / 25);
+            //Handle measuring the notification text
+            mNotificationTextPaint.setTextSize(width / 20);
 
             //Below is for measuring the complications
             final float offset = mHasFlatTire ? -18f : -10f; //offset for complications
