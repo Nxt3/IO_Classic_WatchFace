@@ -1,3 +1,7 @@
+v2.6 / August 29, 2017
+=========================
+* Increased notifcation indicator text size
+
 v2.5.1 / August 28, 2017
 =========================
 * Fixed bug where manually toggling night mode wouldn't happen instantly if you had disabled the second hand
