@@ -20,8 +20,10 @@ width="200"
 ## Features
   - Complication support
   - Customizable colors
-  - Show/hide second hand
+  - Night mode (auto or manual)
+  - Notification indicator
   - Full ambient mode support
+  - Show/hide second hand
   - Choose number of tick marks to show
 
 
