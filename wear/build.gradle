@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "io.nxt3.ioclassic"
         minSdkVersion 25
-        targetSdkVersion 25
-        versionCode 27
-        versionName "2.6"
+        targetSdkVersion 26
+        versionCode 28
+        versionName "2.7"
     }
     buildTypes {
         release {
@@ -33,9 +33,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided 'com.google.android.wearable:wearable:2.0.2'
-    compile 'com.google.android.support:wearable:2.0.2'
+    provided 'com.google.android.wearable:wearable:2.0.5'
+    compile 'com.google.android.support:wearable:2.0.5'
 
-    compile 'com.google.android.gms:play-services-wearable:10.2.6'
-    compile 'com.anjlab.android.iab.v3:library:1.0.+'
+    compile 'com.google.android.gms:play-services-wearable:11.0.4'
+    compile 'com.anjlab.android.iab.v3:library:1.0.44'
 }
