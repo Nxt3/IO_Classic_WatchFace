@@ -975,6 +975,11 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         public void onNotificationCountChanged(int count) {
             super.onNotificationCountChanged(count);
             mNotificationCount = count;
+
+            //redrawing once a second anyways, so don't redraw again
+            if (!mShowSecondHand) {
+                invalidate();
+            }
         }
 
 
