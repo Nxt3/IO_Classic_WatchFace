@@ -9,7 +9,6 @@
 
 # Add any project specific keep options here:
 -dontwarn java.lang.invoke.*
--dontwarn **$$Lambda$*
 
 # Needed for complication_styles.xml
  -keep class android.support.wearable.complications.rendering.ComplicationDrawable { *; }
