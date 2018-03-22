@@ -128,10 +128,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private int mNotificationTextColor;
         private int mNotificationCircleColor;
 
-        //Notification counts
-        private int mNotificationCount;
-        private int mUnreadNotificationCount;
-
         //Complication stuff
         private SparseArray<ComplicationData> mActiveComplicationDataSparseArray;
         private SparseArray<ComplicationDrawable> mComplicationDrawableSparseArray;
@@ -181,6 +177,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                             | Gravity.TOP)
                     .setViewProtectionMode(WatchFaceStyle.PROTECT_STATUS_BAR
                             | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
+                    .setHideNotificationIndicator(true)
                     .setAcceptsTapEvents(true)
                     .build());
 
@@ -449,9 +446,9 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             int count = 0;
 
             if (mNotificationIndicatorUnread) {
-                count = mUnreadNotificationCount;
+                count = getUnreadCount();
             } else if (mNotificationIndicatorAll) {
-                count = mNotificationCount;
+                count = getNotificationCount();
             }
 
             if (count > 0) {
@@ -476,7 +473,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
                 }
 
                 canvas.drawCircle(xPos, yPos, mCenterX * 0.08f, mNotificationCirclePaint);
-                canvas.drawText(String.valueOf(mNotificationCount), xPos,
+                canvas.drawText(String.valueOf(count), xPos,
                         yPos - (mNotificationTextPaint.descent()
                                 + mNotificationTextPaint.ascent()) / 2, mNotificationTextPaint);
             }
@@ -607,6 +604,24 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
 
             //Check and trigger whether or not timer should be running (only in active mode)
             updateTimer();
+        }
+
+        @Override
+        public void onUnreadCountChanged(int count) {
+            super.onUnreadCountChanged(count);
+
+            if (mNotificationIndicatorUnread && !mShowSecondHand) {
+                invalidate(); //refresh when the count changes
+            }
+        }
+
+        @Override
+        public void onNotificationCountChanged(int count) {
+            super.onNotificationCountChanged(count);
+
+            if (mNotificationIndicatorAll && !mShowSecondHand) {
+                invalidate(); //refresh when the count changes
+            }
         }
 
 
@@ -965,23 +980,6 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        @Override
-        public void onUnreadCountChanged(int count) {
-            super.onUnreadCountChanged(count);
-            mUnreadNotificationCount = count;
-        }
-
-        @Override
-        public void onNotificationCountChanged(int count) {
-            super.onNotificationCountChanged(count);
-            mNotificationCount = count;
-
-            //redrawing once a second anyways, so don't redraw again
-            if (!mShowSecondHand) {
-                invalidate();
-            }
-        }
-
 
         /**
          * Loads the normal color settings
@@ -1113,14 +1111,16 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             }
 
             //Notification indicator
-            final String mNotificationIndicator
+            final String notificationIndicator
                     = prefs.getString("settings_notification_indicator", null);
-            mNotificationIndicatorUnread
-                    = mNotificationIndicator != null && mNotificationIndicator.equals("1");
-            mNotificationIndicatorAll
-                    = mNotificationIndicator != null && mNotificationIndicator.equals("2");
-            mShowNotificationIndicator
-                    = (mNotificationIndicatorAll || mNotificationIndicatorUnread);
+            if (notificationIndicator != null) {
+                mNotificationIndicatorUnread
+                        = notificationIndicator.equals("1");
+                mNotificationIndicatorAll
+                        = notificationIndicator.equals("2");
+                mShowNotificationIndicator
+                        = (mNotificationIndicatorAll || mNotificationIndicatorUnread);
+            }
 
             //Night mode
             mNightModeEnabled = prefs.getBoolean("settings_night_mode_enabled", false);
