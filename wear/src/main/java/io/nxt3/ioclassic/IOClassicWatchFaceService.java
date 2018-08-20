@@ -146,6 +146,7 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
         private boolean mShowMinuteTicks;
         private boolean mClassicMode;
         private int mNumberHourLabels;
+        private boolean mHideCircle;
 
         //Notification indicators
         private boolean mShowNotificationIndicator;
@@ -343,83 +344,87 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             final int width = bounds.width();
             final int height = bounds.height();
 
+            if (!mHideCircle) {
+
             /*
               Offset/distance between the edge and the inner circle; bigger if the device
               has a flat tire.
               If mClassicMode is true, then reduce the offset even further
              */
-            final float circleOffset = mClassicMode ? 3f : (mHasFlatTire ? 38f : 24f);
+                final float circleOffset = mClassicMode ? 3f : (mHasFlatTire ? 38f : 24f);
 
-            //draws outer circle
-            canvas.drawColor(mOuterCircleColor);
-            canvas.drawCircle(mCenterX, mCenterY, width / 2,
-                    mOuterBackgroundPaint);
-            canvas.drawCircle(mCenterX, mCenterY, width / 2 - circleOffset - 20.0f,
-                    mBackgroundPaint);
+                //draws outer circle
+                canvas.drawColor(mOuterCircleColor);
+                canvas.drawCircle(mCenterX, mCenterY, width / 2,
+                        mOuterBackgroundPaint);
+                canvas.drawCircle(mCenterX, mCenterY, width / 2 - circleOffset - 20.0f,
+                        mBackgroundPaint);
 
-            //used as the starting point for drawing the ticks (drawn from IN to OUT)
-            final float innerTickRadius = mCenterX - circleOffset - 14;
+                //used as the starting point for drawing the ticks (drawn from IN to OUT)
+                final float innerTickRadius = mCenterX - circleOffset - 14;
 
-            //if mShowMinuteTicks, make the hour ticks slightly longer
-            final float innerHourTickRadius = mShowMinuteTicks
-                    ? innerTickRadius - 2.50f : innerTickRadius;
+                //if mShowMinuteTicks, make the hour ticks slightly longer
+                final float innerHourTickRadius = mShowMinuteTicks
+                        ? innerTickRadius - 2.50f : innerTickRadius;
 
-            //used as the stopping point for drawing the ticks
-            final float outerTickRadius = mCenterX - circleOffset - 1;
+                //used as the stopping point for drawing the ticks
+                final float outerTickRadius = mCenterX - circleOffset - 1;
 
-            //draw hour tick marks
-            for (int tickIndex = 0; tickIndex < mNumberHourTicks; tickIndex++) {
-                final float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberHourTicks);
+                //draw hour tick marks
+                for (int tickIndex = 0; tickIndex < mNumberHourTicks; tickIndex++) {
+                    final float tickRotation = (float) (tickIndex * Math.PI * 2 / mNumberHourTicks);
 
-                final float innerX = (float) Math.sin(tickRotation) * innerHourTickRadius;
-                final float innerY = (float) -Math.cos(tickRotation) * innerHourTickRadius;
-                final float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
-                final float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
+                    final float innerX = (float) Math.sin(tickRotation) * innerHourTickRadius;
+                    final float innerY = (float) -Math.cos(tickRotation) * innerHourTickRadius;
+                    final float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
+                    final float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
 
-                canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
-                        mCenterX + outerX, mCenterY + outerY, mCircleAndTickPaint);
-            }
-
-            //draws minute tick marks
-            for (int tickIndex = 0; tickIndex < 60 && mShowMinuteTicks; tickIndex++) {
-                final float tickRotation = (float) (tickIndex * Math.PI * 2 / 60);
-
-                final float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
-                final float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
-                final float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
-                final float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
-
-                canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
-                        mCenterX + outerX, mCenterY + outerY, mMinuteTickPaint);
-            }
-
-            //draws hour text labels
-            for (int hourIndex = 0; hourIndex < mNumberHourLabels; hourIndex++) {
-                final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberHourLabels);
-
-                //offset from the hour tick marks
-                final float textOffset = HelperFunctions.dpToPx(mContext, 13);
-                final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
-                final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
-
-                final int multiplyOffset = 12 / mNumberHourLabels;
-                final int hourLabelNumber = (hourIndex == 0) ? 12 : hourIndex * multiplyOffset;
-                final String hourLabelString
-                        = HelperFunctions.getHourLabel(mContext, hourLabelNumber);
-
-                if (hourIndex / mNumberHourLabels == 0) {
-                    canvas.drawText(hourLabelString,
-                            mCenterX + x,
-                            mCenterY + y
-                                    - (mHourLabelTextPaint.descent()
-                                    + mHourLabelTextPaint.ascent()) / 2,
-                            mHourLabelTextPaint);
+                    canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
+                            mCenterX + outerX, mCenterY + outerY, mCircleAndTickPaint);
                 }
-            }
 
-            //draws circle for the ticks
-            canvas.drawArc(circleOffset, circleOffset, width - circleOffset,
-                    height - circleOffset, 0, 360, false, mCircleAndTickPaint);
+                //draws minute tick marks
+                for (int tickIndex = 0; tickIndex < 60 && mShowMinuteTicks; tickIndex++) {
+                    final float tickRotation = (float) (tickIndex * Math.PI * 2 / 60);
+
+                    final float innerX = (float) Math.sin(tickRotation) * innerTickRadius;
+                    final float innerY = (float) -Math.cos(tickRotation) * innerTickRadius;
+                    final float outerX = (float) Math.sin(tickRotation) * outerTickRadius;
+                    final float outerY = (float) -Math.cos(tickRotation) * outerTickRadius;
+
+                    canvas.drawLine(mCenterX + innerX, mCenterY + innerY,
+                            mCenterX + outerX, mCenterY + outerY, mMinuteTickPaint);
+                }
+
+                //draws hour text labels
+                for (int hourIndex = 0; hourIndex < mNumberHourLabels; hourIndex++) {
+                    final float tickRotation = (float) (hourIndex * Math.PI * 2 / mNumberHourLabels);
+
+                    //offset from the hour tick marks
+                    final float textOffset = HelperFunctions.dpToPx(mContext, 13);
+                    final float x = (float) Math.sin(tickRotation) * (innerTickRadius - textOffset);
+                    final float y = (float) -Math.cos(tickRotation) * (innerTickRadius - textOffset);
+
+                    final int multiplyOffset = 12 / mNumberHourLabels;
+                    final int hourLabelNumber = (hourIndex == 0) ? 12 : hourIndex * multiplyOffset;
+                    final String hourLabelString
+                            = HelperFunctions.getHourLabel(mContext, hourLabelNumber);
+
+                    if (hourIndex / mNumberHourLabels == 0) {
+                        canvas.drawText(hourLabelString,
+                                mCenterX + x,
+                                mCenterY + y
+                                        - (mHourLabelTextPaint.descent()
+                                        + mHourLabelTextPaint.ascent()) / 2,
+                                mHourLabelTextPaint);
+                    }
+                }
+
+                //draws circle for the ticks
+                canvas.drawArc(circleOffset, circleOffset, width - circleOffset,
+                        height - circleOffset, 0, 360, false, mCircleAndTickPaint);
+
+            }
         }
 
         /**
@@ -1097,6 +1102,8 @@ public class IOClassicWatchFaceService extends CanvasWatchFaceService {
             //Minute ticks & classic mode
             mShowMinuteTicks = prefs.getBoolean("settings_show_minute_ticks", false);
             mClassicMode = prefs.getBoolean("settings_classic_mode", false);
+
+            mHideCircle = prefs.getBoolean("settings_hide_circle", false);
 
             final String numberHourLabels = prefs.getString("settings_number_hour_labels",
                     getString(R.string.settings_none));
