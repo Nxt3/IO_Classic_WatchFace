@@ -176,15 +176,14 @@
 
             <SwitchPreference
                 android:defaultValue="false"
-                android:key="settings_classic_mode"
-                android:summary="@string/settings_classic_mode_summary"
-                android:title="@string/settings_classic_mode_title" />
-
+                android:key="settings_hide_circle"
+                android:title="@string/settings_hide_all_circle_ticks_title" />
 
             <SwitchPreference
                 android:defaultValue="false"
-                android:key="settings_hide_circle"
-                android:title="@string/settings_hide_all_circle_ticks_title" />
+                android:key="settings_classic_mode"
+                android:summary="@string/settings_classic_mode_summary"
+                android:title="@string/settings_classic_mode_title" />
 
             <ListPreference
                 android:defaultValue="0"

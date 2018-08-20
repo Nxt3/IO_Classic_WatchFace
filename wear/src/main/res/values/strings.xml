@@ -63,7 +63,7 @@
     <string name="settings_number_ticks_title">Number of hour tick marks</string>
     <string name="settings_number_ticks_default">Default &#40;4&#41;</string>
     <string name="settings_show_minute_ticks_title">Show minute tick marks</string>
-    <string name="settings_hide_all_circle_ticks_title">Hide all Ticks and Circle</string>
+    <string name="settings_hide_all_circle_ticks_title">Hide all ticks and circles</string>
 
     <!--Number selections for hour tick marks and number of hour labels-->
     <string name="settings_none">None</string>
