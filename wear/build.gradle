@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "io.nxt3.ioclassic"
         minSdkVersion 25
-        targetSdkVersion 27
-        versionCode 31
-        versionName "2.9"
+        targetSdkVersion 28
+        versionCode 32
+        versionName "2.10"
     }
 
     buildTypes {
@@ -33,10 +33,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided 'com.google.android.wearable:wearable:2.2.0'
-    compile 'com.google.android.support:wearable:2.2.0'
+    provided 'com.google.android.wearable:wearable:2.4.0'
+    compile 'com.google.android.support:wearable:2.4.0'
 
-    compile 'com.google.android.gms:play-services-wearable:12.0.0'
+    compile 'com.google.android.gms:play-services-wearable:16.0.1'
     compile 'com.anjlab.android.iab.v3:library:1.0.44'
 }
 
